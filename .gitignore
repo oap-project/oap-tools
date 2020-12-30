@@ -1,0 +1,7 @@
+
+
+# IDEA config files
+.idea/
+*.iml
+dev/thirdparty/
+dev/release-package/

@@ -5,11 +5,17 @@
 OAP_HOME="$(cd "`dirname "$0"`/.."; pwd)"
 
 DEV_PATH=$OAP_HOME/dev
-OAP_VERSION=0.9.0
+
+OAP_VERSION=1.1.0
+OAP_BRANCH="master"
+
+declare -A repo_dic
+repo_dic=([remote-shuffle]="https://github.com/oap-project/remote-shuffle.git" [native-sql-engine]="https://github.com/oap-project/native-sql-engine.git" [arrow-data-source]="https://github.com/oap-project/arrow-data-source.git" [pmem-shuffle]="https://github.com/oap-project/pmem-shuffle.git" [oap-mllib]="https://github.com/oap-project/oap-mllib.git" [pmem-spill]="https://github.com/oap-project/pmem-spill.git" [pmem-common]="https://github.com/oap-project/pmem-common.git" [sql-ds-cache]="https://github.com/oap-project/sql-ds-cache.git")
+
+
 SPARK_VERSION=3.0.0
 
 GCC_MIN_VERSION=7.0
-
 
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
 
@@ -55,19 +61,38 @@ function check_gcc() {
   fi
 }
 
+
+function clone_all(){
+    
+    for key in $(echo ${!repo_dic[*]})
+    do
+        echo "$key : ${repo_dic[$key]}"
+        cd $OAP_HOME
+        if [ ! -d $key ]; then
+            git clone ${repo_dic[$key]} -b $OAP_BRANCH 
+        else
+            cd $key
+            git pull
+            git checkout  $OAP_BRANCH 
+        fi
+    
+    done
+}
+
+
 function gather() {
   cd  $DEV_PATH
   package_name=oap-$OAP_VERSION-bin-spark-$SPARK_VERSION
   rm -rf $DEV_PATH/release-package/*
   target_path=$DEV_PATH/release-package/$package_name/jars/
   mkdir -p $target_path
-  cp ../oap-cache/oap/target/*.jar $target_path
-  cp ../oap-common/target/*.jar $target_path
-  cp ../oap-data-source/arrow/target/*.jar $target_path
-  cp ../oap-native-sql/core/target/*.jar $target_path
-  cp ../oap-shuffle/remote-shuffle/target/*.jar $target_path
-  cp ../oap-shuffle/RPMem-shuffle/core/target/*.jar $target_path
-  cp ../oap-spark/target/*.jar $target_path
+  cp ../sql-ds-cache/target/*spark-3.0.0.jar $target_path
+  cp ../pmem-common/target/*.jar $target_path
+  cp ../arrow-data-source/standard/target/*with-dependencies.jar $target_path
+  cp ../native-sql-engine/core/target/*with-dependencies.jar $target_path
+  cp ../remote-shuffle/target/*.jar $target_path
+  cp ../pmem-shuffle/core/target/*with-dependencies.jar $target_path
+  cp ../pmem-spill/target/*.jar $target_path
   cp ../oap-mllib/mllib-dal/target/*.jar $target_path
   cp ../dev/thirdparty/arrow/java/plasma/target/arrow-plasma-0.17.0.jar $target_path
 
@@ -82,6 +107,70 @@ function gather() {
   echo "Please check the result in  $DEV_PATH/release-package!"
 }
 
+function build_oap(){
+    case $1 in
+    arrow-data-source)
+    cd $OAP_HOME/arrow-data-source
+    mvn clean package -DskipTests
+    ;;
+
+    native-sql-engine)
+    cd $OAP_HOME/arrow-data-source
+    mvn clean install -DskipTests
+    cd $OAP_HOME/native-sql-engine/core
+    mvn clean package  -DskipTests
+    ;;
+
+    oap-mllib )
+    cd $OAP_HOME/oap-mllib/mllib-dal
+    export ONEAPI_ROOT=/opt/intel/oneapi
+    source /opt/intel/oneapi/dal/latest/env/vars.sh
+    source /opt/intel/oneapi/tbb/latest/env/vars.sh
+    source /tmp/oneCCL/build/_install/env/setvars.sh
+    mvn clean package  -DskipTests
+    ;;
+
+    pmem-common)    
+    cd $OAP_HOME/pmem-common
+    mvn clean package -Pvmemcache  -Ppersistent-memory  -DskipTests
+    ;;
+
+    pmem-shuffle)
+    cd $OAP_HOME/pmem-shuffle
+    mvn clean package  -DskipTests
+    cd $OAP_HOME
+    ;;
+
+    pmem-spill)
+    cd $OAP_HOME/pmem-common
+    mvn clean install -Pvmemcache  -Ppersistent-memory  -DskipTests
+    cd $OAP_HOME/pmem-spill
+    mvn clean package  -DskipTests
+    cd $OAP_HOME
+    ;;
+
+    remote-shuffle)
+    cd $OAP_HOME/remote-shuffle
+    mvn clean package  -DskipTests
+    ;;
+
+    sql-ds-cache)
+    cd $OAP_HOME/pmem-common
+    mvn clean install -Pvmemcache  -Ppersistent-memory  -DskipTests
+    cd $OAP_HOME/sql-ds-cache
+    mvn clean package  -DskipTests
+    ;;
+
+    *)    # unknown option
+    echo "Unknown option "
+    exit 1
+    ;;
+esac
+}
+
+gather
+exit 0
+
 check_gcc
 cd $OAP_HOME
 while [[ $# -ge 0 ]]
@@ -91,60 +180,53 @@ case $key in
     "")
     shift 1
     echo "Start to compile all modules of OAP ..."
-    cd $OAP_HOME
-    export ONEAPI_ROOT=/opt/intel/inteloneapi
-    source /opt/intel/inteloneapi/daal/2021.1-beta07/env/vars.sh
-    source /opt/intel/inteloneapi/tbb/2021.1-beta07/env/vars.sh
-    source /tmp/oneCCL/build/_install/env/setvars.sh
-    mvn clean  -Ppersistent-memory -Pvmemcache -DskipTests package
+    build_oap native-sql-engine
+    build_oap oap-mllib
+    build_oap pmem-shuffle
+    build_oap pmem-spill
+    build_oap remote-shuffle
+    build_oap sql-ds-cache
     gather
     exit 0
     ;;
-    --oap-cache)
+    --arrow-data-source)
     shift 1
-    export ONEAPI_ROOT=/tmp/
-    mvn clean package -pl com.intel.oap:oap-cache -am -Ppersistent-memory -Pvmemcache -DskipTests
+    build_oap arrow-data-source
     exit 0
     ;;
-    --spark-arrow-datasource)
+    --native-sql-engine)
     shift 1
-    export ONEAPI_ROOT=/tmp/
-    mvn clean package -pl com.intel.oap:spark-arrow-datasource  -am -DskipTests
+    build_oap native-sql-engine
     exit 0
     ;;
     --oap-mllib )
     shift 1
-    export ONEAPI_ROOT=/opt/intel/inteloneapi
-    source /opt/intel/inteloneapi/daal/2021.1-beta07/env/vars.sh
-    source /opt/intel/inteloneapi/tbb/2021.1-beta07/env/vars.sh
-    source /tmp/oneCCL/build/_install/env/setvars.sh
-    mvn clean package -pl com.intel.oap:oap-mllib  -am -DskipTests
+    build_oap oap-mllib
     exit 0
     ;;
-    --spark-columnar-core)
+    --pmem-common)
     shift 1
-    export ONEAPI_ROOT=/tmp/
-    mvn clean package -pl com.intel.oap:spark-columnar-core  -am -DskipTests
+    build_oap pmem-common
+    exit 0
+    ;;
+    --pmem-shuffle)
+    shift 1
+    build_oap pmem-shuffle
+    exit 0
+    ;;
+    --pmem-spill)
+    shift 1
+    build_oap pmem-spill
     exit 0
     ;;
     --remote-shuffle)
     shift 1
-    export ONEAPI_ROOT=/tmp/
-    mvn clean package -pl com.intel.oap:oap-remote-shuffle  -am -DskipTests
+    build_oap remote-shuffle
     exit 0
     ;;
-    --oap-rpmem-shuffle)
+    --sql-ds-cache)
     shift 1
-    export ONEAPI_ROOT=/tmp/
-    cd $OAP_HOME/oap-shuffle/RPMem-shuffle
-    mvn clean package -DskipTests
-    cd $OAP_HOME
-    exit 0
-    ;;
-    --oap-spark)
-    shift 1
-    export ONEAPI_ROOT=/tmp/
-    mvn clean package -pl com.intel.oap:oap-spark -Ppersistent-memory  -am -DskipTests
+    build_oap sql-ds-cache
     exit 0
     ;;
     *)    # unknown option
@@ -153,5 +235,4 @@ case $key in
     ;;
 esac
 done
-
 
