@@ -9,6 +9,14 @@ TARGET_CMAKE_SOURCE_URL=https://cmake.org/files/v3.11/cmake-3.11.1.tar.gz
 GCC_MIN_VERSION=7.0
 LLVM_MIN_VERSION=7.0
 rx='^([0-9]+\.){0,2}(\*|[0-9]+)$'
+ARROW_BRANCH="oap-master"
+
+OAP_VERSION=1.1.0
+OAP_BRANCH="master"
+
+declare -A repo_dic
+repo_dic=([remote-shuffle]="https://github.com/oap-project/remote-shuffle.git" [native-sql-engine]="https://github.com/oap-project/native-sql-engine.git" [arrow-data-source]="https://github.com/oap-project/arrow-data-source.git" [pmem-shuffle]="https://github.com/oap-project/pmem-shuffle.git" [oap-mllib]="https://github.com/oap-project/oap-mllib.git" [pmem-spill]="https://github.com/oap-project/pmem-spill.git" [pmem-common]="https://github.com/oap-project/pmem-common.git" [sql-ds-cache]="https://github.com/oap-project/sql-ds-cache.git")
+
 
 if [ -z "$DEV_PATH" ]; then
   OAP_HOME="$(cd "`dirname "$0"`/../.."; pwd)"
@@ -54,7 +62,7 @@ function install_maven() {
   yum -y install wget
   cd $DEV_PATH/thirdparty
   if [ ! -f " $DEV_PATH/thirdparty/apache-maven-$MAVEN_TARGET_VERSION-bin.tar.gz" ]; then
-        wget --no-check-certificate https://mirrors.cnnic.cn/apache/maven/maven-3/$MAVEN_TARGET_VERSION/binaries/apache-maven-$MAVEN_TARGET_VERSION-bin.tar.gz
+        wget -t 0 -c --no-check-certificate https://mirrors.cnnic.cn/apache/maven/maven-3/$MAVEN_TARGET_VERSION/binaries/apache-maven-$MAVEN_TARGET_VERSION-bin.tar.gz
   fi
 
   cd /usr/local/
@@ -107,7 +115,7 @@ function prepare_cmake() {
       cd $DEV_PATH/thirdparty
       echo " $DEV_PATH/thirdparty/cmake-$CMAKE_TARGET_VERSION.tar.gz"
       if [ ! -f " $DEV_PATH/thirdparty/cmake-$CMAKE_TARGET_VERSION.tar.gz" ]; then
-        wget --no-check-certificate $TARGET_CMAKE_SOURCE_URL
+        wget -t 0 -c --no-check-certificate $TARGET_CMAKE_SOURCE_URL
       fi
       tar xvf cmake-$CMAKE_TARGET_VERSION.tar.gz
       cd cmake-$CMAKE_TARGET_VERSION/
@@ -124,7 +132,7 @@ function prepare_cmake() {
     cd $DEV_PATH/thirdparty
     echo " $DEV_PATH/thirdparty/cmake-$CMAKE_TARGET_VERSION.tar.gz"
     if [ ! -f "cmake-$CMAKE_TARGET_VERSION.tar.gz" ]; then
-      wget --no-check-certificate $TARGET_CMAKE_SOURCE_URL
+      wget -t 0 -c --no-check-certificate $TARGET_CMAKE_SOURCE_URL
     fi
 
     tar xvf cmake-$CMAKE_TARGET_VERSION.tar.gz
@@ -147,7 +155,7 @@ function prepare_memkind() {
   fi
   cd memkind/
   git pull
-  git checkout v1.10.1-rc2
+  git checkout v1.10.1
 
   yum -y install autoconf
   yum -y install automake
@@ -200,7 +208,7 @@ function install_gcc7() {
   if [ ! -d "gcc-7.3.0" ]; then
     if [ ! -f "gcc-7.3.0.tar" ]; then
       if [ ! -f "gcc-7.3.0.tar.xz" ]; then
-        wget  --no-check-certificate https://bigsearcher.com/mirrors/gcc/releases/gcc-7.3.0/gcc-7.3.0.tar.xz
+        wget -t 0 -c  --no-check-certificate https://bigsearcher.com/mirrors/gcc/releases/gcc-7.3.0/gcc-7.3.0.tar.xz
       fi
       xz -d gcc-7.3.0.tar.xz
     fi
@@ -215,7 +223,8 @@ function install_gcc7() {
 }
 
 function prepare_llvm() {
-  CURRENT_LLVM_VERSION_STR="$(llvm-config --version)"
+  check_gcc
+  CURRENT_LLVM_VERSION_STR=`export LD_LIBRARY_PATH=$DEV_PATH/thirdparty/gcc7/lib64:$LD_LIBRARY_PATH;llvm-config --version`
   if [[ "CURRENT_LLVM_VERSION_STR" =~ $rx  ]]; then
     if version_ge $CURRENT_LLVM_VERSION_STR $LLVM_MIN_VERSION; then
       echo "llvm is installed"
@@ -228,7 +237,7 @@ function prepare_llvm() {
   cd $DEV_PATH/thirdparty/llvm
   if [ ! -d "llvm-7.0.1.src" ]; then
     if [ ! -f "llvm-7.0.1.src.tar.xz" ]; then
-      wget --no-check-certificate http://releases.llvm.org/7.0.1/llvm-7.0.1.src.tar.xz
+      wget -t 0 -c --no-check-certificate http://releases.llvm.org/7.0.1/llvm-7.0.1.src.tar.xz
     fi
     tar xf llvm-7.0.1.src.tar.xz
   fi
@@ -238,7 +247,7 @@ function prepare_llvm() {
 
   if [ ! -d "clang" ]; then
     if [ ! -f "cfe-7.0.1.src.tar.xz" ]; then
-      wget --no-check-certificate http://releases.llvm.org/7.0.1/cfe-7.0.1.src.tar.xz
+      wget -t 0 -c --no-check-certificate http://releases.llvm.org/7.0.1/cfe-7.0.1.src.tar.xz
       tar xf cfe-7.0.1.src.tar.xz
     fi
     mv cfe-7.0.1.src clang
@@ -247,7 +256,6 @@ function prepare_llvm() {
   mkdir -p build
   cd build
 
-  check_gcc
 
   cmake -DCMAKE_BUILD_TYPE=Release ..
   cmake --build .
@@ -261,17 +269,21 @@ function prepare_intel_arrow() {
   yum -y install libgsasl
   yum -y install libidn-devel.x86_64
   yum -y install libntlm.x86_64
+  yum -y install python3
   cd $DEV_PATH
   mkdir -p $DEV_PATH/thirdparty/
   cd $DEV_PATH/thirdparty/
   intel_arrow_repo="https://github.com/Intel-bigdata/arrow.git"
   if [ ! -d "arrow" ]; then
-    git clone $intel_arrow_repo -b branch-0.17.0-oap-0.9
+    git clone $intel_arrow_repo -b $ARROW_BRANCH
     cd arrow
   else
     cd arrow
+    git checkout -f $ARROW_BRANCH
     git pull
   fi
+  git branch
+#  exit 0
   current_arrow_path=$(pwd)
   mkdir -p cpp/release-build
   check_gcc
@@ -281,7 +293,7 @@ function prepare_intel_arrow() {
   make -j
   make install
   cd ../../java
-  mvn clean install -q -P arrow-jni -am -Darrow.cpp.build.dir=$current_arrow_path/cpp/release-build/release/ -DskipTests -Dcheckstyle.skip
+  mvn clean install -P arrow-jni -am -Darrow.cpp.build.dir=$current_arrow_path/cpp/release-build/release/ -DskipTests -Dcheckstyle.skip
 }
 
 
@@ -291,16 +303,17 @@ function prepare_intel_conda_arrow() {
   cd $DEV_PATH/thirdparty/
   intel_arrow_repo="https://github.com/Intel-bigdata/arrow.git"
   if [ ! -d "arrow" ]; then
-    git clone $intel_arrow_repo -b branch-0.17.0-oap-0.9
+    git clone $intel_arrow_repo -b $ARROW_BRANCH
     cd arrow
   else
     cd arrow
+    git checkout -f $ARROW_BRANCH
     git pull
   fi
   current_arrow_path=$(pwd)
 
   cd java/
-  mvn clean install -q -P arrow-jni -am -Darrow.cpp.build.dir=/root/miniconda2/envs/oapbuild/lib -DskipTests -Dcheckstyle.skip
+  mvn clean install  -P arrow-jni -am -Darrow.cpp.build.dir=/root/miniconda2/envs/oapbuild/lib/ -DskipTests -Dcheckstyle.skip
 }
 
 
@@ -404,7 +417,24 @@ function prepare_PMoF() {
 function prepare_oneAPI() {
   cd $DEV_PATH/
   cd ../oap-mllib/dev/
-  sudo sh install-build-deps-centos.sh
+  sh install-build-deps-centos.sh
+}
+
+function clone_all(){
+    echo "Start to git clone all OAP modules ..."
+    for key in $(echo ${!repo_dic[*]})
+    do
+        echo "$key : ${repo_dic[$key]}"
+        cd $OAP_HOME
+        if [ ! -d $key ]; then
+            git clone ${repo_dic[$key]} -b $OAP_BRANCH 
+        else
+            cd $key
+            git pull
+            git checkout  $OAP_BRANCH 
+        fi
+    
+    done
 }
 
 function  prepare_conda_build() {
@@ -441,6 +471,7 @@ function oap_build_help() {
 }
 
 check_jdk
+clone_all
 while [[ $# -gt 0 ]]
 do
 key="$1"
@@ -504,11 +535,6 @@ case $key in
     ;;
     --prepare_llvm)
     shift 1 
-    prepare_llvm
-    exit 0
-    ;;
-    --prepare_llvm)
-    shift 1
     prepare_llvm
     exit 0
     ;;
