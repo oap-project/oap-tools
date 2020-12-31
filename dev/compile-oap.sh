@@ -73,11 +73,15 @@ function gather() {
   cp ../pmem-shuffle/core/target/*with-dependencies.jar $target_path
   cp ../pmem-spill/target/*.jar $target_path
   cp ../oap-mllib/mllib-dal/target/*.jar $target_path
-  cp ../dev/thirdparty/arrow/java/plasma/target/arrow-plasma-0.17.0.jar $target_path
 
   find $target_path -name "*test*"|xargs rm -rf
   cd $target_path
   rm -f oap-cache-$OAP_VERSION.jar
+  cd $DEV_PATH/thirdparty
+  if [ ! -d "arrow" ]; then
+    sh $DEV_PATH/scripts/prepare_oap_env.sh --prepare_intel_arrow
+  fi
+  cp $DEV_PATH/thirdparty/arrow/java/plasma/target/arrow-plasma-0.17.0.jar $target_path
   mkdir -p $DEV_PATH/thirdparty/arrow/oap
   rm -rf $DEV_PATH/thirdparty/arrow/oap/*
   cp $target_path/* $DEV_PATH/thirdparty/arrow/oap/
