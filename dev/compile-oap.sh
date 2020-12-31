@@ -147,9 +147,6 @@ function build_oap(){
 esac
 }
 
-gather
-exit 0
-
 check_gcc
 cd $OAP_HOME
 while [[ $# -ge 0 ]]
@@ -215,3 +212,5 @@ case $key in
 esac
 done
 
+gather
+exit 0
