@@ -216,7 +216,6 @@ case $key in
     build_oap pmem-spill
     build_oap remote-shuffle
     build_oap sql-ds-cache
-    exit 0
     ;;
     *)    # unknown option
     echo "Unknown option "
