@@ -1,17 +1,17 @@
 {% set ARROW_VERSION = "0.17.0" %}
 package:
-  name: arrow
+  name: oap-arrow
   version: {{ ARROW_VERSION }}
 
 source:
-  path: ../../../thirdparty/arrow/
+  path: ../../../thirdparty/arrow2/
 
 build:
   build:
   number: 0
   skip: true  # [win and vc<14]
   run_exports:
-    - {{ pin_subpackage("arrow", max_pin="x.x") }}
+    - {{ pin_subpackage("oap-arrow", max_pin="x.x") }}
 
 requirements:
   build:
@@ -30,8 +30,8 @@ requirements:
     - glog
     - grpc-cpp >=1.21.4
     - libprotobuf
-    - clangdev 9
-    - llvmdev 9
+    - clangdev 7
+    - llvmdev 7
     - lz4-c
     - numpy >=1.14
     - orc  # [unix]
@@ -58,9 +58,12 @@ requirements:
     - zstd
     - libhdfs3
     - vmemcache 0.8
-    - memkind 1.10.1-rc2
+    - memkind 1.10.1
     - hpnl 1.0
-
+    - gcc_impl_linux-64 7.5.0
+    - gcc_linux-64 7.5.0
+    - gxx_impl_linux-64 7.5.0
+    - gxx_linux-64 7.5.0
 test:
   commands:
     # headers1
@@ -108,10 +111,10 @@ about:
       the license section of the installed Conda package and/or the README file) and all notices, disclaimers or license terms
       for third party or open source software included in or with the software.</strong>
       <br/><br/>
-      EULA: <a href="https://github.com/Intel-bigdata/OAP/blob/branch-0.9-spark-3.x/LICENSE.txt" target="_blank">Apache License 2.0</a><br/>
-      Third Party Programs: https://github.com/Intel-bigdata/OAP/blob/branch-0.9-spark-3.x/TPP.txt
+      EULA: <a href="https://github.com/Intel-bigdata/OAP/blob/master/LICENSE.txt" target="_blank">Apache License 2.0</a><br/>
+      Third Party Programs: https://github.com/Intel-bigdata/OAP/blob/master/TPP.txt
       <br/><br/>'
-  dev_url: https://github.com/Intel-bigdata/OAP/blob/branch-0.9-spark-3.x/docs/Developer-Guide.md
-  doc_url: https://github.com/Intel-bigdata/OAP/blob/branch-0.9-spark-3.x/docs/OAP-Installation-Guide.md
+  dev_url: https://github.com/Intel-bigdata/OAP/blob/master/docs/Developer-Guide.md
+  doc_url: https://github.com/Intel-bigdata/OAP/blob/master/docs/OAP-Installation-Guide.md
 
 
