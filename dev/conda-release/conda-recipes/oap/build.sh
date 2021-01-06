@@ -16,6 +16,7 @@ if [ "$(uname)" == "Linux" ]; then
 fi
 
 cmake \
+    -DARROW_WITH_FASTPFOR=ON \
     -DARROW_PLASMA_JAVA_CLIENT=on \
     -DARROW_PLASMA=ON \
     -DARROW_GANDIVA_JAVA=ON \
