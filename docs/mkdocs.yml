@@ -1,0 +1,46 @@
+site_name: OAP Project
+
+repo_name: 'Fork on GitHub '
+repo_url: https://github.com/oap-project/oap-project.github.io.git
+edit_uri: ""
+
+
+nav:
+  - Home: index.md
+  - OAP Installation Guide: OAP-Installation-Guide.md
+  - OAP Developer Guide: OAP-Developer-Guide.md
+  - SQL DS Cache:
+    - User Guide: "SQLDSCache/User-Guide.md"
+    - Advanced Configuration: "SQLDSCache/Advanced-Configuration.md"
+    - Developer Guide: "SQLDSCache/Developer-Guide.md"
+  - Native SQL Engine:
+    - User Guide: NativeSQLEngine/User-Guide.md
+    - Prerequisite: NativeSQLEngine/Prerequisite.md
+    - Installation: NativeSQLEngine/Installation.md
+    - InstallationNotes: NativeSQLEngine/InstallationNotes.md
+    - Configuration: NativeSQLEngine/Configuration.md
+    - SparkInstallation: NativeSQLEngine/SparkInstallation.md
+    - ApacheArrowInstallation: NativeSQLEngine/ApacheArrowInstallation.md
+  - Arrow Data Source:
+    - User Guide: ArrowDataSource/User-Guide.md
+  - OAP MLlib:
+    - User Guide: OAPMLlib/User-Guide.md
+  - PMem Shuffle:
+    - User Guide: PMemShuffle/User-Guide.md
+  - PMem Spill:
+    - User Guide: PMemSpill/User-Guide.md
+  - PMem Common:
+    - User Guide: PMemCommon/User-Guide.md
+  - Remote Shuffle:
+    - User Guide: RemoteShuffle/User-Guide.md
+  - Version Selector: "../"
+
+
+theme: "readthedocs"
+
+
+plugins:
+  - search
+  - mkdocs-versioning:
+      version: master
+      exclude_from_nav: ["image", "js", "css", "fonts", "img"]
