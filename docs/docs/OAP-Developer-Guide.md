@@ -33,7 +33,7 @@ If enable Shuffle Remote PMem extension with RDMA, you can refer to [PMem Shuffl
 We provide scripts below to help automatically install dependencies above **except RDMA**, need change to **root** account, run:
 
 ```
-# git clone -b <tag-version> 
+# git clone -b <version> https://github.com/oap-project/oap-tools.git
 # cd oap-tools
 # sh dev/install-compile-time-dependencies.sh
 ```
