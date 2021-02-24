@@ -65,7 +65,8 @@ function gather() {
   rm -rf $DEV_PATH/release-package/*
   target_path=$DEV_PATH/release-package/$package_name/jars/
   mkdir -p $target_path
-  cp ../sql-ds-cache/target/*spark-3.0.0.jar $target_path
+  cp ../sql-ds-cache/Plasma-based-cache/target/*spark-3.0.0.jar $target_path
+  cp ../sql-ds-cache/HCFS-based-cache/target/*.jar $target_path
   cp ../pmem-common/target/*.jar $target_path
   cp ../arrow-data-source/standard/target/*with-dependencies.jar $target_path
   cp ../native-sql-engine/core/target/*with-dependencies.jar $target_path
