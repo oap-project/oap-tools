@@ -21,7 +21,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
-    - aws-sdk-cpp 1.7.164
+    - aws-sdk-cpp 
     - boost-cpp >=1.68.0
     - brotli
     - bzip2
@@ -32,6 +32,7 @@ requirements:
     - libprotobuf
     - clangdev 7
     - llvmdev 7
+    - libutf8proc
     - lz4-c
     - numpy >=1.14
     - orc  # [unix]
@@ -44,7 +45,7 @@ requirements:
 
   run:
     - numpy >=1.14
-    - aws-sdk-cpp 1.7.164
+    - aws-sdk-cpp 
     - boost-cpp
     - brotli
     - c-ares
