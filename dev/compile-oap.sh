@@ -83,7 +83,7 @@ function gather() {
   if [ ! -d "arrow" ]; then
     sh $DEV_PATH/scripts/prepare_oap_env.sh --prepare_intel_arrow
   fi
-  cp $DEV_PATH/thirdparty/arrow/java/plasma/target/arrow-plasma-0.17.0.jar $target_path
+  cp $DEV_PATH/thirdparty/arrow/java/plasma/target/arrow-plasma-3.0.0.jar $target_path
   mkdir -p $DEV_PATH/thirdparty/arrow/oap
   rm -rf $DEV_PATH/thirdparty/arrow/oap/*
   cp $target_path/* $DEV_PATH/thirdparty/arrow/oap/
