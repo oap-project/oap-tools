@@ -68,8 +68,8 @@ function gather() {
   cp ../sql-ds-cache/Plasma-based-cache/target/*spark-3.0.0.jar $target_path
   cp ../sql-ds-cache/HCFS-based-cache/target/*.jar $target_path
   cp ../pmem-common/target/*.jar $target_path
-  cp ../arrow-data-source/standard/target/*with-dependencies.jar $target_path
-  cp ../native-sql-engine/core/target/*with-dependencies.jar $target_path
+  cp ../native-sql-engine/arrow-data-source/standard/target/*with-dependencies.jar $target_path
+  cp ../native-sql-engine/native-sql-engine/core/target/*with-dependencies.jar $target_path
   cp ../remote-shuffle/shuffle-daos/target/*.jar $target_path
   cp ../remote-shuffle/shuffle-hadoop/target/*.jar $target_path
   cp ../pmem-shuffle/core/target/*with-dependencies.jar $target_path
@@ -100,8 +100,6 @@ function build_oap(){
     ;;
 
     native-sql-engine)
-    cd $OAP_HOME/arrow-data-source
-    mvn clean install -DskipTests
     cd $OAP_HOME/native-sql-engine/core
     mvn clean package  -DskipTests
     ;;
