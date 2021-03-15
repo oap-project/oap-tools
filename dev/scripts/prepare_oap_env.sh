@@ -13,7 +13,7 @@ INTEL_ARROW_REPO="https://github.com/oap-project/arrow.git"
 ARROW_BRANCH="arrow-3.0.0-oap"
 
 OAP_VERSION=1.1.0
-OAP_BRANCH="master"
+OAP_BRANCH="branch-1.1-spark-3.x"
 
 declare -A repo_dic
 repo_dic=([remote-shuffle]="https://github.com/oap-project/remote-shuffle.git" [native-sql-engine]="https://github.com/oap-project/native-sql-engine.git" [arrow-data-source]="https://github.com/oap-project/arrow-data-source.git" [pmem-shuffle]="https://github.com/oap-project/pmem-shuffle.git" [oap-mllib]="https://github.com/oap-project/oap-mllib.git" [pmem-spill]="https://github.com/oap-project/pmem-spill.git" [pmem-common]="https://github.com/oap-project/pmem-common.git" [sql-ds-cache]="https://github.com/oap-project/sql-ds-cache.git")
