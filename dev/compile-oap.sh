@@ -100,7 +100,7 @@ function build_oap(){
     ;;
 
     native-sql-engine)
-    cd $OAP_HOME/native-sql-engine/core
+    cd $OAP_HOME/native-sql-engine/
     mvn clean package  -DskipTests
     ;;
 
