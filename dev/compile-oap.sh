@@ -101,7 +101,7 @@ function build_oap(){
 
     native-sql-engine)
     cd $OAP_HOME/native-sql-engine/
-    mvn clean package  -DskipTests
+    mvn clean package -am -DskipTests -Dcpp_tests=OFF -Dbuild_arrow=OFF -Dstatic_arrow=OFF -Darrow_root=/root/miniconda2/envs/oapbuild -Dbuild_protobuf=OFF
     ;;
 
     oap-mllib )
