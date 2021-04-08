@@ -9,3 +9,5 @@ conda install -c intel icc_rt=2021.1.2
 conda uninstall --force  mkl
 conda install -c intel mkl=2021.1.1
 conda install -c intel daal4py=2021.1
+conda install -c intel ipykernel ipython
+pip install intel-tensorflow==2.3.0
