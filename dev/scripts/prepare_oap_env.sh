@@ -10,7 +10,7 @@ GCC_MIN_VERSION=7.0
 LLVM_MIN_VERSION=7.0
 rx='^([0-9]+\.){0,2}(\*|[0-9]+)$'
 INTEL_ARROW_REPO="https://github.com/oap-project/arrow.git"
-ARROW_BRANCH="arrow-3.0.0-oap"
+ARROW_BRANCH="arrow-3.0.0-oap-1.1"
 
 OAP_VERSION=1.1.0
 OAP_BRANCH="branch-1.1-spark-3.x"
