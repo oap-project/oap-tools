@@ -26,3 +26,14 @@ Import notebook
 
 6. Open the notebook and attached it to the cluster you created, then run it.
 ![create_cluster_with_container](../imgs/create_cluster_with_container.png)
+
+## Create a new cluster using init_intel_optimized_ml.sh
+
+You can refer to the guide [Use Intel Optimized ML libraries in Databricks Runtime for ML](../README.md)
+
+
+## Notes
+
+
+For best performance of Bert benchmark, use the same value for the arguments num-cores and num-intra-thread in the notebook **[Bert-Benchmark-Tensorflow.ipynb](./Bert-Benchmark-Tensorflow.ipynb)**, **num-cores**  is equal to the number of  ***Core(s) per socket***, you can use the command **"lscpu"** to get it.
+
