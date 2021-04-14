@@ -10,7 +10,8 @@ Upload the init script **[init_intel_optimized_ml.sh](./init_intel_optimized_ml.
 - Click the DBFS button at the top of the page.
 - Click the Upload button at the top of the page.
 - On the Upload Data to DBFS dialog, optionally select a target directory or enter a new one.
-- In the Files box, drag and drop or use the file browser to select the file **[init_intel_optimized_ml.sh](./init_intel_optimized_ml.sh)** to upload.
+- In the Files box, drag and drop or use the file browser to select the file **[init_intel_optimized_ml.sh](./init_intel_optimized_ml.sh)** to upload. 
+
 ![upload_init_script](./imgs/upload_init_script.png)
 
 
@@ -25,7 +26,8 @@ To use the cluster configuration page to configure a cluster to run an init scri
 4. At the bottom of the page, click the Init Scripts tab.
 5. In the Destination drop-down, select a destination type. In the example in the preceding section, the destination is DBFS.
 6. Specify a path to the init script. In the example in the preceding section, the path is **dbfs:/FileStore/init_intel_optimized_ml.sh**. The path must begin with dbfs:/.
-7. Click Add.
+7. Click Add. 
+
 ![create_cluster](./imgs/create_cluster.png)
 
 
@@ -53,5 +55,6 @@ You should import the **notebook**  we provided from firstly.
  2. Open the notebook *benchmark_sklearn* and attached it to the cluster you created, then run it.
    
 #### To run benchmark_tensorflow
-  The steps to run benchmark_tensorflow are same to the above. 
+  The steps to run benchmark_tensorflow are same to the above.   
+  
   ***Notice:*** For best performance of Bert benchmark, use the same value for the arguments num-cores and num-intra-thread in the notebook **[benchmark_tensorflow.ipynb](./notebooks/benchmark_tensorflow.ipynb)**, **num-cores**  is equal to the number of  ***Core(s) per socket***, you can use the command **"lscpu"** to get it.
