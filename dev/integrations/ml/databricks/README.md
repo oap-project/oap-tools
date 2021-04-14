@@ -1,4 +1,4 @@
-# Use Intel Optimized ML libraries in Databricks Runtime for ML
+# Use Intel Optimized ML libraries in Databricks Runtime for ML 7.5
 This directory contains scripts useful to create clusters with intel optimized AI libraries on Databricks.
 
 ## 1. Upload init script 
@@ -17,9 +17,41 @@ Upload the init script **[init_intel_optimized_ml.sh](./init_intel_optimized_ml.
 ## 2. Create a new cluster using init scripts
 To use the cluster configuration page to configure a cluster to run an init script:
 
-1. On the cluster configuration page, click the Advanced Options toggle.
-2. At the bottom of the page, click the Init Scripts tab.
-3. In the Destination drop-down, select a destination type. In the example in the preceding section, the destination is DBFS.
-4. Specify a path to the init script. In the example in the preceding section, the path is **dbfs:/FileStore/init_intel_optimized_ml.sh**. The path must begin with dbfs:/.
-5. Click Add.
+
+
+1. Click the  Clusters Icon in the sidebar.
+2. Choose the Cluster Mode **Single Node** and Databricks Runtim Version **Runtime:7.5 ML**.
+3. On the cluster configuration page, click the Advanced Options toggle.
+4. At the bottom of the page, click the Init Scripts tab.
+5. In the Destination drop-down, select a destination type. In the example in the preceding section, the destination is DBFS.
+6. Specify a path to the init script. In the example in the preceding section, the path is **dbfs:/FileStore/init_intel_optimized_ml.sh**. The path must begin with dbfs:/.
+7. Click Add.
 ![create_cluster](./imgs/create_cluster.png)
+
+
+## 3. Run benchmark notebooks for performance comparison
+
+###  Import the notebooks
+You should import the **notebook**  we provided from firstly.
+
+1. Download the notebooks **[benchmark_tensorflow.ipynb](./notebooks/benchmark_tensorflow.ipynb)** and **[benchmark_sklearn.ipynb](./notebooks/benchmark_sklearn.ipynb)**.
+2. Click the  Workspace Icon or the  Home Icon in the sidebar. Do one of the following:
+   - Next to any folder, click the Menu Dropdown on the right side of the text and select Import.
+
+   - In the Workspace or a user folder, click Down Caret and select Import. 
+
+   - Import notebook.  
+ ![IMPORT-NOTEBOOK](./imgs/import-notebook.png)
+3. Browse to the notebooks file.
+
+4. Click Import.
+
+
+### Run benchmark by notebook
+#### To run benchmark_sklearn
+ 1. Create clusters with Databricks ML Runtime or with intel optimized AI libraries, for the Node type, we recommend **Standard_F16s_v2** and **Standard_F32s_v2**.
+ 2. Open the notebook *benchmark_sklearn* and attached it to the cluster you created, then run it.
+   
+#### To run benchmark_tensorflow
+  The steps to run benchmark_tensorflow are same to the above. 
+  ***Notice:*** For best performance of Bert benchmark, use the same value for the arguments num-cores and num-intra-thread in the notebook **[benchmark_tensorflow.ipynb](./notebooks/benchmark_tensorflow.ipynb)**, **num-cores**  is equal to the number of  ***Core(s) per socket***, you can use the command **"lscpu"** to get it.
