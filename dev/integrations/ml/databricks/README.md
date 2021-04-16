@@ -36,7 +36,9 @@ You should import the **notebook**  we provided to Workspace to run benchmark no
 1. Download the notebooks **[benchmark_tensorflow.ipynb](./notebooks/benchmark_tensorflow.ipynb)** and **[benchmark_sklearn.ipynb](./notebooks/benchmark_sklearn.ipynb)** to your local folder.
 2. Click the  **Workspace** icon or the  **Home** icon in the left sidebar.
 3. In the Workspace or a user folder, click **Down** caret and select Import. 
- ![IMPORT-NOTEBOOK](./imgs/import-notebook.png)
+
+![import-notebook](./imgs/import-notebook.png)
+
 4. Browse to the notebook files downloaded to the local folder.
 5. Click **Import**.
 
