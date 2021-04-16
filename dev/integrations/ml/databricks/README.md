@@ -35,7 +35,7 @@ You should import the **notebook**  we provided to Workspace to run benchmark no
 
 1. Download the notebooks **[benchmark_tensorflow.ipynb](./notebooks/benchmark_tensorflow.ipynb)** and **[benchmark_sklearn.ipynb](./notebooks/benchmark_sklearn.ipynb)** to your local folder.
 2. Click the  **Workspace** icon or the  **Home** icon in the left sidebar.
-3. In the Workspace or a user folder, click **Down** caret and select Import. 
+3. Click **Down** caret in the Workspace or a user folder and select Import. 
 
 ![import-notebook](./imgs/import-notebook.png)
 
@@ -52,6 +52,6 @@ You should import the **notebook**  we provided to Workspace to run benchmark no
 #### Run benchmark_tensorflow notebook
  1. Create cluster with Databricks ML Runtime or Databricks ML Runtime with Intel Optimized ML libraries as described above. For the Node type, we recommend to use **Standard_F16s_v2** or **Standard_F32s_v2**.
  2. Open the notebook *benchmark_tensorflow* and attached it to the corresponding cluster you created.
+ 3. Configure the parameter cores_per_socket at the top of the notebook to the same value of ***Core(s) per socket*** output by **"lscpu"** command.
  4. Click **Run All**.
 
-  ***Notice:*** For best performance of Bert benchmark, use the same value for the arguments num-cores and num-intra-thread in the notebook **[benchmark_tensorflow.ipynb](./notebooks/benchmark_tensorflow.ipynb)**, **num-cores**  is equal to the number of  ***Core(s) per socket***, you can use the command **"lscpu"** to get it.
