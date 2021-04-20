@@ -1,5 +1,5 @@
-# Use Intel Optimized ML libraries on Azure Databricks cloud with Databricks Runtime 7.5 ML 
-This document is used to guide the steps of creating clusters with Intel Optimized ML libraries on Databricks.
+# Use Intel Optimized ML libraries on Azure Databricks cloud with Databricks Runtime for ML 7.5
+This document is used to guide the steps of creating clusters with Intel Optimized ML libraries on Databricks. Please note the current init script works for Databricks Runtime for ML 7.5.
 
 ## 1. Upload init script
 
