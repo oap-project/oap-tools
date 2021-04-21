@@ -106,9 +106,7 @@ function build_oap(){
 
     oap-mllib )
     cd $OAP_HOME/oap-mllib/mllib-dal
-    export ONEAPI_ROOT=/opt/intel/oneapi
-    source /opt/intel/oneapi/dal/latest/env/vars.sh
-    source /opt/intel/oneapi/tbb/latest/env/vars.sh
+    source /opt/intel/oneapi/setvars.sh
     source /tmp/oneCCL/build/_install/env/setvars.sh
     mvn clean package  -DskipTests
     ;;
