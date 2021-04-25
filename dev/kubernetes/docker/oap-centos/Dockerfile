@@ -23,9 +23,9 @@ ENV OAP_HOME              /opt/home/conda/envs/oap-${OAP_VERSION}
 USER root
 
 #install runtime prerequisites
-RUN git clone https://github.com/Intel-bigdata/OAP oap_source && \
+RUN git clone https://github.com/oap-project/oap-tools oap_source && \
   cd /opt/home/oap_source && \
-  git checkout v1.1.0-spark-3.0.0 && \
+  git checkout branch-1.1-spark-3.x && \
   sh /opt/home/oap_source/dev/install-runtime-dependencies.sh --with-rdma && \
   rm -rf /opt/home/oap_source
   
