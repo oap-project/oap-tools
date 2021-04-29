@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # Copyright (c) 2020, NVIDIA CORPORATION.
-# Copyright (c) 2020, Intel CORPORATION.
+# Copyright (c) 2020-2021, Intel CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -43,8 +43,8 @@ Dependencies:
 Usage:
     cd OAP/
 
-    # Python 3.x is required, generate changelog for Release 1.0.0 to ./CHANGELOG.md
-    dev/generate-changelog --token=<GITHUB_PERSONAL_ACCESS_TOKEN> --releases=1.0.0    --path=./CHANGELOG.md
+    # Python 3.x is required, generate changelog for Release 1.1.0 to ./CHANGELOG.md
+    dev/generate-changelog --token=<GITHUB_PERSONAL_ACCESS_TOKEN> --releases=1.1.0    --path=./CHANGELOG.md
 
 """
 import os

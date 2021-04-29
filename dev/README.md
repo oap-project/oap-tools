@@ -5,5 +5,5 @@ This directory contains scripts useful to developers when building, testing, pac
 
 Please refer the below documents for more information.
 
-* [Developer-Guide](../docs/Developer-Guide.md)
+* [Developer-Guide](../docs/docs/OAP-Developer-Guide.md)
 
