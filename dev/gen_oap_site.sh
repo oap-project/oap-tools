@@ -13,7 +13,7 @@
 #########################################################
 # this script is used to generate OAP Project Pages website.
 # Usage: run   ./gen_oap_site.sh with version (branch or tag) to build docs
-# ./gen_oap_site.sh v1.1.0
+# ./gen_oap_site.sh 1.1.0
 
 
 set -x
