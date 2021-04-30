@@ -1,5 +1,6 @@
-# Use Intel Optimized ML libraries on Azure Databricks cloud with Databricks Runtime for ML 7.5
-This document is used to guide the steps of creating clusters with Intel Optimized ML libraries on Databricks. Please note the current init script works for Databricks Runtime for ML 7.5.
+# Use Intel Optimized ML libraries on Azure Databricks cloud with Databricks Runtime 
+This document is used to guide the steps of creating clusters with Intel Optimized ML libraries on Databricks.  
+**Note:** The current init script works for Databricks Runtime version higher than 7.5. For  *Runtime:7.5 ML* and *Runtime:7.6 ML*,  `init_intel_optimized_ml.sh` will help to install libraries from Intel® Distribution, such as python, scikit-Learn, tensorflow, pandas, numpy, etc. For other versions, intel-tensorflow will be installed.
 
 ## 1. Upload init script
 
@@ -18,7 +19,7 @@ Upload the init script **[init_intel_optimized_ml.sh](./init_intel_optimized_ml.
 To create a new cluster using the uploaded init script, follow the following steps:
 
 1. Click the  **Clusters** icon in the left sidebar.
-2. Choose the Cluster Mode and Databricks Runtim Version **Runtime:7.5 ML**.
+2. Choose the Cluster Mode and Databricks Runtim Version, such as **Runtime:7.5 ML**.
 3. Click the **Advanced Options** toggle on the cluster configuration page,
 4. Click the **Init Scripts** tab at the bottom of the page.
 5. Select the "DBFS" destination type in the **Destination** drop-down.
