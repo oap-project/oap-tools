@@ -32,7 +32,7 @@ fi
 
 cd /home/oap-project/oap-whole
 git clone https://github.com/oap-project/oap-tools.git
-cp -r  oap-tools/docs/*   ./oap-project-docs/
+cp -r  oap-tools/*   ./oap-project-docs/
 cd ./oap-project-docs/
 
 mkdocs build
