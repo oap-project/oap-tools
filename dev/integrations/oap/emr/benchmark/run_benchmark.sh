@@ -3,7 +3,6 @@
 SCRIPT_HOME=$(cd $(dirname ${BASH_SOURCE[0]});pwd)
 source ${SCRIPT_HOME}/config
 
-SOFTWARE_HOME=/opt/software
 LOG_HOME=${SOFTWARE_HOME}/log
 sudo mkdir -p ${LOG_HOME}
 sudo chown $(whoami):$(whoami) ${LOG_HOME}
@@ -80,8 +79,11 @@ esac
 shift
 done
 
-function usage() {
-    echo "Usage: $0 -r|--rerun|-c|--cron|-v|--validation -w|--workload workload -d|--dir conf_dir  -i|--iteration iteration_num -q|--queue repo_order -s|--send mailLis" >&2
+function usage()
+    echo "Support to run & generate data for HiBench, TPC-DS and TPC-H"
+    echo "For HiBench, Usage: $0 -r|--rerun|-g|--gen -w|--workload hibench -W|--hibenchWorkload ml/kmeans|micro/terasort -P|--hibenchProfile tiny|small|large|huge|gigantic|bigdata --Port 8020|[customed hdfs port]"
+    echo "For TPC-DS, Usage: $0 -r|--rerun|-g|--gen -w|--workload tpcds -i|--iteration 1 -f|--format parquet|orc -s|--scaleFactor 10 -d|--doubleForDecimal -p|--partitionTables --Port 8020|[customed hdfs port]"
+    echo "For TPC-H, Usage: $0 -r|--rerun|-g|--gen -w|--workload tpch -i|--iteration 1 -f|--format parquet|orc -s|--scaleFactor 10 -d|--doubleForDecimal -p|--partitionTables --Port 8020|[customed hdfs port]"
     exit 1
 }
 
