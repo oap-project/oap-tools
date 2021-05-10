@@ -3,9 +3,9 @@
 # set -e
 MAVEN_TARGET_VERSION=3.6.3
 MAVEN_MIN_VERSION=3.3
-CMAKE_TARGET_VERSION=3.11.1
-CMAKE_MIN_VERSION=3.11
-TARGET_CMAKE_SOURCE_URL=https://cmake.org/files/v3.11/cmake-3.11.1.tar.gz
+CMAKE_TARGET_VERSION=3.16.1
+CMAKE_MIN_VERSION=3.16
+TARGET_CMAKE_SOURCE_URL=https://cmake.org/files/v3.16/cmake-3.16.1.tar.gz
 GCC_MIN_VERSION=7.0
 LLVM_MIN_VERSION=7.0
 rx='^([0-9]+\.){0,2}(\*|[0-9]+)$'
@@ -13,7 +13,7 @@ INTEL_ARROW_REPO="https://github.com/oap-project/arrow.git"
 ARROW_BRANCH="arrow-3.0.0-oap"
 
 OAP_VERSION=1.1.0
-OAP_BRANCH="branch-1.1-spark-3.x"
+OAP_BRANCH="master"
 
 declare -A repo_dic
 repo_dic=([remote-shuffle]="https://github.com/oap-project/remote-shuffle.git" [native-sql-engine]="https://github.com/oap-project/native-sql-engine.git" [pmem-shuffle]="https://github.com/oap-project/pmem-shuffle.git" [oap-mllib]="https://github.com/oap-project/oap-mllib.git" [pmem-spill]="https://github.com/oap-project/pmem-spill.git" [pmem-common]="https://github.com/oap-project/pmem-common.git" [sql-ds-cache]="https://github.com/oap-project/sql-ds-cache.git")
@@ -289,7 +289,7 @@ function prepare_intel_arrow() {
   check_gcc
 
   cd cpp/release-build
-  cmake -DCMAKE_BUILD_TYPE=Release -DARROW_PLASMA_JAVA_CLIENT=on -DARROW_PLASMA=on -DARROW_DEPENDENCY_SOURCE=BUNDLED -DARROW_GANDIVA_JAVA=ON -DARROW_GANDIVA=ON -DARROW_PARQUET=ON -DARROW_HDFS=ON -DARROW_BOOST_USE_SHARED=ON -DARROW_JNI=ON -DARROW_WITH_SNAPPY=ON -DARROW_FILESYSTEM=ON -DARROW_JSON=ON -DARROW_WITH_PROTOBUF=ON -DARROW_DATASET=ON -DARROW_WITH_LZ4=ON -DARROW_WITH_FASTPFOR=ON ..
+  cmake -DCMAKE_BUILD_TYPE=Release -DARROW_PLASMA_JAVA_CLIENT=on -DARROW_PLASMA=on -DARROW_DEPENDENCY_SOURCE=BUNDLED -DARROW_GANDIVA_JAVA=ON -DARROW_GANDIVA=ON -DARROW_PARQUET=ON -DARROW_HDFS=ON -DARROW_BOOST_USE_SHARED=ON -DARROW_JNI=ON -DARROW_WITH_SNAPPY=ON -DARROW_FILESYSTEM=ON -DARROW_JSON=ON -DARROW_WITH_PROTOBUF=ON -DARROW_DATASET=ON -DARROW_WITH_LZ4=ON -DARROW_WITH_FASTPFOR=ON -DARROW_CSV=ON -DARROW_S3=ON -DARROW_WITH_ZSTD=OFF -DARROW_WITH_BROTLI=OFF -DARROW_WITH_ZLIB=OFF -DARROW_FLIGHT=OFF -DARROW_JEMALLOC=ON -DARROW_SIMD_LEVEL=AVX2 -DARROW_RUNTIME_SIMD_LEVEL=MAX -DARROW_COMPUTE=ON ..
   make -j
   make install
   cd ../../java
