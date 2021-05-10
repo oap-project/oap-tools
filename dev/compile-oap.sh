@@ -101,14 +101,12 @@ function build_oap(){
 
     native-sql-engine)
     cd $OAP_HOME/native-sql-engine/
-    mvn clean package  -DskipTests
+    mvn clean package -am -DskipTests -Dcpp_tests=OFF -Dbuild_arrow=OFF -Dstatic_arrow=OFF  -Dbuild_protobuf=ON
     ;;
 
     oap-mllib )
     cd $OAP_HOME/oap-mllib/mllib-dal
-    export ONEAPI_ROOT=/opt/intel/oneapi
-    source /opt/intel/oneapi/dal/latest/env/vars.sh
-    source /opt/intel/oneapi/tbb/latest/env/vars.sh
+    source /opt/intel/oneapi/setvars.sh
     source /tmp/oneCCL/build/_install/env/setvars.sh
     mvn clean package  -DskipTests
     ;;
