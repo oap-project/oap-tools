@@ -22,7 +22,7 @@ function install_spark_sql_perf() {
   install_sbt
   cd ${SOFTWARE_HOME}
   if [ ! -d "spark-sql-perf" ]; then
-    git clone https://github.com/databricks/spark-sql-perf.git && cd spark-sql-perf
+    git clone https://github.com/haojinIntel/spark-sql-perf.git && cd spark-sql-perf
   else
     cd spark-sql-perf && git pull
   fi
