@@ -1,8 +1,7 @@
 #!/bin/bash
 
-SCRIPT_HOME=$(cd $(dirname ${BASH_SOURCE[0]});pwd)
-source ${SCRIPT_HOME}/config
-
+SPARK_HOME=/usr/lib/spark
+SOFTWARE_HOME=/opt/software
 LOG_HOME=${SOFTWARE_HOME}/log
 sudo mkdir -p ${LOG_HOME}
 sudo chown $(whoami):$(whoami) ${LOG_HOME}
@@ -189,6 +188,73 @@ function create_tpch_datagen_script() {
     tables.createExternalTables(data_path, format, database_name, overwrite = true, discoverPartitions = false)" > ${TPCH_LOG_HOME}/tpch_datagen.scala
 }
 
+function create_tpch_arrow_tables_script() {
+    mkdir -p ${TPCH_LOG_HOME}
+    echo "val format = \"parquet\"
+    val scaleFactor = \"${scaleFactor}\"
+    val partitionTables = ${partitionTables}
+    val data_path=\"hdfs://$(hostname):${PORT}/tpch_parquet/${scaleFactor}\"
+    val database_name = \"tpch_arrow_scale_${scaleFactor}_db\"
+    val tables = Seq(\"customer\", \"lineitem\", \"nation\", \"orders\", \"part\", \"partsupp\", \"region\", \"supplier\")
+
+    if (spark.catalog.databaseExists(s\"\$databaseName\")) {
+        println(s\"\$databaseName has exists!\")
+    }else{
+        spark.sql(s\"create database if not exists \$databaseName\").show
+        spark.sql(s\"use \$databaseName\").show
+        for (table <- tables) {
+            if (spark.catalog.tableExists(s\"\$table\")){
+                println(s\"\$table has exists!\")
+            }else{
+                spark.catalog.createTable(s\"\$table\", s\"\$data_path/\$table\", \"arrow\")
+            }
+        }
+        if (partitionTables) {
+            for (table <- tables) {
+                try{
+                    spark.sql(s\"ALTER TABLE \$table RECOVER PARTITIONS\").show
+                }catch{
+                    case e: Exception => println(e)
+                }
+            }
+        }
+    }" > ${TPCH_LOG_HOME}/native_create_table.scala
+}
+
+function create_tpcds_arrow_tables_script() {
+    mkdir -p ${TPCDS_LOG_HOME}
+    echo "val format = \"parquet\"
+    val scaleFactor = \"${scaleFactor}\"
+    val partitionTables = ${partitionTables}
+    val data_path=\"hdfs://$(hostname):${PORT}/tpcds_parquet/${scaleFactor}\"
+    val database_name = \"tpch_arrow_scale_${scaleFactor}_db\"
+    val tables = Seq(\"call_center\", \"catalog_page\", \"catalog_returns\", \"catalog_sales\", \"customer\", \"customer_address\", \"customer_demographics\", \"date_dim\", \"household_demographics\", \"income_band\", \"inventory\", \"item\", \"promotion\", \"reason\", \"ship_mode\", \"store\", \"store_returns\", \"store_sales\", \"time_dim\", \"warehouse\", \"web_page\", \"web_returns\", \"web_sales\", \"web_site\")
+    if (spark.catalog.databaseExists(s\"\$databaseName\")) {
+        println(s\"\$databaseName has exists!\")
+    }else{
+        spark.sql(s\"create database if not exists \$databaseName\").show
+        spark.sql(s\"use \$databaseName\").show
+        for (table <- tables) {
+            if (spark.catalog.tableExists(s\"\$table\")){
+                println(s\"\$table has exists!\")
+            }else{
+                spark.catalog.createTable(s\"\$table\", s\"\$data_path/\$table\", \"arrow\")
+            }
+        }
+        if (partitionTables) {
+            for (table <- tables) {
+                try{
+                    spark.sql(s\"ALTER TABLE \$table RECOVER PARTITIONS\").show
+                }catch{
+                    case e: Exception => println(e)
+                }
+            }
+        }
+    }" > ${TPCDS_LOG_HOME}/native_create_table.scala
+}
+
+
+
 function change_hibench_profile() {
     HiBench_HOME=${SOFTWARE_HOME}/HiBench
     sed "s/$(sed -n '/hibench.scale.profile/p' ${HiBench_HOME}/conf/hibench.conf)/hibench.scale.profile         ${hibenchProfile}/g" -i ${HiBench_HOME}/conf/hibench.conf
@@ -212,10 +278,14 @@ function change_hibench_profile() {
 if [ "${runType}" = "rerun" ]; then
     if [ "${workload}" = "tpcds" ]; then
         rm -rf ${TPCDS_LOG_HOME}/*
-        start_spark_thrift_server
         create_tpcds_database_file
         change_hdfs_permissions
         queriesdir=$SOFTWARE_HOME/spark-sql-perf/src/main/resources/tpcds_2_4
+        if [ "${format}" = "arrow" ]; then
+            create_tpcds_arrow_tables_script
+            cat ${TPCDS_LOG_HOME}/native_create_table.scala | ${SPARK_HOME}/bin/spark-shell --master yarn --deploy-mode client
+        fi
+        start_spark_thrift_server
         for round in $(seq $iteration);do
             echo "Runing ${workload} ${round} round"!
             mkdir -p ${TPCDS_LOG_HOME}/${round}
@@ -270,10 +340,14 @@ if [ "${runType}" = "rerun" ]; then
         done
     elif [ "${workload}" = "tpch" ]; then
         rm -rf ${TPCH_LOG_HOME}/*
-        start_spark_thrift_server
         create_tpch_database_file
         change_hdfs_permissions
         queriesdir=$SOFTWARE_HOME/spark-sql-perf/src/main/resources/tpch/queries
+        if [ "${format}" = "arrow" ]; then
+            create_tpch_arrow_tables_script
+            cat ${TPCH_LOG_HOME}/native_create_table.scala | ${SPARK_HOME}/bin/spark-shell --master yarn --deploy-mode client
+        fi
+        start_spark_thrift_server
         for round in $(seq $iteration);do
             echo "Runing ${workload} ${round} round"!
             mkdir -p ${TPCH_LOG_HOME}/${round}

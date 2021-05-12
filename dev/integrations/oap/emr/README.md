@@ -1,7 +1,5 @@
 # Use OAP on Amazon EMR cloud
 
-
-
 ## 1. Upload init script 
 
 Upload the init script **[init_oap.sh](./init_oap.sh)** and **[install_benchmark.sh](./benchmark/install_benchmark.sh)** and to S3:
@@ -27,10 +25,10 @@ To create a new cluster using the uploaded init script, follow the following ste
 
 ## 3. Run benchmark easily by using **[run_benchmark.sh](./benchmark/run_benchmark.sh)**
 
-The script support to run TPC-DS, TPC-H and HiBench. And you need to add the configuration of OAP on spark-defaults.conf.
+The script support to run TPC-DS, TPC-H and HiBench. If you want to run benchmark by using [OAP](https://github.com/Intel-bigdata/OAP), you should follow the [OAP user guild](https://github.com/Intel-bigdata/OAP/blob/master/docs/OAP-Installation-Guide.md) to configure "/etc/spark/conf/spark-defaults.conf" when running TPC-DS and TPC-H or configure "/opt/software/HiBench/conf/spark.conf" when running HiBench.  
 
 1. For HiBench:
-You need to follow the [Hibench Guide](https://github.com/Intel-bigdata/HiBench) to config spark.conf and hadoop.conf
+You need to follow the [Hibench Guide](https://github.com/Intel-bigdata/HiBench) to config /opt/software/HiBench/conf/spark.conf and /opt/software/HiBench/conf/hadoop.conf
 ```  
 Generate data: ./run_benchmark.sh -g|--gen   -w|--workload hibench -W|--hibenchWorkload [ml/kmeans|micro/terasort|..] -P|--hibenchProfile [tiny|small|large|huge|gigantic|bigdata] --Port [8020|customed hdfs port]  
 Run benchmark: ./run_benchmark.sh -r|--rerun -w|--workload hibench -W|--hibenchWorkload [ml/kmeans|micro/terasort|..] -P|--hibenchProfile [tiny|small|large|huge|gigantic|bigdata] --Port [8020|customed hdfs port]
@@ -38,10 +36,11 @@ Run benchmark: ./run_benchmark.sh -r|--rerun -w|--workload hibench -W|--hibenchW
 2. For TPC-DS:  
 ```
 Generate data: ./run_benchmark.sh -g|--gen   -w|--workload tpcds -f|--format [parquet|orc] -s|--scaleFactor [10|custom the data scale,the unit is GB] -d|--doubleForDecimal -p|--partitionTables --Port [8020|customed hdfs port]   
-Run benchmark: ./run_benchmark.sh -r|--rerun -w|--workload tpcds -i|--iteration [1|custom the interation you want to run] -f|--format [parquet|orc] -s|--scaleFactor [10|custom the data scale,the unit is GB] --Port [8020|customed hdfs port]   
+Run benchmark: ./run_benchmark.sh -r|--rerun -w|--workload tpcds -f|--format [parquet|orc|arrow] -i|--iteration [1|custom the interation you want to run] -f|--format [parquet|orc] -s|--scaleFactor [10|custom the data scale,the unit is GB] --Port [8020|customed hdfs port]   
 ```
 3. For TPC-H:  
 ```
 Generate data: ./run_benchmark.sh -g|--gen   -w|--workload tpcds -f|--format [parquet|orc] -s|--scaleFactor [10|custom the data scale,the unit is GB] -d|--doubleForDecimal -p|--partitionTables --Port [8020|customed hdfs port]  
-Run benchmark: ./run_benchmark.sh -r|--rerun -w|--workload tpch  -i|--iteration [1|custom the interation you want to run] -f|--format [parquet|orc] -s|--scaleFactor [10|custom the data scale,the unit is GB] --Port [8020|customed hdfs port] 
+Run benchmark: ./run_benchmark.sh -r|--rerun -w|--workload tpch  -f|--format [parquet|orc|arrow] -i|--iteration [1|custom the interation you want to run] -f|--format [parquet|orc] -s|--scaleFactor [10|custom the data scale,the unit is GB] --Port [8020|customed hdfs port] 
 ``` 
+(Note: OAP is installed at "/opt/software/oap"; only enabling native-sql-engine can run TPC-DS or TPC-H with arrow format.)
