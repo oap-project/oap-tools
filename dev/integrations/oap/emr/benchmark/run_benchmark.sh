@@ -79,7 +79,7 @@ esac
 shift
 done
 
-function usage()
+function usage() {
     echo "Support to run & generate data for HiBench, TPC-DS and TPC-H"
     echo "For HiBench, Usage: $0 -r|--rerun|-g|--gen -w|--workload hibench -W|--hibenchWorkload ml/kmeans|micro/terasort -P|--hibenchProfile tiny|small|large|huge|gigantic|bigdata --Port 8020|[customed hdfs port]"
     echo "For TPC-DS, Usage: $0 -r|--rerun|-g|--gen -w|--workload tpcds -i|--iteration 1 -f|--format parquet|orc -s|--scaleFactor 10 -d|--doubleForDecimal -p|--partitionTables --Port 8020|[customed hdfs port]"
