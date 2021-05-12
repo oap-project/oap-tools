@@ -100,7 +100,7 @@ test:
 
 about:
   summary: Optimized Analytics Packages for Spark is a project to optimize Spark by providing optimized implmentation of packages in various aspects including cache, shuffle, and so on.
-  home: https://github.com/Intel-bigdata/OAP
+  home: https://github.com/oap-project
   license:  Apache License 2.0
   license_file:
     - LICENSE.txt
@@ -110,9 +110,9 @@ about:
       the license section of the installed Conda package and/or the README file) and all notices, disclaimers or license terms
       for third party or open source software included in or with the software.</strong>
       <br/><br/>
-      EULA: <a href="https://github.com/Intel-bigdata/OAP/blob/master/LICENSE.txt" target="_blank">Apache License 2.0</a><br/>
-      Third Party Programs: https://github.com/Intel-bigdata/OAP/blob/master/TPP.txt
+      EULA: <a href="https://github.com/oap-project/oap-tools/blob/branch-1.1-spark-3.x/LICENSE.txt" target="_blank">Apache License 2.0</a><br/>
+      Third Party Programs: https://github.com/oap-project/oap-tools/blob/branch-1.1-spark-3.x/TPP.txt
       <br/><br/>'
-  dev_url: https://github.com/Intel-bigdata/OAP/blob/master/docs/Developer-Guide.md
-  doc_url: https://github.com/Intel-bigdata/OAP/blob/master/docs/OAP-Installation-Guide.md
+  dev_url: https://github.com/oap-project/oap-tools/blob/branch-1.1-spark-3.x/docs/docs/Developer-Guide.md
+  doc_url: https://github.com/oap-project/oap-tools/blob/branch-1.1-spark-3.x/docs/docs/OAP-Installation-Guide.md
 
