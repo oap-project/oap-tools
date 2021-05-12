@@ -103,22 +103,22 @@ For example:
 sh ./spark-submit-client.sh --conf spark.executor.instances=1 --name spark-pi --class org.apache.spark.examples.SparkPi  local:///opt/home/spark-3.0.0/examples/jars/spark-examples_2.12-3.0.0.jar 100
 ``` 
 
-##### Run kmeans demo with OAP MLlib
+##### Run Kmeans example with OAP MLlib
 After you have started the client pod, you can execute the following command to start the Spark shell into the pod:
 For example:
 
 Go to folder docker/oap-centos/oap
 ``` 
-cat spark-kmeans.scala | sh mllib-shell.sh
+cat Kmeans-example.scala | sh spark-shell-mllib.sh
 ``` 
 
-##### Run demo with Native SQL Engine
+##### Run example with Native SQL Engine
 After you have started the client pod, you can execute the following command to start the Spark shell into the pod:
 For example:
 
 Go to folder docker/oap-centos/oap
 ``` 
-cat native-sql-engine-demo.scala | sh ./native-sql-engine-shell.sh
+cat Native-SQL-Engine-example.scala | sh ./spark-shell-native-sql-engine.sh
 ``` 
 
 ##### Stop the Client
@@ -126,3 +126,7 @@ If you have completed all your work, execute the following command to stop the c
 ``` 
 sh ./spark-client.sh stop
 ``` 
+
+#### Run OAP components in Client Mode Tools
+
+
