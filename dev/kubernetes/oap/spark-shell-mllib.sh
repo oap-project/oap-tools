@@ -16,10 +16,11 @@
 # limitations under the License.
 #
 
+OAP_ENV=/opt/home/conda/envs/oap-1.1.0
 
 sh ../spark/spark-shell-client.sh --conf spark.executor.instances=1 \
-  --conf spark.driver.extraClassPath=/opt/home/conda/envs/oap-1.1.0/oap_jars/oap-mllib-1.1.0.jar \
-  --conf spark.executor.extraClassPath=/opt/home/conda/envs/oap-1.1.0/oap_jars/oap-mllib-1.1.0.jar
+  --conf spark.driver.extraClassPath=$OAP_ENV/oap_jars/oap-mllib-1.1.0.jar \
+  --conf spark.executor.extraClassPath=$OAP_ENV/oap_jars/oap-mllib-1.1.0.jar
 
 
 

@@ -89,23 +89,6 @@ For example:
 sh ./spark-shell-client.sh --conf spark.executor.instances=1
 ``` 
 
-##### Run Kmeans with OAP MLlib
-After you have started the client pod, you can execute the following command to start the Spark shell into the pod:
-For example:
-Go to folder docker/oap-centos/oap
-``` 
-cat spark-kmeans.scala | sh mllib-shell.sh
-``` 
-
-##### Run demo with Native SQL Engine
-After you have started the client pod, you can execute the following command to start the Spark shell into the pod:
-For example:
-Go to folder docker/oap-centos/oap
-``` 
-cat native-sql-engine-demo.scala | sh ./native-sql-engine-shell.sh
-``` 
-
-
 ##### Run Spark SQL
 After you have started the client pod, you can execute the following command to start the Spark SQL into the pod:
 For example:
@@ -125,3 +108,30 @@ If you have completed all your work, execute the following command to stop the c
 ``` 
 sh ./spark-client.sh stop
 ``` 
+
+#### Run OAP components in Client Mode
+
+##### Start the Client pod
+Just refer to [Start the Client](#start-the-client).
+
+##### Run Kmeans example with OAP MLlib
+After you have started the client pod, you can execute the following command to start the Spark shell into the pod:
+For example:
+
+Go to folder docker/oap-centos/oap
+``` 
+cat Kmeans-example.scala | sh spark-shell-mllib.sh
+``` 
+
+##### Run example with Native SQL Engine
+After you have started the client pod, you can execute the following command to start the Spark shell into the pod:
+For example:
+
+Go to folder docker/oap-centos/oap
+``` 
+cat Native-SQL-Engine-example.scala | sh ./spark-shell-native-sql-engine.sh
+``` 
+
+##### Stop the Client pod
+Just refer to [Stop the Client](#stop-the-client).
+
