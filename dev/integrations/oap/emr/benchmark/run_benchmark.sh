@@ -197,11 +197,11 @@ function create_tpch_arrow_tables_script() {
     val database_name = \"tpch_arrow_scale_${scaleFactor}_db\"
     val tables = Seq(\"customer\", \"lineitem\", \"nation\", \"orders\", \"part\", \"partsupp\", \"region\", \"supplier\")
 
-    if (spark.catalog.databaseExists(s\"\$databaseName\")) {
-        println(s\"\$databaseName has exists!\")
+    if (spark.catalog.databaseExists(s\"\$database_name\")) {
+        println(s\"\$database_name has exists!\")
     }else{
-        spark.sql(s\"create database if not exists \$databaseName\").show
-        spark.sql(s\"use \$databaseName\").show
+        spark.sql(s\"create database if not exists \$database_name\").show
+        spark.sql(s\"use \$database_name\").show
         for (table <- tables) {
             if (spark.catalog.tableExists(s\"\$table\")){
                 println(s\"\$table has exists!\")
@@ -229,11 +229,11 @@ function create_tpcds_arrow_tables_script() {
     val data_path=\"hdfs://$(hostname):${PORT}/tpcds_parquet/${scaleFactor}\"
     val database_name = \"tpch_arrow_scale_${scaleFactor}_db\"
     val tables = Seq(\"call_center\", \"catalog_page\", \"catalog_returns\", \"catalog_sales\", \"customer\", \"customer_address\", \"customer_demographics\", \"date_dim\", \"household_demographics\", \"income_band\", \"inventory\", \"item\", \"promotion\", \"reason\", \"ship_mode\", \"store\", \"store_returns\", \"store_sales\", \"time_dim\", \"warehouse\", \"web_page\", \"web_returns\", \"web_sales\", \"web_site\")
-    if (spark.catalog.databaseExists(s\"\$databaseName\")) {
-        println(s\"\$databaseName has exists!\")
+    if (spark.catalog.databaseExists(s\"\$database_name\")) {
+        println(s\"\$database_name has exists!\")
     }else{
-        spark.sql(s\"create database if not exists \$databaseName\").show
-        spark.sql(s\"use \$databaseName\").show
+        spark.sql(s\"create database if not exists \$database_name\").show
+        spark.sql(s\"use \$database_name\").show
         for (table <- tables) {
             if (spark.catalog.tableExists(s\"\$table\")){
                 println(s\"\$table has exists!\")
