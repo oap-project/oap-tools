@@ -16,20 +16,22 @@
 # limitations under the License.
 #
 
+OAP_ENV=/opt/home/conda/envs/oap-1.1.0
+
 sh ../spark/spark-shell-client.sh --conf spark.executor.instances=1 \
---conf spark.driver.extraClassPath=/opt/home/conda/envs/oap-1.1.0/oap_jars/spark-columnar-core-1.1.0-jar-with-dependencies.jar:/opt/home/conda/envs/oap-1.1.0/oap_jars/spark-arrow-datasource-standard-1.1.0-jar-with-dependencies.jar \
+--conf spark.driver.extraClassPath=$OAP_ENV/oap_jars/spark-columnar-core-1.1.0-jar-with-dependencies.jar:$OAP_ENV/oap_jars/spark-arrow-datasource-standard-1.1.0-jar-with-dependencies.jar \
   --conf spark.driver.maxResultSize=15g \
-  --conf spark.executorEnv.LD_LIBRARY_PATH=/opt/home/conda/envs/oap-1.1.0/lib \
-  --conf spark.executorEnv.LIBARROW_DIR=/opt/home/conda/envs/oap-1.1.0 \
+  --conf spark.executorEnv.LD_LIBRARY_PATH=$OAP_ENV/lib \
+  --conf spark.executorEnv.LIBARROW_DIR=$OAP_ENV \
   --conf spark.sql.extensions=com.intel.oap.ColumnarPlugin \
-  --conf spark.executor.extraClassPath=/opt/home/conda/envs/oap-1.1.0/oap_jars/spark-columnar-core-1.1.0-jar-with-dependencies.jar:/opt/home/conda/envs/oap-1.1.0/oap_jars/spark-arrow-datasource-standard-1.1.0-jar-with-dependencies.jar \
+  --conf spark.executor.extraClassPath=$OAP_ENV/oap_jars/spark-columnar-core-1.1.0-jar-with-dependencies.jar:$OAP_ENV/oap_jars/spark-arrow-datasource-standard-1.1.0-jar-with-dependencies.jar \
   --conf spark.sql.columnar.sort=true \
-  --conf spark.executor.extraLibraryPath=/opt/home/conda/envs/oap-1.1.0/lib \
+  --conf spark.executor.extraLibraryPath=$OAP_ENV/lib \
   --conf spark.sql.execution.arrow.maxRecordsPerBatch=20480 \
   --conf spark.sql.parquet.columnarReaderBatchSize=20480 \
   --conf spark.shuffle.manager=org.apache.spark.shuffle.sort.ColumnarShuffleManager \
-  --conf spark.driver.extraLibraryPath=/opt/home/conda/envs/oap-1.1.0/lib \
+  --conf spark.driver.extraLibraryPath=$OAP_ENV/lib \
   --conf spark.sql.columnar.codegen.hashAggregate=true \
-  --conf spark.executorEnv.CC=/opt/home/conda/envs/oap-1.1.0/bin/gcc \
+  --conf spark.executorEnv.CC=$OAP_ENV/bin/gcc \
   --conf spark.memory.offHeap.size=30g
 
