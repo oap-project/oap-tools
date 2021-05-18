@@ -52,11 +52,9 @@ do
         ;;
     -d|--doubleForDecimal)
         useDoubleForDecimal=true
-        shift
         ;;
     -p|--partitionTables)
         partitionTables=true
-        shift
         ;;
     -W|--hibenchWorkload)
         hibenchWorkload=$2
