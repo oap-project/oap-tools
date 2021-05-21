@@ -1,13 +1,19 @@
 # Use Intel Optimized ML libraries on Azure Databricks cloud with Databricks Runtime 
-This document is used to guide the steps of creating clusters with Intel Optimized ML libraries on Databricks.   
+This document is used to guide the steps of creating clusters with Intel Optimized ML libraries on Databricks.  The current init scripts works for Databricks Runtime version higher than 7.5. 
 
-**Note:** The current init script works for Databricks Runtime version higher than 7.5. For  *Runtime:7.5 ML* and *Runtime:7.6 ML*,  `init_intel_optimized_ml.sh` will help to install libraries from Intel® Distribution, such as python, scikit-learn, tensorflow, pandas, numpy, etc. For other versions, `intel-tensorflow` and `scikit-learn-intelex` will be installed.
+We provided two versions of init scripts:
+**init_intel_optimized_ml.sh:** is for  *Runtime:7.5 ML* and *Runtime:7.6 ML*,  it will help to install libraries from Intel® Distribution, such as `python`, `scikit-learn`, `tensorflow`, `pandas`, `numpy`, etc. 
+**init_intel_optimized_ml_ex.sh:**  is for *Runtime:7.5* and *Runtime:7.6* and  other Runtime version higher than 8.0. In this script, `intel-tensorflow` and `scikit-learn-intelex` will be installed.
 
-**scikit-learn-intelex:** Intel(R) Extension for Scikit-learn is a seamless way to speed up your Scikit-learn application. Patching scikit-learn makes it a well-suited machine learning framework for dealing with real-life problems. You can refer to [here](https://github.com/intel/scikit-learn-intelex#%EF%B8%8F-get-started) for more information.
+#### Note  
+
+At present, we support two ways for users to use `scikit-learn`.
+**scikit-learn:** It can be found in Intel Anaconda channel and is used in the same way as the original. But at present it only supports Python 3.6/3.7.
+**scikit-learn-intelex:** Its full name is Intel(R) Extension for Scikit-learn, it's a seamless way to speed up your scikit-learn application by patching scikit-learn. You can refer [here](https://github.com/intel/scikit-learn-intelex#%EF%B8%8F-get-started) for more information.
 
 ## 1. Upload init script
 
-Upload the init script **[init_intel_optimized_ml.sh](./init_intel_optimized_ml.sh)** to Databricks DBFS:
+Upload the init script **[init_intel_optimized_ml.sh](./init_intel_optimized_ml.sh)**(Or **[init_intel_optimized_ml_ex.sh](./init_intel_optimized_ml_ex.sh)** according to your needs. But in the following steps, we only take one as an example.) to Databricks DBFS:
 
 1. Download **[init_intel_optimized_ml.sh](./init_intel_optimized_ml.sh)** to a local folder.
 2. Click **Data** icon in the left sidebar.
