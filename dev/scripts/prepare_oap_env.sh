@@ -13,7 +13,8 @@ INTEL_ARROW_REPO="https://github.com/oap-project/arrow.git"
 ARROW_BRANCH="arrow-3.0.0-oap-1.1"
 
 
-OAP_BRANCH="master"
+OAP_VERSION=1.1.1
+OAP_BRANCH="branch-1.1-spark-3.1.1"
 
 
 declare -A repo_dic
