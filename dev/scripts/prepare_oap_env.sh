@@ -12,8 +12,9 @@ rx='^([0-9]+\.){0,2}(\*|[0-9]+)$'
 INTEL_ARROW_REPO="https://github.com/oap-project/arrow.git"
 ARROW_BRANCH="arrow-3.0.0-oap-1.1"
 
-OAP_VERSION=1.1.0
-OAP_BRANCH="v1.1.0-spark-3.0.0"
+
+OAP_BRANCH="master"
+
 
 declare -A repo_dic
 repo_dic=([remote-shuffle]="https://github.com/oap-project/remote-shuffle.git" [native-sql-engine]="https://github.com/oap-project/native-sql-engine.git" [pmem-shuffle]="https://github.com/oap-project/pmem-shuffle.git" [oap-mllib]="https://github.com/oap-project/oap-mllib.git" [pmem-spill]="https://github.com/oap-project/pmem-spill.git" [pmem-common]="https://github.com/oap-project/pmem-common.git" [sql-ds-cache]="https://github.com/oap-project/sql-ds-cache.git")
