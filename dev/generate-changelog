@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # Copyright (c) 2020, NVIDIA CORPORATION.
-# Copyright (c) 2020, Intel CORPORATION.
+# Copyright (c) 2020-2021, Intel CORPORATION.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -43,8 +43,8 @@ Dependencies:
 Usage:
     cd OAP/
 
-    # Python 3.x is required, generate changelog for Release 1.0.0 to ./CHANGELOG.md
-    dev/generate-changelog --token=<GITHUB_PERSONAL_ACCESS_TOKEN> --releases=1.0.0    --path=./CHANGELOG.md
+    # Python 3.x is required, generate changelog for Release 1.1.0 to ./CHANGELOG.md
+    dev/generate-changelog --token=<GITHUB_PERSONAL_ACCESS_TOKEN> --releases=1.1.0    --path=./CHANGELOG.md
 
 """
 import os
@@ -73,7 +73,7 @@ LABEL_FEATURE = 'feature'
 # Queries
 query_pr = """
 query ($after: String) {
-  repository(name: "OAP", owner: "Intel-bigdata") {
+  repository(name: "sql-ds-cache", owner: "oap-project") {
     pullRequests(states: [MERGED], first: 100, after: $after) {
       totalCount
       nodes {
@@ -108,7 +108,7 @@ query ($after: String) {
 """
 query_issue = """
 query ($after: String) {
-  repository(name: "OAP", owner: "Intel-bigdata") {
+  repository(name: "sql-ds-cache", owner: "oap-project") {
     issues(states: [CLOSED], labels: ["feature", "performance", "bug"], first: 100, after: $after) {
       totalCount
       nodes {
@@ -316,7 +316,7 @@ def main(rels: str, path: str, token: str):
 if __name__ == '__main__':
     parser = ArgumentParser(description="Changelog Generator")
     parser.add_argument("--releases", help="list of release versions, separated by comma",
-                        default="1.0.0,0.8.4")
+                        default="1.1.0")
     parser.add_argument("--token", help="github token, will use GITHUB_TOKEN if empty", default='')
     parser.add_argument("--path", help="path for generated changelog file", default='./CHANGELOG.md')
     args = parser.parse_args()

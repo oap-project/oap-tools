@@ -3,7 +3,7 @@
 #########################################################
 # this script is used to generate OAP Project Pages website.
 # Usage: run   ./gen_component_site.sh with version (branch or tag) to build docs
-# ./gen_component_site.sh   v1.1.0
+# ./gen_component_site.sh   1.1.0
 
 
 set -x
@@ -63,7 +63,7 @@ fi
 echo "Update oap-mllib ${version} documentation on website ... "
 
 cd /home/oap-project/component/
-git clone -b ${version} https://github.com/oap-project/oap-mllib.git
+git clone -b "v${version}-spark-3.0.0" https://github.com/oap-project/oap-mllib.git
 cd oap-mllib
 echo "update the doc version for release"
 mkdocs build
@@ -78,7 +78,7 @@ git push origin gh-pages
 echo "Update oap-mllib ${version} documentation on website ... "
 
 cd /home/oap-project/component/
-git clone -b ${version} https://github.com/oap-project/pmem-spill.git
+git clone -b "v${version}-spark-3.0.0" https://github.com/oap-project/pmem-spill.git
 cd pmem-spill
 echo "update the doc version for release"
 mkdocs build
@@ -92,7 +92,7 @@ git push origin gh-pages
 
 
 cd /home/oap-project/component/
-git clone -b ${version} https://github.com/oap-project/pmem-common.git
+git clone -b "v${version}-spark-3.0.0" https://github.com/oap-project/pmem-common.git
 cd pmem-common
 echo "update the doc version for release"
 mkdocs build
@@ -106,7 +106,7 @@ git push origin gh-pages
 
 
 cd /home/oap-project/component/
-git clone -b ${version} https://github.com/oap-project/pmem-shuffle.git
+git clone -b "v${version}-spark-3.0.0" https://github.com/oap-project/pmem-shuffle.git
 cd pmem-shuffle
 echo "update the doc version for release"
 mkdocs build
@@ -119,7 +119,7 @@ git commit -m "Update ${version} documentation  on pages web"
 git push origin gh-pages
 
 cd /home/oap-project/component/
-git clone -b ${version} https://github.com/oap-project/native-sql-engine.git
+git clone -b "v${version}-spark-3.0.0" https://github.com/oap-project/native-sql-engine.git
 cd native-sql-engine
 echo "update the doc version for release"
 mkdocs build
@@ -131,23 +131,10 @@ git add .
 git commit -m "Update ${version} documentation  on pages web"
 git push origin gh-pages
 
-cd /home/oap-project/component/
-git clone -b ${version} https://github.com/oap-project/arrow-data-source.git
-cd arrow-data-source
-echo "update the doc version for release"
-mkdocs build
-git clone -b gh-pages https://github.com/oap-project/arrow-data-source.git
-rm -rf arrow-data-source/${version}
-cp -r site/${version}  arrow-data-source/
-cd arrow-data-source
-git add .
-git commit -m "Update ${version} documentation  on pages web"
-git push origin gh-pages
-
 
 
 cd /home/oap-project/component/
-git clone -b ${version} https://github.com/oap-project/remote-shuffle.git
+git clone -b "v${version}-spark-3.0.0" https://github.com/oap-project/remote-shuffle.git
 cd remote-shuffle
 echo "update the doc version for release"
 mkdocs build
@@ -160,7 +147,7 @@ git commit -m "Update ${version} documentation  on pages web"
 git push origin gh-pages
 
 cd /home/oap-project/component/
-git clone -b ${version} https://github.com/oap-project/sql-ds-cache.git
+git clone -b "v${version}-spark-3.0.0" https://github.com/oap-project/sql-ds-cache.git
 cd sql-ds-cache
 echo "update the doc version for release"
 mkdocs build

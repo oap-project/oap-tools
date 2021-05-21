@@ -52,11 +52,9 @@ do
         ;;
     -d|--doubleForDecimal)
         useDoubleForDecimal=true
-        shift
         ;;
     -p|--partitionTables)
         partitionTables=true
-        shift
         ;;
     -W|--hibenchWorkload)
         hibenchWorkload=$2
@@ -227,7 +225,7 @@ function create_tpcds_arrow_tables_script() {
     val scaleFactor = \"${scaleFactor}\"
     val partitionTables = ${partitionTables}
     val data_path=\"hdfs://$(hostname):${PORT}/tpcds_parquet/${scaleFactor}\"
-    val database_name = \"tpch_arrow_scale_${scaleFactor}_db\"
+    val database_name = \"tpcds_arrow_scale_${scaleFactor}_db\"
     val tables = Seq(\"call_center\", \"catalog_page\", \"catalog_returns\", \"catalog_sales\", \"customer\", \"customer_address\", \"customer_demographics\", \"date_dim\", \"household_demographics\", \"income_band\", \"inventory\", \"item\", \"promotion\", \"reason\", \"ship_mode\", \"store\", \"store_returns\", \"store_sales\", \"time_dim\", \"warehouse\", \"web_page\", \"web_returns\", \"web_sales\", \"web_site\")
     if (spark.catalog.databaseExists(s\"\$database_name\")) {
         println(s\"\$database_name has exists!\")

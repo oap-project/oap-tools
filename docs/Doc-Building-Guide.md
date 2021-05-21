@@ -22,7 +22,7 @@ Use script to generate OAP Project Pages website. `./gen_oap_site.sh` with versi
 
 ```
 $  git clone https://github.com/oap-project/oap-tools.git
-$  ./oap-tools/dev/gen_oap_site.sh  v1.1.0
+$  ./oap-tools/dev/gen_oap_site.sh  1.1.0
 ```
 
 ## Building feature repo web
@@ -33,5 +33,5 @@ Run commands below to generate OAP Project feature website. `./gen_component_sit
 
 ```
 $  git clone https://github.com/oap-project/oap-tools.git
-$  ./oap-tools/dev/gen_component_site.sh   v1.1.0
+$  ./oap-tools/dev/gen_component_site.sh   1.1.0
 ```
