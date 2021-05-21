@@ -1,9 +1,6 @@
 #!/bin/bash
 
-if [ -z $DATABRICKS_ROOT_CONDA_ENV ]; then
-	pip install intel-tensorflow==2.3.0
-  pip install scikit-learn-intelex
-else
+if [ -n $DATABRICKS_ROOT_CONDA_ENV ]; then
   if [ $DATABRICKS_RUNTIME_VERSION == "7.5" ] || [ $DATABRICKS_RUNTIME_VERSION == "7.6" ] ; then
     apt-get update
     apt-get install --yes --no-install-recommends --fix-missing  libc6
@@ -16,14 +13,5 @@ else
     conda install -c intel daal4py=2021.1
     conda install -c intel ipykernel ipython
     pip install intel-tensorflow==2.3.0
-  elif [ $DATABRICKS_RUNTIME_VERSION == "8.0" ]; then
-    pip install intel-tensorflow==2.3.0
-    pip install scikit-learn-intelex
-  elif [ $DATABRICKS_RUNTIME_VERSION == "8.1" ]; then
-    pip install intel-tensorflow==2.3.0
-    pip install scikit-learn-intelex
-  elif [ $DATABRICKS_RUNTIME_VERSION == "8.2" ]; then
-    pip install intel-tensorflow==2.3.0
-    pip install scikit-learn-intelex
   fi
 fi
