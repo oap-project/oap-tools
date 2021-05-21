@@ -9,7 +9,7 @@ We provided two versions of init scripts:
 
 At present, we support two ways for users to use `scikit-learn`.
 **scikit-learn:** It can be found in Intel Anaconda channel and is used in the same way as the original. But at present it only supports Python 3.6/3.7.
-**scikit-learn-intelex:** Its full name is Intel(R) Extension for Scikit-learn, it's a seamless way to speed up your Scikit-learn application by patching scikit-learn. You can refer to [here](https://github.com/intel/scikit-learn-intelex#%EF%B8%8F-get-started) for more information.
+**scikit-learn-intelex:** Its full name is Intel(R) Extension for Scikit-learn, it's a seamless way to speed up your scikit-learn application by patching scikit-learn. You can refer [here](https://github.com/intel/scikit-learn-intelex#%EF%B8%8F-get-started) for more information.
 
 ## 1. Upload init script
 
