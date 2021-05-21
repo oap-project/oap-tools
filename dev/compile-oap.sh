@@ -65,7 +65,7 @@ function gather() {
   rm -rf $DEV_PATH/release-package/*
   target_path=$DEV_PATH/release-package/$package_name/jars/
   mkdir -p $target_path
-  cp ../sql-ds-cache/Plasma-based-cache/target/*spark-3.0.0.jar $target_path
+  cp ../sql-ds-cache/Plasma-based-cache/target/*spark-$SPARK_VERSION.jar $target_path
   cp ../sql-ds-cache/HCFS-based-cache/target/*.jar $target_path
   cp ../pmem-common/target/*.jar $target_path
   cp ../native-sql-engine/arrow-data-source/standard/target/*with-dependencies.jar $target_path
@@ -83,7 +83,7 @@ function gather() {
   if [ ! -d "arrow" ]; then
     sh $DEV_PATH/scripts/prepare_oap_env.sh --prepare_intel_arrow
   fi
-  cp $DEV_PATH/thirdparty/arrow/java/plasma/target/arrow-plasma-3.0.0.jar $target_path
+  cp $DEV_PATH/thirdparty/arrow/java/plasma/target/arrow-plasma-4.0.0.jar $target_path
   mkdir -p $DEV_PATH/thirdparty/arrow/oap
   rm -rf $DEV_PATH/thirdparty/arrow/oap/*
   cp $target_path/* $DEV_PATH/thirdparty/arrow/oap/
