@@ -14,7 +14,7 @@ ARROW_BRANCH="arrow-3.0.0-oap-1.1"
 
 
 OAP_VERSION=1.1.1
-OAP_BRANCH="branch-1.1-spark-3.1.1"
+OAP_BRANCH="branch-1.1-spark-3.x"
 
 
 declare -A repo_dic
