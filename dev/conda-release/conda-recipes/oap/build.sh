@@ -58,3 +58,7 @@ cp $SRC_DIR/oap/*.jar $PREFIX/oap_jars/
 cp -r $SRC_DIR/pmdk/lib/* $PREFIX/lib/
 mkdir -p $PREFIX/bin
 cp -r $SRC_DIR/pmdk/bin/* $PREFIX/bin/
+cd $PREFIX/lib/
+ln -snf libarrow_dataset_jni.so.400 libarrow_dataset_jni.so
+ln -snf libarrow_dataset.so.400 libarrow_dataset.so
+ln -snf libarrow.so.400 libarrow.so
