@@ -301,6 +301,12 @@ function prepare_intel_arrow() {
 
 
 function prepare_intel_conda_arrow() {
+  cd /root/miniconda2/envs/oapbuild/lib/
+  ln -snf libarrow_dataset_jni.so.400 libarrow_dataset_jni.so
+  ln -snf libarrow_dataset.so.400 libarrow_dataset.so
+  ln -snf libarrow.so.400 libarrow.so
+  ln -snf libgandiva.so.400 libgandiva.so
+  ln -snf libgandiva_jni.so.400 libgandiva_jni.so
   cd $DEV_PATH
   mkdir -p $DEV_PATH/thirdparty/
   cd $DEV_PATH/thirdparty/
