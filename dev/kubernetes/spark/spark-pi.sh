@@ -23,7 +23,7 @@ if [ ! -n "${SPARK_HOME}" ]; then
 fi
 
 K8S_MASTER=localhost:8443
-CONTAINER_IMAGE=spark-centos:1.1.0
+CONTAINER_IMAGE=spark-centos:1.1.1
 SPARK_CONF=${WORK_DIR}/conf
 
 while [[ $# -gt 0 ]]
@@ -67,4 +67,4 @@ $SPARK_HOME/bin/spark-submit \
     --name spark-pi \
     --class org.apache.spark.examples.SparkPi \
     "$@" \
-    local:///opt/home/spark-3.0.0/examples/jars/spark-examples_2.12-3.0.0.jar 100
+    local:///opt/home/spark-3.1.1/examples/jars/spark-examples_2.12-3.1.1.jar 100
