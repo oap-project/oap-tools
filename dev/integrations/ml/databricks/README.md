@@ -10,7 +10,7 @@ We provided two init script options which are different on scikit-learn usage. B
 from sklearnex import patch_sklearn <br/>
 patch_sklearn()
 
-Because of this, you can choose which programe to use the optimized implemention by calling the patch_sklearn() method. This option works for *Runtime:7.5*, *Runtime:7.6*, and *Runtime 8.x". 
+Because of this, you can choose which program to use the optimized implemention by calling the patch_sklearn() method. This option works for *Runtime:7.5*, *Runtime:7.6*, and *Runtime 8.x". 
 
 ## 1. Upload init script
 
