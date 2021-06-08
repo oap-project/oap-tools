@@ -3,7 +3,7 @@ import org.apache.spark.ml.evaluation.ClusteringEvaluator
 
 spark.sparkContext.setLogLevel("INFO")
 
-val dataset = spark.read.format("libsvm").load("/opt/home/spark-3.0.0/data/mllib/sample_kmeans_data.txt")
+val dataset = spark.read.format("libsvm").load("/opt/home/spark-3.1.1/data/mllib/sample_kmeans_data.txt")
 
 // Trains a k-means model.
 val kmeans = new KMeans().setK(2).setSeed(1L)

@@ -19,7 +19,7 @@
 WORK_DIR="$(dirname "$0")"
 
 K8S_SVC_ADDRESS=https://kubernetes.default.svc.cluster.local:443
-CONTAINER_IMAGE=spark-centos:1.1.0
+CONTAINER_IMAGE=spark-centos:1.1.1
 SPARK_CONF=${WORK_DIR}/conf/
 ACTION=shell
 

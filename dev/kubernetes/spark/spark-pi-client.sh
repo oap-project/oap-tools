@@ -35,6 +35,6 @@ case "$1" in
     --name spark-pi \
     --class org.apache.spark.examples.SparkPi \
     "$@" \
-    local:///opt/home/spark-3.0.0/examples/jars/spark-examples_2.12-3.0.0.jar 100
+    local:///opt/home/spark-3.1.1/examples/jars/spark-examples_2.12-3.1.1.jar 100
     ;;
 esac

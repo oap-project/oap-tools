@@ -10,10 +10,11 @@ GCC_MIN_VERSION=7.0
 LLVM_MIN_VERSION=7.0
 rx='^([0-9]+\.){0,2}(\*|[0-9]+)$'
 INTEL_ARROW_REPO="https://github.com/oap-project/arrow.git"
-ARROW_BRANCH="arrow-3.0.0-oap-1.1"
+ARROW_BRANCH="arrow-4.0.0-oap-1.1.1"
 
 
-OAP_BRANCH="master"
+OAP_VERSION=1.1.1
+OAP_BRANCH="branch-1.1-spark-3.1.1"
 
 
 declare -A repo_dic
@@ -125,6 +126,7 @@ function prepare_cmake() {
       gmake
       gmake install
       yum remove cmake -y
+      rm -f /usr/bin/cmake
       ln -s /usr/local/bin/cmake /usr/bin/
       cd  $DEV_PATH
     fi
@@ -299,6 +301,12 @@ function prepare_intel_arrow() {
 
 
 function prepare_intel_conda_arrow() {
+  cd /root/miniconda2/envs/oapbuild/lib/
+  ln -snf libarrow_dataset_jni.so.400 libarrow_dataset_jni.so
+  ln -snf libarrow_dataset.so.400 libarrow_dataset.so
+  ln -snf libarrow.so.400 libarrow.so
+  ln -snf libgandiva.so.400 libgandiva.so
+  ln -snf libgandiva_jni.so.400 libgandiva_jni.so
   cd $DEV_PATH
   mkdir -p $DEV_PATH/thirdparty/
   cd $DEV_PATH/thirdparty/

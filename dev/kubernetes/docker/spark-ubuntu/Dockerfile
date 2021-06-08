@@ -70,7 +70,7 @@ RUN wget https://enos.itcollege.ee/~jpoial/allalaadimised/jdk8/jdk-8u281-linux-x
     rm jdk-8u281-linux-x64.tar && \
     ln -s /opt/home/jdk1.8.0_261 /opt/home/jdk
     
-ARG SPARK_VERSION=3.0.0
+ARG SPARK_VERSION=3.1.1
 
 ENV SPARK_VERSION                   ${SPARK_VERSION}
 ENV SPARK_HOME           /opt/home/spark-${SPARK_VERSION}
