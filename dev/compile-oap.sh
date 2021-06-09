@@ -6,7 +6,7 @@ OAP_HOME="$(cd "`dirname "$0"`/.."; pwd)"
 
 DEV_PATH=$OAP_HOME/dev
 
-OAP_VERSION=1.1.1
+OAP_VERSION=1.2.0
 
 SPARK_VERSION=3.1.1
 
@@ -65,7 +65,7 @@ function gather() {
   rm -rf $DEV_PATH/release-package/*
   target_path=$DEV_PATH/release-package/$package_name/jars/
   mkdir -p $target_path
-  cp ../sql-ds-cache/Plasma-based-cache/target/*spark-$SPARK_VERSION.jar $target_path
+  cp ../sql-ds-cache/Plasma-based-cache/target/*spark-*.jar $target_path
   cp ../sql-ds-cache/HCFS-based-cache/target/*.jar $target_path
   cp ../pmem-common/target/*.jar $target_path
   cp ../native-sql-engine/arrow-data-source/standard/target/*with-dependencies.jar $target_path
@@ -73,7 +73,7 @@ function gather() {
   cp ../remote-shuffle/shuffle-daos/target/*.jar $target_path
   cp ../remote-shuffle/shuffle-hadoop/target/*.jar $target_path
   cp ../pmem-shuffle/core/target/*with-dependencies.jar $target_path
-  cp ../pmem-spill/RDD-Cache/target/*.jar $target_path
+  cp ../pmem-spill/target/*.jar $target_path
   cp ../oap-mllib/mllib-dal/target/*.jar $target_path
 
   find $target_path -name "*test*"|xargs rm -rf
@@ -214,6 +214,10 @@ case $key in
     build_oap pmem-spill
     build_oap remote-shuffle
     build_oap sql-ds-cache
+    gather
+    exit 0
+    ;;
+    --gather)
     gather
     exit 0
     ;;
