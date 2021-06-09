@@ -10,11 +10,11 @@ GCC_MIN_VERSION=7.0
 LLVM_MIN_VERSION=7.0
 rx='^([0-9]+\.){0,2}(\*|[0-9]+)$'
 INTEL_ARROW_REPO="https://github.com/oap-project/arrow.git"
-ARROW_BRANCH="arrow-4.0.0-oap-1.1.1"
+ARROW_BRANCH="arrow-4.0.0-oap"
 
 
-OAP_VERSION=1.1.1
-OAP_BRANCH="branch-1.1-spark-3.1.1"
+OAP_VERSION=1.2.0
+OAP_BRANCH="master"
 
 
 declare -A repo_dic
@@ -229,7 +229,7 @@ function install_gcc7() {
 function prepare_llvm() {
   check_gcc
   CURRENT_LLVM_VERSION_STR=`export LD_LIBRARY_PATH=$DEV_PATH/thirdparty/gcc7/lib64:$LD_LIBRARY_PATH;llvm-config --version`
-  if [[ "CURRENT_LLVM_VERSION_STR" =~ $rx  ]]; then
+  if [[ $CURRENT_LLVM_VERSION_STR =~ $rx  ]]; then
     if version_ge $CURRENT_LLVM_VERSION_STR $LLVM_MIN_VERSION; then
       echo "llvm is installed"
       return
