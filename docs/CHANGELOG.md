@@ -55,7 +55,7 @@ Generated on 2021-06-02
 |[#255](https://github.com/oap-project/native-sql-engine/pull/255)|[NSE-256] do not run ram report test on each PR|
 
 
-### SQL DS Cache
+### SQL Data Source Cache
 
 #### Features
 |||
@@ -88,7 +88,7 @@ Generated on 2021-06-02
 |[#39](https://github.com/oap-project/oap-mllib/pull/39)|[ML-26] Build for different spark version by -Pprofile|
 
 
-### PMEM Spill
+### PMem Spill
 
 #### Features
 |||
@@ -101,7 +101,7 @@ Generated on 2021-06-02
 |[#41](https://github.com/oap-project/pmem-spill/pull/41)|[PMEM-SPILL-34][POAE7-1119]Port RDD cache to Spark 3.1.1 as separate module|
 
 
-### PMEM Common
+### PMem Common
 
 #### Features
 |||
@@ -116,7 +116,7 @@ Generated on 2021-06-02
 |[#9](https://github.com/oap-project/pmem-common/pull/9)|[PMEM-COMMON-8][POAE7-896]use clflush optimize version for clflush|
 
 
-### PMEM Shuffle
+### PMem Shuffle
 
 #### Features
 |||
@@ -297,7 +297,7 @@ Generated on 2021-06-02
 |[#6](https://github.com/oap-project/native-sql-engine/pull/6)|[NSE-5][SCALA] Fix ColumnarBroadcastExchange didn't fallback issue w/ DPP|
 
 
-### SQL DS Cache
+### SQL Data Source Cache
 
 #### Features
 |||
@@ -363,7 +363,7 @@ Generated on 2021-06-02
 |[#19](https://github.com/oap-project/oap-mllib/pull/19)|[ML-18]  Auto detect KVS port for oneCCL to avoid port conflict|
 
 
-### PMEM Spill
+### PMem Spill
 
 #### Bugs Fixed
 |||
@@ -383,7 +383,7 @@ Generated on 2021-06-02
 |[#10](https://github.com/oap-project/pmem-spill/pull/10)|Fixing one pmem path on AppDirect mode may cause the pmem initialization path to be empty Path|
 
 
-### PMEM Shuffle
+### PMem Shuffle
 
 #### Features
 |||
