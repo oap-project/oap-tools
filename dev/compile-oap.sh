@@ -49,10 +49,16 @@ function check_gcc() {
   CURRENT_GCC_VERSION=${array[2]}
   if version_lt $CURRENT_GCC_VERSION $GCC_MIN_VERSION; then
     if [ ! -f "$DEV_PATH/thirdparty/gcc7/bin/gcc" ]; then
-      install_gcc7
+      if [  -n "$(uname -a | grep Ubuntu)" ]; then
+        apt-get install -y g++-7
+      else
+        install_gcc7
+        export CXX=$DEV_PATH/thirdparty/gcc7/bin/g++
+        export CC=$DEV_PATH/thirdparty/gcc7/bin/gcc
+      fi 
+      
     fi
-    export CXX=$DEV_PATH/thirdparty/gcc7/bin/g++
-    export CC=$DEV_PATH/thirdparty/gcc7/bin/gcc
+
   fi
 }
 

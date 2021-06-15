@@ -6,6 +6,7 @@ MAVEN_MIN_VERSION=3.3
 CMAKE_TARGET_VERSION=3.16.1
 CMAKE_MIN_VERSION=3.16
 TARGET_CMAKE_SOURCE_URL=https://cmake.org/files/v3.16/cmake-3.16.1.tar.gz
+TARGET_CMAKE_TAR_URL=https://github.com/Kitware/CMake/releases/download/v3.16.1/cmake-3.16.1-linux-x86_64.tar.gz
 GCC_MIN_VERSION=7.0
 LLVM_MIN_VERSION=7.0
 rx='^([0-9]+\.){0,2}(\*|[0-9]+)$'
@@ -33,9 +34,72 @@ function check_jdk() {
   fi
 }
 
+function check_os {
+  if [  -n "$(uname -a | grep Ubuntu)" ]; then
+    install_ubuntu_lib
+  else
+    install_redhat_lib
+  fi  
+}
+
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
 
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
+
+function install_ubuntu_lib() {
+  apt-get -y update
+  apt-get -y install cmake
+  apt-get -y install libcurl4-openssl-dev
+  apt-get -y install libssl-dev
+  apt-get -y install libboost-all-dev
+  apt-get -y install autoconf
+  apt-get -y install automake
+  apt-get -y install libnuma-dev
+  apt-get -y install libndctl-dev
+  apt-get -y install numactl
+  apt-get -y install libtool
+  apt-get -y install unzip
+  apt-get -y install asciidoctor
+  apt-get -y install libkmod-dev libkmod2 kmod
+  apt-get -y install libudev-dev libudev1
+  apt-get -y install libdaxctl-dev 
+  apt-get -y install build-essential
+  apt-get -y install autogen
+  apt-get -y install pandoc
+  apt-get -y install libkmod2
+  apt-get -y install libudev1
+  apt-get -y install libjemalloc-dev
+  apt-get -y pkg-config
+  apt-get -y install uuid-dev libuuid1
+  apt-get -y install libjson-c-dev
+  apt -y install llvm-7
+  apt -y install clang-7
+}
+
+
+function install_redhat_lib() {
+  yum -y install autoconf
+  yum -y install automake
+  yum -y install gcc-c++
+  yum -y install libtool
+  yum -y install numactl-devel
+  yum -y install unzip
+  yum -y install make
+  yum -y install wget
+  yum -y install gmp-devel
+  yum -y install mpfr-devel
+  yum -y install libmpc-devel
+  yum -y install rpm-build
+  yum -y install libgsasl
+  yum -y install libidn-devel.x86_64
+  yum -y install libntlm.x86_64
+  yum -y install python3
+  yum -y install cmake boost-devel boost-system
+  yum -y install  epel-release which bash-completion
+  yum -y install asciidoctor kmod-devel.x86_64 libudev-devel libuuid-devel json-c-devel jemalloc-devel
+  yum -y groupinstall "Development Tools"
+  yum -y install pandoc
+}
 
 function check_gcc() {
   CURRENT_GCC_VERSION_STR="$(gcc --version)"
@@ -62,7 +126,6 @@ function check_maven() {
 }
 
 function install_maven() {
-  yum -y install wget
   cd $DEV_PATH/thirdparty
   if [ ! -f " $DEV_PATH/thirdparty/apache-maven-$MAVEN_TARGET_VERSION-bin.tar.gz" ]; then
         wget -t 0 -c --no-check-certificate https://mirrors.cnnic.cn/apache/maven/maven-3/$MAVEN_TARGET_VERSION/binaries/apache-maven-$MAVEN_TARGET_VERSION-bin.tar.gz
@@ -104,6 +167,46 @@ function prepare_maven() {
   fi
 }
 
+function install_cmake_redhat() {
+  mkdir -p $DEV_PATH/thirdparty
+  cd $DEV_PATH/thirdparty
+  echo " $DEV_PATH/thirdparty/cmake-$CMAKE_TARGET_VERSION.tar.gz"
+  if [ ! -f " $DEV_PATH/thirdparty/cmake-$CMAKE_TARGET_VERSION.tar.gz" ]; then
+    wget -t 0 -c --no-check-certificate $TARGET_CMAKE_SOURCE_URL
+  fi
+  tar xvf cmake-$CMAKE_TARGET_VERSION.tar.gz
+  cd cmake-$CMAKE_TARGET_VERSION/
+  ./bootstrap
+  gmake
+  gmake install
+  rm -f /usr/bin/cmake
+  ln -s /usr/local/bin/cmake /usr/bin/
+  cd  $DEV_PATH
+}
+
+
+
+function install_cmake_ubuntu() {
+  mkdir -p $DEV_PATH/thirdparty
+  cd $DEV_PATH/thirdparty
+  wget -t 0 -c --no-check-certificate $TARGET_CMAKE_TAR_URL
+  tar -xzf cmake-$CMAKE_TARGET_VERSION-linux-x86_64.tar.gz
+  mkdir -p  /usr/local/cmake
+  cp -r cmake-$CMAKE_TARGET_VERSION-Linux-x86_64/* /usr/local/cmake
+
+  echo 'export PATH=/usr/local/cmake/bin:$PATH' >> ~/.bashrc
+  source ~/.bashrc
+  cd  $DEV_PATH
+}
+
+function install_cmake {
+  if [  -n "$(uname -a | grep Ubuntu)" ]; then
+    install_cmake_ubuntu
+  else
+    install_cmake_redhat
+  fi  
+}
+
 function prepare_cmake() {
   CURRENT_CMAKE_VERSION_STR="$(cmake --version)"
   cd  $DEV_PATH
@@ -114,37 +217,12 @@ function prepare_cmake() {
     CURRENT_CMAKE_VERSION=${array[2]}
     if version_lt $CURRENT_CMAKE_VERSION $CMAKE_MIN_VERSION; then
       echo "$CURRENT_CMAKE_VERSION is less than $CMAKE_MIN_VERSION,install cmake $CMAKE_TARGET_VERSION"
-      mkdir -p $DEV_PATH/thirdparty
-      cd $DEV_PATH/thirdparty
-      echo " $DEV_PATH/thirdparty/cmake-$CMAKE_TARGET_VERSION.tar.gz"
-      if [ ! -f " $DEV_PATH/thirdparty/cmake-$CMAKE_TARGET_VERSION.tar.gz" ]; then
-        wget -t 0 -c --no-check-certificate $TARGET_CMAKE_SOURCE_URL
-      fi
-      tar xvf cmake-$CMAKE_TARGET_VERSION.tar.gz
-      cd cmake-$CMAKE_TARGET_VERSION/
-      ./bootstrap
-      gmake
-      gmake install
-      yum remove cmake -y
-      rm -f /usr/bin/cmake
-      ln -s /usr/local/bin/cmake /usr/bin/
-      cd  $DEV_PATH
+      
+      install_cmake
     fi
   else
     echo "cmake is not installed"
-    mkdir -p $DEV_PATH/thirdparty
-    cd $DEV_PATH/thirdparty
-    echo " $DEV_PATH/thirdparty/cmake-$CMAKE_TARGET_VERSION.tar.gz"
-    if [ ! -f "cmake-$CMAKE_TARGET_VERSION.tar.gz" ]; then
-      wget -t 0 -c --no-check-certificate $TARGET_CMAKE_SOURCE_URL
-    fi
-
-    tar xvf cmake-$CMAKE_TARGET_VERSION.tar.gz
-    cd cmake-$CMAKE_TARGET_VERSION/
-    ./bootstrap
-    gmake
-    gmake install
-    cd  $DEV_PATH
+    install_cmake
   fi
 }
 
@@ -161,14 +239,6 @@ function prepare_memkind() {
   git pull
   git checkout v1.10.1
 
-  yum -y install autoconf
-  yum -y install automake
-  yum -y install gcc-c++
-  yum -y install libtool
-  yum -y install numactl-devel
-  yum -y install unzip
-  yum -y install make
-
   ./autogen.sh
   ./configure
   make
@@ -178,10 +248,14 @@ function prepare_memkind() {
 }
 
 function prepare_vmemcache() {
-   if [ -n "$(rpm -qa | grep libvmemcache)" ]; then
+  if [ -n "$(rpm -qa | grep libvmemcache)" ]; then
+    echo "libvmemcache is installed"
+    return
+  elif [ -n "$(dpkg -l|grep libvmemcache)" ]; then
     echo "libvmemcache is installed"
     return
   fi
+
   vmemcache_repo="https://github.com/pmem/vmemcache.git"
   prepare_cmake
   cd  $DEV_PATH
@@ -194,18 +268,20 @@ function prepare_vmemcache() {
   git pull
   mkdir -p build
   cd build
-  yum -y install rpm-build
-  cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCPACK_GENERATOR=rpm
-  make package
-  rpm -i libvmemcache*.rpm
+  if [  -n "$(uname -a | grep Ubuntu)" ]; then
+    cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCPACK_GENERATOR=deb
+    make package
+    sudo dpkg -i libvmemcache*.deb
+  else
+    cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCPACK_GENERATOR=rpm
+    make package
+    rpm -i libvmemcache*.rpm
+  fi  
+  
 }
 
 function install_gcc7() {
   #for gcc7
-  yum -y install gmp-devel
-  yum -y install mpfr-devel
-  yum -y install libmpc-devel
-  yum -y install wget
 
   cd $DEV_PATH/thirdparty
 
@@ -269,11 +345,10 @@ function prepare_llvm() {
 
 function prepare_intel_arrow() {
   prepare_cmake
-  prepare_llvm
-  yum -y install libgsasl
-  yum -y install libidn-devel.x86_64
-  yum -y install libntlm.x86_64
-  yum -y install python3
+  if [  -z "$(uname -a | grep Ubuntu)" ]; then
+    prepare_llvm
+  fi  
+
   cd $DEV_PATH
   mkdir -p $DEV_PATH/thirdparty/
   cd $DEV_PATH/thirdparty/
@@ -351,7 +426,6 @@ function prepare_libfabric() {
 
 function prepare_HPNL(){
   prepare_libfabric
-  yum -y install cmake boost-devel boost-system
   mkdir -p $DEV_PATH/thirdparty
   cd $DEV_PATH/thirdparty
   if [ ! -d "HPNL" ]; then
@@ -369,9 +443,7 @@ function prepare_HPNL(){
 }
 
 function prepare_ndctl() {
-  yum install -y epel-release which bash-completion
-  yum install -y autoconf asciidoctor kmod-devel.x86_64 libudev-devel libuuid-devel json-c-devel jemalloc-devel
-  yum groupinstall -y "Development Tools"
+
   mkdir -p $DEV_PATH/thirdparty
   cd $DEV_PATH/thirdparty
   if [ ! -d "ndctl" ]; then
@@ -388,7 +460,6 @@ function prepare_ndctl() {
 
 function prepare_PMDK() {
   prepare_ndctl
-  yum install -y pandoc
   mkdir -p $DEV_PATH/thirdparty
   cd $DEV_PATH/thirdparty
   if [ ! -d "pmdk" ]; then
@@ -396,7 +467,13 @@ function prepare_PMDK() {
   fi
   cd pmdk
   git checkout tags/1.8
-  make -j && make install
+  if [  -n "$(uname -a | grep Ubuntu)" ]; then
+    make NDCTL_ENABLE=n
+    make NDCTL_ENABLE=n install
+  else
+    make -j && make install
+  fi 
+  
   export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig/:$PKG_CONFIG_PATH
   echo 'export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig/:$PKG_CONFIG_PATH' > /etc/profile.d/pmdk.sh
   source /etc/profile
@@ -425,7 +502,12 @@ function prepare_PMoF() {
 function prepare_oneAPI() {
   cd $DEV_PATH/
   cd ../oap-mllib/dev/
-  sh install-build-deps-centos.sh
+  
+  if [  -n "$(uname -a | grep Ubuntu)" ]; then
+    sh install-build-deps-ubuntu.sh
+  else
+    sh install-build-deps-centos.sh
+  fi 
 }
 
 function clone_all(){
@@ -480,6 +562,7 @@ function oap_build_help() {
 
 check_jdk
 clone_all
+check_os
 while [[ $# -gt 0 ]]
 do
 key="$1"
