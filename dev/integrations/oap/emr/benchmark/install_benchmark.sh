@@ -1,6 +1,6 @@
 #!/bin/bash
 sudo yum -y install git
-SOFTWARE_HOME=/opt/software
+SOFTWARE_HOME=/opt/benchmark-tools
 sudo mkdir -p $SOFTWARE_HOME
 sudo chown $(whoami):$(whoami) $SOFTWARE_HOME
 
@@ -79,7 +79,7 @@ while [[ $# -ge 0 ]]
 do
 key="$1"
 case $key in
-    --all)
+    "")
     shift 1
     echo "Start to deploy all benchmark for OAP ..."
     install_hibench

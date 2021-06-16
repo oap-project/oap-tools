@@ -1,7 +1,7 @@
 #!/bin/bash
-oap_install_dir=/opt/software/oap
+oap_install_dir=/opt/benchmark-tools/oap
 sudo mkdir -p $oap_install_dir
-conda_install_dir=/opt/software/conda
+conda_install_dir=/opt/benchmark-tools/conda
 sudo yum -y install wget
 
 ## Step 1: install conda

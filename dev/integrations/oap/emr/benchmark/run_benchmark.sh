@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SPARK_HOME=/usr/lib/spark
-SOFTWARE_HOME=/opt/software
+SOFTWARE_HOME=/opt/benchmark-tools
 LOG_HOME=${SOFTWARE_HOME}/log
 sudo mkdir -p ${LOG_HOME}
 sudo chown $(whoami):$(whoami) ${LOG_HOME}
