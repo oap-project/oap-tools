@@ -44,24 +44,23 @@ function install_gcc7() {
 }
 
 function check_gcc() {
+  echo "check gcc"
   CURRENT_GCC_VERSION_STR="$(gcc --version)"
   array=(${CURRENT_GCC_VERSION_STR//,/ })
   CURRENT_GCC_VERSION=${array[2]}
   if version_lt $CURRENT_GCC_VERSION $GCC_MIN_VERSION; then
-    if [ ! -f "$DEV_PATH/thirdparty/gcc7/bin/gcc" ]; then
-      if [  -n "$(uname -a | grep Ubuntu)" ]; then
-        apt-get install -y g++-7
-      else
+    if [  -n "$(uname -a | grep Ubuntu)" ]; then
+      apt-get install -y g++-7
+    else
+      if [ ! -f "$DEV_PATH/thirdparty/gcc7/bin/gcc" ]; then
         install_gcc7
-        export CXX=$DEV_PATH/thirdparty/gcc7/bin/g++
-        export CC=$DEV_PATH/thirdparty/gcc7/bin/gcc
       fi 
-      
+      export CXX=$DEV_PATH/thirdparty/gcc7/bin/g++
+      export CC=$DEV_PATH/thirdparty/gcc7/bin/gcc
     fi
 
   fi
 }
-
 
 
 
