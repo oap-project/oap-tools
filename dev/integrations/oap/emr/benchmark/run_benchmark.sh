@@ -91,6 +91,10 @@ function start_spark_thrift_server() {
     sleep 60
 }
 
+function stop_spark_thrift_server() {
+    sudo ${SPARK_HOME}/sbin/stop-thriftserver.sh
+}
+
 function change_hdfs_permissions() {
     /usr/bin/hdfs dfs -chmod -R 777 /user
 }
@@ -375,12 +379,15 @@ if [ "${runType}" = "rerun" ]; then
 elif [ "${runType}" = "gen" ]; then
     if [ "${workload}" = "tpcds" ]; then
         create_tpcds_datagen_script
+        stop_spark_thrift_server
         cat ${TPCDS_LOG_HOME}/tpcds_datagen.scala | ${SPARK_HOME}/bin/spark-shell --master yarn --deploy-mode client --jars ${SOFTWARE_HOME}/spark-sql-perf/target/scala-2.12/spark-sql-perf_2.12-0.5.1-SNAPSHOT.jar
     elif [ "${workload}" = "tpch" ]; then
         create_tpch_datagen_script
+        stop_spark_thrift_server
         cat ${TPCH_LOG_HOME}/tpch_datagen.scala | ${SPARK_HOME}/bin/spark-shell --master yarn --deploy-mode client --jars ${SOFTWARE_HOME}/spark-sql-perf/target/scala-2.12/spark-sql-perf_2.12-0.5.1-SNAPSHOT.jar
     elif [ "${workload}" = "hibench" ]; then
         change_hibench_profile
+        stop_spark_thrift_server
         cd ${SOFTWARE_HOME}/HiBench && sh bin/workloads/${hibenchWorkload}/prepare/prepare.sh
     fi
 else
