@@ -10,13 +10,13 @@ case $key in
     shift 1
     echo "Start to install all compile-time dependencies for OAP ..."
     export ENABLE_RDMA=true
-    sh $OAP_HOME/dev/scripts/prepare_oap_env.sh --prepare_all
+    bash $OAP_HOME/dev/scripts/prepare_oap_env.sh --prepare_all
     exit 0
     ;;
     "")
     shift 1
     echo "Start to install all compile-time dependencies for OAP ..."
-    sh $OAP_HOME/dev/scripts/prepare_oap_env.sh --prepare_all
+    bash $OAP_HOME/dev/scripts/prepare_oap_env.sh --prepare_all
     exit 0
     ;;
     *)    # unknown option
