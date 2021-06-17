@@ -1,7 +1,7 @@
 #!/bin/bash
-oap_install_dir=/opt/software/oap
+oap_install_dir=/opt/benchmark-tools/oap
 sudo mkdir -p $oap_install_dir
-conda_install_dir=/opt/software/conda
+conda_install_dir=/opt/benchmark-tools/conda
 sudo yum -y install wget
 
 ## Step 1: install conda
@@ -15,4 +15,4 @@ sudo chown $(whoami):$(whoami) ${oap_install_dir}
 ## Step 2: install oap
 conda create -y python=3.7 -p ${oap_install_dir}
 conda activate ${oap_install_dir}
-conda install -c conda-forge -c intel -y oap=1.1.0
+conda install -c conda-forge -c intel-beaver -c intel oap=1.2.0
