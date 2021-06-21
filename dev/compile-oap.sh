@@ -113,7 +113,7 @@ function build_oap(){
     cd $OAP_HOME/oap-mllib/mllib-dal
     source /opt/intel/oneapi/setvars.sh
     source /tmp/oneCCL/build/_install/env/setvars.sh
-    mvn clean package  -DskipTests  -Pspark-3.1.1
+    mvn clean package  -Dmaven.test.skip=true  -Pspark-3.1.1
     ;;
 
     pmem-common)    
