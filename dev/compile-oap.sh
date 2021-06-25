@@ -77,7 +77,7 @@ function gather() {
   cp ../native-sql-engine/native-sql-engine/core/target/*with-dependencies.jar $target_path
   cp ../remote-shuffle/shuffle-daos/target/*.jar $target_path
   cp ../remote-shuffle/shuffle-hadoop/target/*.jar $target_path
-  cp ../pmem-shuffle/core/target/*with-dependencies.jar $target_path
+  cp ../pmem-shuffle/core/target/*with-spark*.jar $target_path
   cp ../pmem-spill/RDD-Cache/target/*.jar $target_path
   cp ../oap-mllib/mllib-dal/target/*.jar $target_path
 
