@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+set -o pipefail
+
+# usage: log info "msg", or, echo "msg" | log info
+# debug:0; info:1; warn:2; error:3
+loglevel=1
+
+function log() {
+  local msg
+  logtype=$1
+  shift
+  msg="$@"
+  if [[ -z ${msg} ]]; then
+    while read msg; do
+      output_msg ${logtype} ${msg}
+    done
+  else
+    output_msg ${logtype} ${msg}
+  fi
+}
+
+function output_msg() {
+  logtype=$1
+  shift
+  msg="$@"
+  datetime=`date +'%F %H:%M:%S.%3N'`
+  logformat="[${logtype}] ${datetime} | ${msg}"
+  {
+    case $logtype in
+      debug)
+        [[ $loglevel -le 0 ]] && echo -e "${logformat}" ;;
+      info)
+        [[ $loglevel -le 1 ]] && echo -e "${logformat}" ;;
+      warn)
+        [[ $loglevel -le 2 ]] && echo -e "${logformat}" ;;
+      error)
+        [[ $loglevel -le 3 ]] && echo -e "${logformat}" ;;
+    esac
+  }
+}
+
+
+

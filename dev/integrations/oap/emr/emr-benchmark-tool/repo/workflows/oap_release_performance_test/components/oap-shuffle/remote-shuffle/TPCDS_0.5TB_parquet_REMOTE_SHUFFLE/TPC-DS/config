@@ -1,0 +1,4 @@
+scale 2
+format parquet
+queries 26,27,68
+partitionTables true
