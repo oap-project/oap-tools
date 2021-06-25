@@ -1,0 +1,1 @@
+use tpcds_arrow{%partitioned%}_scale_{%scale%}_db;
