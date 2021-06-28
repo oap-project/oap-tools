@@ -102,7 +102,7 @@ def run_conf(conf, workflow, workflow_result_dict, workflow_start_date, baseline
     elif workload == "hibench":
         hibench_workload = get_default_hibench_workload(conf)
         if hibench_workload is None:
-            print "Please define HiBench_workload  you want to run !"
+            print("Please define HiBench_workload  you want to run !")
             return
         HiBench.update(conf)
         status = HiBench.run_workload(conf,  hibench_workload)
@@ -126,7 +126,7 @@ def run_dataGen_conf(conf):
     elif workload == "hibench":
         hibench_workload = get_default_hibench_workload(conf)
         if hibench_workload is None:
-            print "Please define HIBENCH_WORKLOAD  you want to run !"
+            print("Please define HIBENCH_WORKLOAD  you want to run !")
             exit(1)
         HiBench.update(conf)
         HiBench.gen_data(conf,  hibench_workload)
@@ -163,7 +163,6 @@ def hibench_data_collect(conf, workflow, workflow_result_dict, workflow_start_da
 
 def tpc_data_collect(conf, workflow, tpc_workload, workflow_result_dict, workflow_start_date, isSuccess, baseline_result_dict, last_version_baseline_result_dict):
     beaver_env = get_merged_env(conf)
-    spark_version = beaver_env.get("SPARK_VERSION").strip(" ").strip("\n")
     spark_sql_perf_home = beaver_env.get("SPARK_SQL_PERF_HOME")
     resDir = get_result_directory(conf)
     mkdirs(resDir)
@@ -301,7 +300,7 @@ def run_workflow(workflow):
 
     get_conf_list(output_workflow, testing_conf_list, dataGen_conf_list)
     if len(testing_conf_list) == 0 or len(dataGen_conf_list) == 0:
-        print "Please define the conf you want to test in [your_workflow}/.base"
+        print("Please define the conf you want to test in [your_workflow}/.base")
         exit(1)
 
     testing_conf_list = baseline_conf_list_filter(testing_conf_list, baseline_conf_list)

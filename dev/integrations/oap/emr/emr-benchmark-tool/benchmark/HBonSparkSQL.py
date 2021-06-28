@@ -13,7 +13,7 @@ def gen_data(custom_conf, workload):
 
 def run_workload(custom_conf, workload):
     beaver_env = get_merged_env(custom_conf)
-    run_hibench(beaver_env, workload)
+    return run_hibench(beaver_env, workload)
 
 def update(custom_conf):
     beaver_env = get_merged_env(custom_conf)
