@@ -20,7 +20,7 @@ def undeploy_spark_sql_perf():
 def run_tpc_query(beaver_env, iteration, workload):
     script_folders = os.path.join(beaver_env.get("SPARK_SQL_PERF_HOME"), workload + "_script")
     arrow_format = ""
-    if beaver_env.get("NATIVE_SQL_ENGINE").lower() == "true" or beaver_env.get("ARROW_DATA_SOURCE").lower() == "true":
+    if beaver_env.get("NATIVE_SQL_ENGINE").lower() == "true":
         arrow_format = "arrow"
     print (colors.LIGHT_BLUE + "\tStart to run test..." + colors.ENDC)
     if beaver_env.get("THROUGHPUT_TEST").lower() == "true":

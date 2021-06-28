@@ -12,7 +12,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     workflows = args.workflows.strip().strip("\n").split(",")
     if len(workflows) == 0:
-        print "Please input right workflow"
+        print("Please input right workflow")
         exit(1)
     for workflow in workflows:
         run_workflow(os.path.abspath(workflow))
