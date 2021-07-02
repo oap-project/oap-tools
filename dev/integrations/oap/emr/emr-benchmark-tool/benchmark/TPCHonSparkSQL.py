@@ -4,16 +4,16 @@ current_path = os.path.dirname(os.path.abspath(__file__))
 project_path = os.path.dirname(current_path)
 sys.path.append(project_path)
 from core.spark_sql_perf import *
+from core.spark import *
 
-current_path = os.path.dirname(os.path.abspath(__file__))
 
 def gen_data(custom_conf):
     beaver_env = get_merged_env(custom_conf)
     gen_tpc_data(beaver_env, "tpch")
 
-
 def run_query(custom_conf, iteration):
     beaver_env = get_merged_env(custom_conf)
+    start_plasma_service(beaver_env)
     return run_tpc_query(beaver_env, iteration, "tpch")
 
 def update(custom_conf):
