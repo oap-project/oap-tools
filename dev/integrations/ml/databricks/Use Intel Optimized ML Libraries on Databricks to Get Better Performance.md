@@ -1,4 +1,4 @@
-# Speed up Azure Databricks Machine Learning Runtime Delivers Faster with Intel Optimized ML Libraries
+# Speed up Azure Databricks Machine Learning Runtime with Intel Optimized ML Libraries
 
 
 ### 1. Intel Optimized ML Libraries 
