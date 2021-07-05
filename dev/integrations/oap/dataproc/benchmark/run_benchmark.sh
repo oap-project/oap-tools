@@ -95,10 +95,6 @@ function stop_spark_thrift_server() {
     sudo ${SPARK_HOME}/sbin/stop-thriftserver.sh
 }
 
-function change_hdfs_permissions() {
-    /usr/bin/hdfs dfs -chmod -R 777 /user
-}
-
 function create_tpcds_database_file() {
     mkdir -p ${TPCDS_LOG_HOME}
     echo "use tpcds_${format}_scale_${scaleFactor}_db;" > ${TPCDS_LOG_HOME}/dbname.txt
@@ -281,7 +277,6 @@ if [ "${runType}" = "rerun" ]; then
     if [ "${workload}" = "tpcds" ]; then
         rm -rf ${TPCDS_LOG_HOME}/*
         create_tpcds_database_file
-        change_hdfs_permissions
         queriesdir=$SOFTWARE_HOME/spark-sql-perf/src/main/resources/tpcds_2_4
         if [ "${format}" = "arrow" ]; then
             create_tpcds_arrow_tables_script
@@ -295,7 +290,7 @@ if [ "${runType}" = "rerun" ]; then
                 if [ $t == 14 ] || [ $t == 23 ] || [ $t == 24 ] || [ $t == 39 ]; then
                     if [ -e "${queriesdir}/q${t}a.sql" ]; then
                         start=$(date +%s)
-                        $SPARK_HOME/bin/beeline -u jdbc:hive2://$(hostname):10001 -i ${TPCDS_LOG_HOME}/dbname.txt -f ${queriesdir}/q${t}a.sql > ${TPCDS_LOG_HOME}/${round}/q${t}a.log 2>&1
+                        $SPARK_HOME/bin/beeline -u jdbc:hive2://$(hostname):10000 -i ${TPCDS_LOG_HOME}/dbname.txt -f ${queriesdir}/q${t}a.sql > ${TPCDS_LOG_HOME}/${round}/q${t}a.log 2>&1
                         end=$(date +%s)
                         time=$(( $end - $start ))
                         Error_message=$(grep -r "Error:" ${TPCDS_LOG_HOME}/${round}/q${t}a.log | wc -l )
@@ -309,7 +304,7 @@ if [ "${runType}" = "rerun" ]; then
                     fi
                     if [ -e "${queriesdir}/q${t}b.sql" ]; then
                         start=$(date +%s)
-                        $SPARK_HOME/bin/beeline -u jdbc:hive2://$(hostname):10001 -i ${TPCDS_LOG_HOME}/dbname.txt -f ${queriesdir}/q${t}b.sql > ${TPCDS_LOG_HOME}/${round}/q${t}b.log 2>&1
+                        $SPARK_HOME/bin/beeline -u jdbc:hive2://$(hostname):10000 -i ${TPCDS_LOG_HOME}/dbname.txt -f ${queriesdir}/q${t}b.sql > ${TPCDS_LOG_HOME}/${round}/q${t}b.log 2>&1
                         end=$(date +%s)
                         time=$(( $end - $start ))
                         Error_message=$(grep -r "Error:" ${TPCDS_LOG_HOME}/${round}/q${t}b.log | wc -l )
@@ -324,7 +319,7 @@ if [ "${runType}" = "rerun" ]; then
                 else
                     if [ -e "${queriesdir}/q${t}.sql" ]; then
                         start=$(date +%s)
-                        $SPARK_HOME/bin/beeline -u jdbc:hive2://$(hostname):10001 -i ${TPCDS_LOG_HOME}/dbname.txt -f ${queriesdir}/q${t}.sql > ${TPCDS_LOG_HOME}/${round}/q${t}.log 2>&1
+                        $SPARK_HOME/bin/beeline -u jdbc:hive2://$(hostname):10000 -i ${TPCDS_LOG_HOME}/dbname.txt -f ${queriesdir}/q${t}.sql > ${TPCDS_LOG_HOME}/${round}/q${t}.log 2>&1
                         end=$(date +%s)
                         time=$(( $end - $start ))
                         Error_message=$(grep -r "Error:" ${TPCDS_LOG_HOME}/${round}/q${t}.log | wc -l )
@@ -343,7 +338,6 @@ if [ "${runType}" = "rerun" ]; then
     elif [ "${workload}" = "tpch" ]; then
         rm -rf ${TPCH_LOG_HOME}/*
         create_tpch_database_file
-        change_hdfs_permissions
         queriesdir=$SOFTWARE_HOME/spark-sql-perf/src/main/resources/tpch/queries
         if [ "${format}" = "arrow" ]; then
             create_tpch_arrow_tables_script
@@ -356,7 +350,7 @@ if [ "${runType}" = "rerun" ]; then
             for t in $(seq 22);do
                 if [ -e "${queriesdir}/${t}.sql" ]; then
                     start=$(date +%s)
-                    $SPARK_HOME/bin/beeline -u jdbc:hive2://$(hostname):10001 -i ${TPCH_LOG_HOME}/dbname.txt -f ${queriesdir}/${t}.sql > ${TPCH_LOG_HOME}/${round}/q${t}.log 2>&1
+                    $SPARK_HOME/bin/beeline -u jdbc:hive2://$(hostname):10000 -i ${TPCH_LOG_HOME}/dbname.txt -f ${queriesdir}/${t}.sql > ${TPCH_LOG_HOME}/${round}/q${t}.log 2>&1
                     end=$(date +%s)
                     time=$(( $end - $start ))
                     Error_message=$(grep -r "Error:" ${TPCH_LOG_HOME}/${round}/q${t}.log | wc -l )
@@ -372,7 +366,6 @@ if [ "${runType}" = "rerun" ]; then
             echo "The result directory is: ${TPCDS_LOG_HOME}/${round}"
         done
     elif [ "${workload}" = "hibench" ]; then
-        change_hdfs_permissions
         cd ${SOFTWARE_HOME}/HiBench && sh bin/workloads/${hibenchWorkload}/spark/run.sh
     fi
 
