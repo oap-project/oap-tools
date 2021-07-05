@@ -16,7 +16,9 @@ def gen_data(custom_conf):
 def run_query(custom_conf, iteration):
     beaver_env = get_merged_env(custom_conf)
     start_plasma_service(beaver_env)
-    return run_tpc_query(beaver_env, iteration, "tpcds")
+    status = run_tpc_query(beaver_env, iteration, "tpcds")
+    stop_plasma_service(beaver_env)
+    return status
 
 def update(custom_conf):
     beaver_env = get_merged_env(custom_conf)
