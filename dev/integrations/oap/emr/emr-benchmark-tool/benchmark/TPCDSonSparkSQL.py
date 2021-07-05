@@ -7,6 +7,7 @@ sys.path.append(project_path)
 from core.spark_sql_perf import *
 from utils.util import *
 from utils.config_utils import *
+from core.spark import *
 
 def gen_data(custom_conf):
     beaver_env = get_merged_env(custom_conf)
@@ -14,6 +15,7 @@ def gen_data(custom_conf):
 
 def run_query(custom_conf, iteration):
     beaver_env = get_merged_env(custom_conf)
+    start_plasma_service(beaver_env)
     return run_tpc_query(beaver_env, iteration, "tpcds")
 
 def update(custom_conf):

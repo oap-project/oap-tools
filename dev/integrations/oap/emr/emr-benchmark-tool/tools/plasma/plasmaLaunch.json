@@ -1,0 +1,16 @@
+{
+  "name": "plasma-store-service",
+  "version": 1,
+  "components" :
+  [
+   {
+     "name": "plasma-store-service",
+     "number_of_containers": 3,
+     "launch_command": "{%oap.home%}/bin/plasma-store-server -m {%plasma.cache.size%} -s /tmp/plasmaStore -d /mnt/pmem",
+     "resource": {
+       "cpus": 1,
+       "memory": 512
+     }
+   }
+  ]
+}
