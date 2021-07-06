@@ -33,6 +33,7 @@ def start_plasma_service(beaver_env):
         os.system("yarn app -launch plasma-store-service /tmp/plasmaLaunch.json")
 
 def stop_plasma_service(beaver_env):
+    update_plasma_conf(beaver_env)
     os.system("yarn app -launch plasma-store-service /tmp/plasmaLaunch.json")
     os.system("yarn app -destroy plasma-store-service")
 
