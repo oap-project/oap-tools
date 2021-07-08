@@ -14,7 +14,6 @@ source ~/.bashrc
 sudo chown $(whoami):$(whoami) ${oap_install_dir}
 
 ## Step 2: install oap
-conda create -y python=3.7 -p ${oap_install_dir}
-conda activate ${oap_install_dir}
-conda install -y  -c conda-forge -c intel-beaver -c intel  oap=1.1.1
+
+conda create -p ${oap_install_dir}  -c conda-forge -c intel-beaver -c intel -c intel-bigdata -y oap=1.2.0
 
