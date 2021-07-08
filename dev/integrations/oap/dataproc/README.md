@@ -11,17 +11,21 @@ Upload the initialization actions script **[bootstrap_oap.sh](./bootstrap_oap.sh
 
 
 ## 2. Create a new cluster using bootstrap script
-To create a new cluster using the uploaded bootstrap script, follow the following steps:
+To create a new cluster with initialization actions, follow the steps below:
 
-1. Click the  **CREATE CLUSTER** to create and custom your cluster;
-2. **Set up cluster:** choose cluster type and Dataproc image version, enable component gateway.
-3. **Configure nodes:** choose the instance type and other configurations of nodes;
-4. **Customize cluster:** add initialization actions **[bootstrap_oap.sh](./bootstrap_oap.sh)** like following picture;
+1). Click the  **CREATE CLUSTER** to create and custom your cluster.
+
+2). **Set up cluster:** choose cluster type and Dataproc image version, enable component gateway.
+![Enable_component_gateway](./imgs/component_gateway.png)
+
+3). **Configure nodes:** choose the instance type and other configurations of nodes.
+
+4). **Customize cluster:** add initialization actions as below;
 ![Add bootstrap action](./imgs/add_scripts.png)
-5. **Manage security:** define the permissions and other security configurations;
-6. Click **Create cluster**. 
 
-![create_cluster](./imgs/create_cluster.png)
+5). **Manage security:** define the permissions and other security configurations;
+
+6). Click **Create**. 
 
 ## 3. Run benchmark easily by using **[run_benchmark.sh](./benchmark/run_benchmark.sh)**
 
@@ -56,15 +60,26 @@ Generate data: ./run_benchmark.sh -g|--gen   -w|--workload hibench -W|--hibenchW
 Run benchmark: ./run_benchmark.sh -r|--rerun -w|--workload hibench -W|--hibenchWorkload [ml/kmeans|micro/terasort|..] -P|--hibenchProfile [tiny|small|large|huge|gigantic|bigdata] --Port [8020|customed hdfs port]
 ```
 
-### 2. Run TPC-DS:  
+### 3. Run TPC-DS:  
 ```
 Generate data: ./run_benchmark.sh -g|--gen   -w|--workload tpcds -f|--format [parquet|orc] -s|--scaleFactor [10|custom the data scale,the unit is GB] -d|--doubleForDecimal -p|--partitionTables --Port [8020|customed hdfs port]   
 Run benchmark: ./run_benchmark.sh -r|--rerun -w|--workload tpcds -f|--format [parquet|orc|arrow] -i|--iteration [1|custom the interation you want to run]  -s|--scaleFactor [10|custom the data scale,the unit is GB]  -p|--partitionTables --Port [8020|customed hdfs port]   
 ```
-### 3. Run TPC-H:  
+Only after enabling Gazelle Plugin can you run TPC-DS or TPC-H with arrow format.
+
+Example: generate 1GB Parquet, then run TPC-DS all queries with Gazelle enabled.
+
+```
+# generate data
+./run_benchmark.sh -g -w tpcds -f parquet  -s 1 -d -p --Port 8020
+
+# run TPC-DS
+./run_benchmark.sh -r -w tpcds -f arrow -s 1 -i 1 -p --Port  8020
+```
+
+### 4. Run TPC-H:  
 ```
 Generate data: ./run_benchmark.sh -g|--gen   -w|--workload tpch  -f|--format [parquet|orc] -s|--scaleFactor [10|custom the data scale,the unit is GB] -d|--doubleForDecimal -p|--partitionTables --Port [8020|customed hdfs port]  
 Run benchmark: ./run_benchmark.sh -r|--rerun -w|--workload tpch  -f|--format [parquet|orc|arrow] -i|--iteration [1|custom the interation you want to run] -s|--scaleFactor [10|custom the data scale,the unit is GB] -p|--partitionTables --Port [8020|customed hdfs port] 
 ``` 
-(Note: OAP is installed at `/opt/benchmark-tools/oap/`; only enabling native-sql-engine can run TPC-DS or TPC-H with arrow format.)
 
