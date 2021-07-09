@@ -70,6 +70,7 @@ def gen_test_dict(custom_conf ,beaver_env, mode=[]):
     data_format = config_dict.get("format").strip()
     tables_partition = config_dict.get("partitionTables").strip()
     queries = config_dict.get("queries").strip()
+    s3_bucket = beaver_env.get("S3_BUCKET")
     dict["{%partitionTables%}"] = tables_partition
     dict["{%scale%}"] = data_scale
     dict["{%data.format%}"] = data_format
@@ -78,6 +79,12 @@ def gen_test_dict(custom_conf ,beaver_env, mode=[]):
     dict["{%tpcds.script.home%}"] = os.path.join(beaver_env.get("SPARK_SQL_PERF_HOME"), "tpcds_script/")
     dict["{%hostname%}"] = socket.gethostname()
     dict["{%tpcds.home%}"] = beaver_env.get("TPCDS_KIT_HOME")
+    dict["{%storage%}"] = beaver_env.get("STORAGE")
+
+    if beaver_env.get("STORAGE") == "s3":
+        dict["{%s3.bucket%}"] = s3_bucket
+    else:
+        dict["{%s3.bucket%}"] = ""
 
     if config_dict.get("partitionTables").strip() == "true":
         dict["{%partitioned%}"] = "_partition"

@@ -1,5 +1,5 @@
 val tools_path = "{%tpcds.home%}/tools"
-val data_path = "hdfs://{%hostname%}:8020/tpcds_{%data.format%}{%partitioned%}/{%scale%}"
+val data_path = "{%storage%}://{%s3.bucket%}/datagen/tpcds_{%data.format%}{%partitioned%}/{%scale%}"
 val database_name = "tpcds_{%data.format%}{%partitioned%}_scale_{%scale%}_db"
 val scale = "{%scale%}"
 val p = scale.toInt / 2048.0
