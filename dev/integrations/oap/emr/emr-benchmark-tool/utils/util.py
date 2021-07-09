@@ -71,6 +71,7 @@ def update_copy_hibench_conf(custom_conf, beaver_env):
     copy_configurations(hibench_output_conf, "hibench", beaver_env.get("HIBENCH_HOME"))
 
 def get_hibench_replace_dict(beaver_env):
+    dict = {};
     print(colors.LIGHT_BLUE + "Update spark.conf and hadoop.conf" + colors.ENDC)
     hostname = socket.gethostname()
     hibench_hadoop_examples_jars = subprocess.check_output(
@@ -85,12 +86,18 @@ def get_hibench_replace_dict(beaver_env):
         hibench_hadoop_examples_test_jars = subprocess.check_output(
         "find " + os.path.join(os.path.dirname(beaver_env.get("HADOOP_HOME")), "hadoop-mapreduce") + " -name hadoop-mapreduce-client-jobclient-*tests.jar", shell=True).decode('utf-8').strip('\r\n')
     hibench_version = hibench_get_build_version(beaver_env)
-    dict = {'master_hostname':hostname,
-            '{%hadoop.home%}':beaver_env.get("HADOOP_HOME"),
-            '{%spark.home%}':beaver_env.get("SPARK_HOME"),
-            '{%hibench.version%}':hibench_version,
-            '{%hibench.hadoop.examples.jar%}':hibench_hadoop_examples_jars,
-            '{%hibench.hadoop.examples.test.jar%}':hibench_hadoop_examples_test_jars}
+    s3_bucket = beaver_env.get("S3_BUCKET")
+    dict["{%storage%}"] = beaver_env.get("STORAGE")
+    if beaver_env.get("STORAGE") == "s3":
+        dict["{%s3.bucket%}"] = s3_bucket
+    else:
+        dict["{%s3.bucket%}"] = ""
+    dict["master_hostname"] = hostname
+    dict["{%hadoop.home%}"] = beaver_env.get("HADOOP_HOME")
+    dict["{%spark.home%}"] = beaver_env.get("SPARK_HOME")
+    dict["{%hibench.version%}"] = hibench_version
+    dict["{%hibench.hadoop.examples.jar%}"] = hibench_hadoop_examples_jars
+    dict["{%hibench.hadoop.examples.test.jar%}"] = hibench_hadoop_examples_test_jars
     return dict
 
 def hibench_get_build_version(beaver_env):
