@@ -81,6 +81,11 @@ def gen_test_dict(custom_conf ,beaver_env, mode=[]):
     dict["{%tpcds.home%}"] = beaver_env.get("TPCDS_KIT_HOME")
     dict["{%storage%}"] = beaver_env.get("STORAGE")
 
+    if beaver_env.get("NATIVE_SQL_ENGINE").lower() == "true":
+        dict["{%arrow_enable%}"] = 'true'
+    else:
+        dict["{%arrow_enable%}"] = 'false'
+
     if beaver_env.get("STORAGE") == "s3":
         dict["{%s3.bucket%}"] = s3_bucket
     else:
@@ -113,6 +118,7 @@ def gen_tpch_test_dict(custom_conf ,beaver_env, mode=[]):
     ifPartitioned = config_dict.get("partitionTables").strip()
     tables_partition = config_dict.get("partition").strip()
     queries = config_dict.get("queries").strip()
+    s3_bucket = beaver_env.get("S3_BUCKET")
     dict["{%partitionTables%}"] = ifPartitioned
     dict["{%scale%}"] = data_scale
     dict["{%data.format%}"] = data_format
@@ -122,12 +128,22 @@ def gen_tpch_test_dict(custom_conf ,beaver_env, mode=[]):
     dict["{%tpch.script.home%}"] = os.path.join(beaver_env.get("SPARK_SQL_PERF_HOME"), "tpch_script/")#os.path.join(beaver_env.get("OAP_HOME"), "test_script/" + spark_version)
     dict["{%hostname%}"] = socket.gethostname()
     dict["{%tpch.home%}"] = beaver_env.get("TPCH_DBGEN_HOME")
+    dict["{%storage%}"] = beaver_env.get("STORAGE")
+
+    if beaver_env.get("NATIVE_SQL_ENGINE").lower() == "true":
+        dict["{%arrow_enable%}"] = 'true'
+    else:
+        dict["{%arrow_enable%}"] = 'false'
+
+    if beaver_env.get("STORAGE") == "s3":
+        dict["{%s3.bucket%}"] = s3_bucket
+    else:
+        dict["{%s3.bucket%}"] = ""
 
     if config_dict.get("partitionTables").strip() == "true":
         dict["{%partitioned%}"] = "_partition"
     else:
         dict["{%partitioned%}"] = ""
-
 
     if queries == 'all':
         dict["{%queries%}"] = ""
