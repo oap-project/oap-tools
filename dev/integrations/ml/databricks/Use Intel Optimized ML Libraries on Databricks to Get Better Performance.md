@@ -74,11 +74,11 @@ up to hundreds of times. Especially SVM algorithm, the acceleration is the best.
 
 ##### Tensorflow Performance
 
-+ BERT Base Classifier model on MRPC
++ BERT-Large model on SQuADv1.1 dataset
 
-![Bert Base](imgs/bert.png) 
+![BERT-Large-Benchmark](imgs/BERT-Large-F32s_v2.png) 
 
-We can see intel-tensorflow  achieved 42% and 53% acceleration on the node type F16s_v2 and F32s_v2.
+On Databricks Standard_F32s_v2 instance, Intel TensorFlow delivers 2.09X higher inference performance and 1.76X higher inference performance than Stock TensorFlow.
 
 
 ### 5.Summary
