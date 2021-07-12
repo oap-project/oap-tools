@@ -18,6 +18,8 @@ As tensorflow is a widely-used machine learning framework in the deep learning a
 
 ### 2. Databricks Platform
 
+Azure Databricks is a data analytics platform optimized for the Microsoft Azure cloud services platform. Azure Databricks offers three environments for developing data intensive applications: Databricks SQL, Databricks Data Science & Engineering, and Databricks Machine Learning.
+
 Databricks Platform is a fast, easy, and collaborative Apache SparkTM based analytics service. You can use it to unlock insights from all your data and build artificial intelligence (AI) solutions with Azure Databricks, set up your Apache Spark™ environment in minutes, autoscale, and collaborate on shared projects in an interactive workspace. Databricks supports Python, Scala, R, Java, and SQL, as well as data science frameworks and libraries including TensorFlow, PyTorch, and scikit-learn.  
 At present, AWS and Azure have integrated Databricks. In this blog, we use Azure Databricks for experiments.
 
@@ -37,12 +39,12 @@ Write the command to download the tool in notebook, then select the correspondin
 
 + Model Zoo
 
-[Model Zoo](https://github.com/IntelAI/models) contains links to pre-trained models, sample scripts, best practices, and step-by-step tutorials for many popular open-source machine learning models optimized by Intel to run on Intel® Xeon® Scalable processors. We use this tool to run [BERT Base](https://github.com/IntelAI/models/blob/d257a4afaee41c5e59c499895d4ef15aefee2056/benchmarks/language_modeling/tensorflow/bert_base/README.md) Classifier model on MRPC. Same as above, we also provide a ready-made [notebook](https://github.com/oap-project/oap-tools/tree/master/dev/integrations/ml/databricks#run-benchmark_tensorflow-notebook) for you to use, it includes download data, download benchmark tools, and has been configured to run directly.
+[Model Zoo](https://github.com/IntelAI/models) contains links to pre-trained models, sample scripts, best practices, and step-by-step tutorials for many popular open-source machine learning models optimized by Intel to run on Intel® Xeon® Scalable processors. We use this tool to run [BERT Large](https://github.com/IntelAI/models/tree/v1.8.1/benchmarks/language_modeling/tensorflow/bert_large/README.md) model on SQuADv1.1. Same as above, we also provide a ready-made [notebook](https://github.com/oap-project/oap-tools/tree/master/dev/integrations/ml/databricks#run-benchmark_tensorflow-notebook) for you to use, it includes download data, download benchmark tools, and has been configured to run directly.
 
 
 
 #### 4.2 Performance Numbers 
-We use Databricks Runtim Version **7.5 ML**, and selected node type ***Standard_F16s_v2*** to run scikit-lenarn and node types ***Standard_F16s_v2*** / ***Standard_F32s_v2*** to run tensorflow,  cluster mode is **Single Node**.
+We use Databricks Runtim Version **7.5 ML**, and selected node type ***Standard_F16s_v2*** to run scikit-lenarn and node type ***Standard_F32s_v2*** to run tensorflow,  cluster mode is **Single Node**.
 
 Instance |	vCPU(s)|	RAM	| Temporary storage
 ---|---|---|---|---
@@ -78,7 +80,7 @@ up to hundreds of times. Especially SVM algorithm, the acceleration is the best.
 
 ![BERT-Large-Benchmark](imgs/BERT-Large-F32s_v2.png) 
 
-On Databricks Standard_F32s_v2 instance, Intel TensorFlow delivers 2.09X higher inference performance and 1.76X higher inference performance than Stock TensorFlow.
+On Databricks Standard_F32s_v2 instance, Intel TensorFlow delivers 2.09X higher inference performance and 1.76X higher training performance than Stock TensorFlow.
 
 
 ### 5.Summary
