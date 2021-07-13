@@ -3,14 +3,14 @@ This document is used to guide the steps of creating clusters with Intel Optimiz
 
 We provided two init script options which are different on scikit-learn usage. Both options are the same as to TensorFlow. Before you go, please read below information and decide which opiton is most suitable for you and undersand the impacts each option may have.
 
-**Option A: init_intel_optimized_ml.sh** For this init script option, an [Intel optimized or "static patched" scikit-learn](https://anaconda.org/intel/scikit-learn) is installed and replace this existing scikit-learn library. All the user program will use the optimized scikit-learn without any code change. The optimized scikit-learn optimizes the algorithm by calling to daal4py implementations of the same algorithm which may lead different results comparing with the stock version scikit-learn. This option works for *Runtime:7.5 ML* and *Runtime:7.6 ML* only. 
+**Option A: init_intel_optimized_ml.sh** For this init script option, an [Intel optimized or "static patched" scikit-learn](https://anaconda.org/intel/scikit-learn) is installed and replace this existing scikit-learn library. All the user program will use the optimized scikit-learn without any code change. The optimized scikit-learn optimizes the algorithm by calling to daal4py implementations of the same algorithm which may lead different results comparing with the stock version scikit-learn. This option works for *Runtime:7.6 ML* only. 
 
 **Optionn B: init_intel_optimized_ml_ex.sh**  For this init scirpt opiton, [scikit-learn-intelex](https://github.com/intel/scikit-learn-intelex#%EF%B8%8F-get-started) is installed and the existing scikit-learn library will kept unchanged at the installation time. The user program need to explicitly patch the existing scikit-learn library with scikit-learn-intelex by calling patch_sklearn like below at the beginning:
 
 from sklearnex import patch_sklearn <br/>
 patch_sklearn()
 
-Because of this, you can choose which program to use the optimized implemention by calling the patch_sklearn() method. This option works for *Runtime:7.5*, *Runtime:7.6*, and *Runtime 8.x". 
+Because of this, you can choose which program to use the optimized implemention by calling the patch_sklearn() method. This option works for *Runtime:7.6*, and *Runtime 8.x". 
 
 ## 1. Upload init script
 
@@ -29,7 +29,7 @@ Upload the init script **[init_intel_optimized_ml.sh](./init_intel_optimized_ml.
 To create a new cluster using the uploaded init script, follow the following steps:
 
 1. Click the  **Clusters** icon in the left sidebar.
-2. Choose the Cluster Mode and Databricks Runtim Version, such as **Runtime:7.5 ML**.
+2. Choose the Cluster Mode and Databricks Runtim Version, such as **Runtime:7.6 ML**.
 3. Click the **Advanced Options** toggle on the cluster configuration page,
 4. Click the **Init Scripts** tab at the bottom of the page.
 5. Select the "DBFS" destination type in the **Destination** drop-down.
