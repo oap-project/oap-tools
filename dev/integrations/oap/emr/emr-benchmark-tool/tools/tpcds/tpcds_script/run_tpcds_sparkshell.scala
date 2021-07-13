@@ -6,7 +6,7 @@ import java.util.Date
 
 val iteration=6
 val use_arrow = {%arrow_enable%}
-var databaseName = s"tpcds_{%data.format%}{%partitioned%}_scale_${scale}_db"
+var databaseName = s"tpcds_{%data.format%}{%partitioned%}_scale_{%scale%}_db"
 val log_location="{%sparksql.perf.home%}/tpcds_script/tpcds"
 if (use_arrow){
     val data_format = "{%data.format%}"
@@ -47,7 +47,7 @@ for (round <- 1 to iteration){
     directory.createDirectory(true, false)
     val each_round_result = new PrintWriter(s"$log_location/logs/$round/result.csv")      // each round result
     val queries = (1 to 99).map { q =>
-        if new File(s"${log_location}/tpcds-queries/q${q}.sql").exists() {
+        if (new File(s"${log_location}/tpcds-queries/q${q}.sql").exists()) {
             val start_time = new Date().getTime                                 // the starting time of query
             val query_log = new PrintWriter(s"$log_location/logs/$round/${q}.log") //query log
             val queryContent: String = Source.fromFile(s"${log_location}/tpcds-queries/q${q}.sql").mkString  //query string
@@ -65,14 +65,14 @@ for (round <- 1 to iteration){
             } catch {
                 case ex: Exception => {
                     query_log.println(ex.getStackTraceString)
-                    out.println(s"q${q},-1,Fail")
+                    each_round_result.println(s"q${q},-1,Fail")
                 }
             } finally {
                 query_log.close
             }
         }
 
-        if new File(s"${log_location}/tpcds-queries/q${q}a.sql").exists() {
+        if (new File(s"${log_location}/tpcds-queries/q${q}a.sql").exists()) {
             val start_time = new Date().getTime                                 // the starting time of query
             val query_log = new PrintWriter(s"$log_location/logs/$round/${q}a.log") //query log
             val queryContent: String = Source.fromFile(s"${log_location}/tpcds-queries/q${q}a.sql").mkString  //query string
@@ -90,14 +90,14 @@ for (round <- 1 to iteration){
             } catch {
                 case ex: Exception => {
                     query_log.println(ex.getStackTraceString)
-                    out.println(s"q${q}a,-1,Fail")
+                    each_round_result.println(s"q${q}a,-1,Fail")
                 }
             } finally {
                 query_log.close
             }
         }
 
-        if new File(s"${log_location}/tpcds-queries/q${q}b.sql").exists() {
+        if (new File(s"${log_location}/tpcds-queries/q${q}b.sql").exists()) {
             val start_time = new Date().getTime                                 // the starting time of query
             val query_log = new PrintWriter(s"$log_location/logs/$round/${q}b.log") //query log
             val queryContent: String = Source.fromFile(s"${log_location}/tpcds-queries/q${q}b.sql").mkString  //query string
@@ -115,7 +115,7 @@ for (round <- 1 to iteration){
             } catch {
                 case ex: Exception => {
                     query_log.println(ex.getStackTraceString)
-                    out.println(s"q${q}b,-1,Fail")
+                    each_round_result.println(s"q${q}b,-1,Fail")
                 }
             } finally {
                 query_log.close
