@@ -3,6 +3,7 @@ import java.io.PrintWriter
 import scala.reflect.io.Directory
 import java.io.File
 import java.util.Date
+import java.io.FileWriter
 
 val iteration=6
 val use_arrow = {%arrow_enable%}
@@ -45,10 +46,10 @@ sql(s"use $databaseName")
 for (round <- 1 to iteration){
     val directory = new Directory(new File(s"$log_location/logs/$round"))   //create log directory for each round
     directory.createDirectory(true, false)
-    val each_round_result = new PrintWriter(s"$log_location/logs/$round/result.csv")      // each round result
     val queries = (1 to 22).map { q =>
+        val each_round_result = new FileWriter(s"$log_location/logs/$round/result.csv",true)      // each round result
         val start_time = new Date().getTime                                 // the starting time of query
-        val query_log = new PrintWriter(s"$log_location/logs/$round/${q}.log") //query log
+        val query_log = new PrintWriter(s"$log_location/logs/$round/q${q}.log") //query log
         val queryContent: String = Source.fromFile(s"${log_location}/tpch-queries/${q}.sql").mkString  //query string
         println(queryContent)
         val df = spark.sql(s"$queryContent")
@@ -60,20 +61,15 @@ for (round <- 1 to iteration){
                 query_log.println(df_row(i).mkString(",")) //get each column data and save into file
             }
             val elapse_time = (end_time - start_time) / 1000   //the elapsed time of query
-            each_round_result.println(s"q${q},${elapse_time},Success")
+            each_round_result.write(s"q${q},${elapse_time},Success\n")
         } catch {
             case ex: Exception => {
                 query_log.println(ex.getStackTraceString)
-                each_round_result.println(s"q${q},-1,Fail")
+                each_round_result.write(s"q${q},-1,Fail\n")
             }
         } finally {
             query_log.close
         }
+        each_round_result.close
     }
-    each_round_result.close
 }
-
-
-
-
-
