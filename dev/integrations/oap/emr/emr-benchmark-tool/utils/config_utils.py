@@ -210,7 +210,17 @@ def get_properties_base (conf_root, conf_file, delimeter):
 
 def merge_properties(props, props_from) :
     for k, v in props_from.items():
-        props[k] = v
+        if k.startswith("-"):
+            k = k.replace(k[0], "", 1)
+            props.pop(k, "nokey")
+        elif k.startswith("++"):
+            k = k.replace(k[0], "", 2)
+            props[k] = props[k] + str(v)
+        elif k.startswith("--"):
+            k = k.replace(k[0], "", 2)
+            props[k] = props[k].replace(str(v), '')
+        else:
+            props[k] = v
     return props
 
 # environment hierarchy merge
