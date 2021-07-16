@@ -2,26 +2,35 @@ EMR-benchmark-tool is the project to easily run different workloads by providing
 
 # Prerequisites
  
-Make sure the primary node has python2 installed
+Make sure the primary node has python2 installed;
+
+If you use AWS EMR, please execute the following commands to update the basic configurations for spark:
+
+```sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-emr/spark/spark-defaults.conf;```
+
+```sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-emr/hibench/spark.conf;```
 
 
-## Config Rules to Follow ##
+## Config Rules to Follow && Create a configuration folder ##
 
 We organized the configurations in an inheritance hierarchy to make your own configuration as minimum as possible.
 
-* When you run your own cluster, start from an empty conf folder. By default, your empty folder will inherit all the properties in the ```./conf``` folder. So DON’T try to make changes in the ```./conf``` unless we want to make the change apply to all.
+* When you run your own cluster, start from an empty conf folder. By default, your empty folder will inherit all the properties in the ```./conf``` folder. So Don't try to make changes in the ```./conf``` unless we want to make the change apply to all.
 
 * When you have an empty folder, only add new changes for config files to the folder. Don’t copy the whole config file from ```./conf```. Instead, create an empty file and add only the values that you need change. The unchanged values will inherit from ```./conf``` folder.
 
-* There are other conf folders in the repo which also inherit from ```./conf``` folder. You can inherit from the conf in repo by creating a ```.base``` file in your conf folder and put the relative path to the conf you want to inherit in the first line, for example: ```../spark```
+* There are other conf folders in the repo which also inherit from ```./conf``` folder. 
+You can inherit from the conf in repo by creating a ```.base``` file in your conf folder and put the relative path to the conf you want to inherit in the first line. 
 
-## Create a configuration folder ##
-
-In ```./repo/confs```, create a new directory with a meaningful name which will act as your configuration root for your workload. As an example, we create a configuration folder with name ```testconf```.
+* For example, we've created the repo ```repo/confs/spark-oap-emr```for the users who want to run tests on EMR cluster. 
+Please follow prerequisites to update default configurations of spark. 
+If you want to inherit all configurations of ```repo/confs/spark-oap-emr```, please create a new directory in ```./repo/confs```with a meaningful name which will act as your configuration root for your workload and update the content of ```.base```.
 
 ```
 mkdir ./repo/confs/testconf
+echo "../spark-oap-emr" > ./repo/confs/testconf/.base
 ```
+
 
 # Run TPC-DS #
 
@@ -156,12 +165,12 @@ python benchmark/HBonSparkSQL.py run ./repo/confs/testconf ml/kmeans
 
 ## Prepare workflow  ##
 
-There are one repo in ```./repo/workflows/``` named ```oap_release_performance_test``` which provide default configuration for different cases. Please create a repo  with the same structure and update the values you need.
+There are one repo in ```./repo/workflows/``` named ```oap_release_performance_test_on_EMR``` which provide default configuration for different cases. Please create a repo  with the same structure and update the values you need.
 
-For example: we create the  workflow floder as ```OAP_1.2_function_test``` in the floder ```./repo/workflows/```  and update ```./repo/OAP_1.2_function_test/.base``` to inherit ```./repo/workflows/oap_release_performance_test/```
+For example: we create the  workflow floder as ```OAP_1.2_function_test``` in the floder ```./repo/workflows/```  and update ```./repo/OAP_1.2_function_test/.base``` to inherit ```./repo/workflows/oap_release_performance_test_on_EMR```
 ```
 # In file .base
-../oap_release_performance_test
+../oap_release_performance_test_on_EMR
 ```
 
 ## Trick release test ##
