@@ -25,7 +25,7 @@ To create a new cluster with initialization actions, follow the steps below:
 
 3). **Hardware:** choose the instance type and other configurations of hardware;
 
-4). **General Cluster Settings:** add bootstrap action and add **[bootstrap_oap.sh](../dev/integrations/oap/emr/bootstrap_oap.sh)** like following picture;
+4). **General Cluster Settings:** add bootstrap action and add **[bootstrap_oap.sh](../dev/integrations/oap/emr/bootstrap_oap.sh)** and **[install_benchmark.sh](./dev/integrations/oap/emr/benchmark/install_benchmark.sh)**like following picture;
 ![Add bootstrap action](../dev/integrations/oap/emr/imgs/add-bootstrap-oap.PNG)
 
 5). **Security:** define the permissions and other security configurations.
@@ -117,29 +117,26 @@ queries all                // 'all' means running 22 queries, '1,2,4,6' means ru
 ```
 
 
-## 3. Run TPC-DS
+### 3. Run TPC-DS
 
-We provide scripts **[run_benchmark.sh](../dev/integrations/oap/dataproc/benchmark/run_benchmark.sh)** to help easily run TPC-DS and TPC-H.
-
-```
-Generate data: ./run_benchmark.sh -g|--gen   -w|--workload tpcds -f|--format [parquet|orc] -s|--scaleFactor [10|custom the data scale,the unit is GB] -d|--doubleForDecimal -p|--partitionTables --Port [8020|customed hdfs port]   
-Run benchmark: ./run_benchmark.sh -r|--rerun -w|--workload tpcds -f|--format [parquet|orc|arrow] -i|--iteration [1|custom the interation you want to run]  -s|--scaleFactor [10|custom the data scale,the unit is GB]  -p|--partitionTables --Port [8020|customed hdfs port]   
-```
-
-Only after enabling Gazelle Plugin can you run TPC-DS or TPC-H with arrow format.
-
-Example: generate 1GB Parquet, then run TPC-DS all queries with Gazelle enabled.
+We provide scripts to help easily run TPC-DS and TPC-H.
 
 ```
-# generate data
-./run_benchmark.sh -g -w tpcds -f parquet  -s 1 -d -p --Port 8020
+Update: python benchmark/TPCDSonSparkSQL.py update ./repo/confs/gazella_plugin_performance   
 
-# run TPC-DS
-./run_benchmark.sh -r -w tpcds -f arrow -s 1 -i 1 -p --Port  8020
+Generate data: python benchmark/TPCDSonSparkSQL.py gen_data ./repo/confs/gazella_plugin_performance
+
+### run power test for 1 round.
+Run benchmark: python benchmark/TPCDSonSparkSQL.py run ./repo/confs/gazella_plugin_performance 1
 ```
 
 ### 4. Run TPC-H:  
+
 ```
-Generate data: ./run_benchmark.sh -g|--gen   -w|--workload tpch  -f|--format [parquet|orc] -s|--scaleFactor [10|custom the data scale,the unit is GB] -d|--doubleForDecimal -p|--partitionTables --Port [8020|customed hdfs port]  
-Run benchmark: ./run_benchmark.sh -r|--rerun -w|--workload tpch  -f|--format [parquet|orc|arrow] -i|--iteration [1|custom the interation you want to run] -s|--scaleFactor [10|custom the data scale,the unit is GB] -p|--partitionTables --Port [8020|customed hdfs port] 
-``` 
+Update: python benchmark/TPCHonSparkSQL.py update ./repo/confs/gazella_plugin_performance   
+
+Generate data: python benchmark/TPCHonSparkSQL.py gen_data ./repo/confs/gazella_plugin_performance
+
+### run power test for 1 round.
+Run benchmark: python benchmark/TPCHonSparkSQL.py run ./repo/confs/gazella_plugin_performance 1
+```
