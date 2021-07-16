@@ -32,7 +32,7 @@ To create a new cluster with initialization actions, follow the steps below:
 
 6). Click **Create cluster**. 
 
-## 2. Using benchmark-tools to easily run TPC-DS with Gazelle
+## 2. Using benchmark-tools to easily run TPC-DS or TPC-H with Gazelle
 
 You can refer to [benchmark-tool Guide](../dev/integrations/oap/emr/emr-benchmark-tool/README.md) to learn how to use this tool. We switch working directory at ```../dev/integrations/oap/emr/emr-benchmark-tool``` and follow next steps.
 
@@ -47,13 +47,13 @@ $ sudo cp /lib/spark/conf/spark-defaults.conf ./repo/confs/spark-oap-emr/spark/s
 
 #### Create the testing repo
 ```
-mkdir ./repo/confs/gazella_plugin_performance
+mkdir ./repo/confs/gazelle_plugin_performance
 ```
 #### Update the content of .base to inherit the configuration of ./repo/confs/spark-oap-emr
 ```
-echo "../spark-oap-emr" > ./repo/confs/gazella_plugin_performance/.base
+echo "../spark-oap-emr" > ./repo/confs/gazelle_plugin_performance/.base
 ```
-#### Update the content of ./repo/confs/gazella_plugin_performance/env.conf
+#### Update the content of ./repo/confs/gazelle_plugin_performance/env.conf
 ```
 NATIVE_SQL_ENGINE=TRUE
 STORAGE=s3
@@ -63,7 +63,7 @@ Note: If you want to use s3 for storage, you must define S3_BUCKET; if you use h
 
 #### Update the configurations of spark
 **[bootstrap_oap.sh](../dev/integrations/oap/emr/bootstrap_oap.sh)** will help install all OAP packages under dir `/opt/benchmark-tools/oap`,
-make sure to add below configuration to `./repo/confs/gazella_plugin_performance/spark/spark-defaults.conf`.
+make sure to add below configuration to `./repo/confs/gazelle_plugin_performance/spark/spark-defaults.conf`.
 
 ```
 ++spark.driver.extraLibraryPath   :/opt/benchmark-tools/oap/lib
@@ -98,7 +98,7 @@ spark.executor.userClassPathFirst               true
 
 #### Define te the configurations of TPC-DS
 
-Edit the content of `./repo/confs/gazella_plugin_performance/TPC-DS/config`
+Edit the content of `./repo/confs/gazelle_plugin_performance/TPC-DS/config`
 ```
 scale 1                    // data scale/GB
 format parquet             // support parquet or orc
@@ -108,7 +108,7 @@ queries all                // 'all' means running 99 queries, '1,2,4,6' means ru
 
 #### Define te the configurations of TPC-H
 
-Edit the content of `./repo/confs/gazella_plugin_performance/TPC-H/config`
+Edit the content of `./repo/confs/gazelle_plugin_performance/TPC-H/config`
 ```
 scale 1                    // data scale 1 GB
 format parquet             // support parquet or orc
@@ -117,26 +117,26 @@ queries all                // 'all' means running 22 queries, '1,2,4,6' means ru
 ```
 
 
-### 3. Run TPC-DS
+### 2.3. Run TPC-DS
 
 We provide scripts to help easily run TPC-DS and TPC-H.
 
 ```
-Update: python benchmark/TPCDSonSparkSQL.py update ./repo/confs/gazella_plugin_performance   
+Update: python benchmark/TPCDSonSparkSQL.py update ./repo/confs/gazelle_plugin_performance   
 
-Generate data: python benchmark/TPCDSonSparkSQL.py gen_data ./repo/confs/gazella_plugin_performance
-
-### run power test for 1 round.
-Run benchmark: python benchmark/TPCDSonSparkSQL.py run ./repo/confs/gazella_plugin_performance 1
-```
-
-### 4. Run TPC-H:  
-
-```
-Update: python benchmark/TPCHonSparkSQL.py update ./repo/confs/gazella_plugin_performance   
-
-Generate data: python benchmark/TPCHonSparkSQL.py gen_data ./repo/confs/gazella_plugin_performance
+Generate data: python benchmark/TPCDSonSparkSQL.py gen_data ./repo/confs/gazelle_plugin_performance
 
 ### run power test for 1 round.
-Run benchmark: python benchmark/TPCHonSparkSQL.py run ./repo/confs/gazella_plugin_performance 1
+Run benchmark: python benchmark/TPCDSonSparkSQL.py run ./repo/confs/gazelle_plugin_performance 1
+```
+
+### 2.4. Run TPC-H:  
+
+```
+Update: python benchmark/TPCHonSparkSQL.py update ./repo/confs/gazelle_plugin_performance   
+
+Generate data: python benchmark/TPCHonSparkSQL.py gen_data ./repo/confs/gazelle_plugin_performance
+
+### run power test for 1 round.
+Run benchmark: python benchmark/TPCHonSparkSQL.py run ./repo/confs/gazelle_plugin_performance 1
 ```
