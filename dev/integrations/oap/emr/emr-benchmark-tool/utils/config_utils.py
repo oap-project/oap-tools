@@ -215,10 +215,10 @@ def merge_properties(props, props_from) :
             props.pop(k, "nokey")
         elif k.startswith("++"):
             k = k.replace(k[0], "", 2)
-            props[k] = props[k] + str(v)
+            props[k] = props[k].strip() + str(v).strip()
         elif k.startswith("--"):
             k = k.replace(k[0], "", 2)
-            props[k] = props[k].replace(str(v), '')
+            props[k] = props[k].replace(str(v).strip(), '')
         else:
             props[k] = v
     return props

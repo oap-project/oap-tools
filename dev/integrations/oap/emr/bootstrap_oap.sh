@@ -12,5 +12,11 @@ ${conda_install_dir}/bin/conda init
 source ~/.bashrc
 sudo chown $(whoami):$(whoami) ${oap_install_dir}
 
+if [ ! -n "$1" ];then
+    oap_version=$1
+else
+    oap_version=1.2.0
+fi
+
 ## Step 2: install oap
-conda create -c conda-forge -c intel-bigdata -c intel -y oap=1.2.0 -p ${oap_install_dir}
+conda create -c conda-forge -c intel-beaver -c intel-bigdata -c intel -y oap=${oap_version} -p ${oap_install_dir}

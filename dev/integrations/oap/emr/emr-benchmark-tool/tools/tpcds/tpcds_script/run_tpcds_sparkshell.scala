@@ -8,7 +8,9 @@ import java.io.FileWriter
 val iteration=6
 val use_arrow = {%arrow_enable%}
 var databaseName = s"tpcds_{%data.format%}{%partitioned%}_scale_{%scale%}_db"
-val log_location="{%sparksql.perf.home%}/tpcds_script/tpcds"
+val log_location = "{%sparksql.perf.home%}/tpcds_script/tpcds"
+val queries_list = "{%queries%}".split(" ")
+
 if (use_arrow){
     val data_format = "{%data.format%}"
     val scale = {%scale%}
@@ -46,7 +48,7 @@ sql(s"use $databaseName")
 for (round <- 1 to iteration){
     val directory = new Directory(new File(s"$log_location/logs/$round"))   //create log directory for each round
     directory.createDirectory(true, false)
-    val queries = (1 to 99).map { q =>
+    val queries = queries_list.map { q =>
         val each_round_result = new FileWriter(s"$log_location/logs/$round/result.csv",true)      // each round result
         if (new File(s"${log_location}/tpcds-queries/q${q}.sql").exists()) {
             val start_time = new Date().getTime                                 // the starting time of query

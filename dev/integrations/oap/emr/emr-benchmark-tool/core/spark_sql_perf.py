@@ -26,7 +26,7 @@ def run_tpc_query(beaver_env, iteration, workload):
     if beaver_env.get("THROUGHPUT_TEST").lower() == "true":
         status = os.system("unset SPARK_HOME;cd " + script_folders + ";bash run_" + workload + "_sparksql_throughput_test.sh " + str(iteration) + " " + arrow_format)
     else:
-        status = os.system("unset SPARK_HOME;cd " + script_folders + ";bash run_" + workload + "_sparksql.sh " + str(iteration) + " " + arrow_format)
+        status = os.system("unset SPARK_HOME;cd " + script_folders + ";bash run_" + workload + "_sparkshell.sh " + str(iteration))
     log_folder = os.path.join(script_folders, workload+ "/logs")
     result_folder = os.path.join(beaver_env.get("BEAVER_OPT_HOME"), "result/" + workload + "/logs-" + str(time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())))
     os.system("mkdir -p " + result_folder)
