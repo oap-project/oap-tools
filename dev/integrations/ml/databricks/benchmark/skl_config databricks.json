@@ -1,0 +1,417 @@
+{
+    "common": {
+        "lib": ["sklearn"],
+        "data-format": ["pandas"],
+        "data-order": ["F"],
+        "dtype": ["float64"]
+    },
+    "cases": [
+        {
+            "algorithm": "kmeans",
+            "dataset": [
+                {
+                    "source": "synthetic",
+                    "type": "blobs",
+                    "n_clusters": 1000,
+                    "n_features": 20,
+                    "training": {
+                        "n_samples": 1000000
+                    }
+                }
+            ],
+            "time-method": ["box_filter"],
+            "time-limit": [50],
+            "n-clusters": [1000],
+            "maxiter": [50],
+            "tol": [0.0]
+        },
+        {
+            "algorithm": "kmeans",
+            "dataset": [
+                {
+                    "source": "synthetic",
+                    "type": "blobs",
+                    "n_clusters": 5,
+                    "n_features": 50,
+                    "training": {
+                        "n_samples": 10000000
+                    }
+                }
+            ],
+            "time-method": ["box_filter"],
+            "time-limit": [50],
+            "n-clusters": [5],
+            "maxiter": [50],
+            "init": ["k-means++"],
+            "tol": [0.0]
+        },
+        {
+            "algorithm": "kmeans",
+            "dataset": [
+                {
+                    "source": "synthetic",
+                    "type": "blobs",
+                    "n_clusters": 20,
+                    "n_features": 50,
+                    "training": {
+                        "n_samples": 3000000
+                    }
+                }
+            ],
+            "time-method": ["box_filter"],
+            "time-limit": [50],
+            "n-clusters": [20],
+            "maxiter": [50],
+            "tol": [0.0]
+        },
+        {
+            "lib": ["daal4py"],
+            "algorithm": "pca",
+            "dataset": [
+                {
+                    "source": "synthetic",
+                    "type": "classification",
+                    "n_classes": 2,
+                    "n_features": 100,
+                    "training": {
+                        "n_samples": 1000000
+                    },
+                    "testing": {
+                        "n_samples": 100000
+                    }
+                },
+                {
+                    "source": "synthetic",
+                    "type": "classification",
+                    "n_classes": 2,
+                    "n_features": 2000,
+                    "training": {
+                        "n_samples": 10000
+                    }
+                },
+                {
+                    "source": "synthetic",
+                    "type": "classification",
+                    "n_classes": 2,
+                    "n_features": 1000,
+                    "training": {
+                        "n_samples": 30000
+                    }
+                }
+            ],
+            "svd-solver": ["correlation"],
+            "n-components": [10]
+        },
+        {
+            "algorithm": "ridge",
+            "dataset": [
+                {
+                    "source": "synthetic",
+                    "type": "regression",
+                    "n_features": 20,
+                    "training": {
+                        "n_samples": 10000000
+                    }
+                },
+                {
+                    "source": "synthetic",
+                    "type": "regression",
+                    "n_features": 100,
+                    "training": {
+                        "n_samples": 2000000
+                    }
+                }
+            ],
+            "alpha": [5]
+        },
+        {
+            "algorithm": "linear",
+            "dataset": [
+                {
+                    "source": "synthetic",
+                    "type": "regression",
+                    "n_features": 20,
+                    "training": {
+                        "n_samples": 10000000
+                    }
+                },
+                {
+                    "source": "synthetic",
+                    "type": "regression",
+                    "n_features": 100,
+                    "training": {
+                        "n_samples": 2000000
+                    }
+                }
+            ]
+        },
+        {
+            "algorithm": "log_reg",
+            "dataset": [
+                {
+                    "source": "synthetic",
+                    "type": "classification",
+                    "n_classes": 2,
+                    "n_features": 20,
+                    "training": {
+                        "n_samples": 10000000
+                    }
+                },
+                {
+                    "source": "synthetic",
+                    "type": "classification",
+                    "n_classes": 2,
+                    "n_features": 100,
+                    "training": {
+                        "n_samples": 2000000
+                    }
+                },
+                {
+                    "source": "synthetic",
+                    "type": "classification",
+                    "n_classes": 5,
+                    "n_features": 20,
+                    "training": {
+                        "n_samples": 10000000
+                    }
+                },
+                {
+                    "source": "synthetic",
+                    "type": "classification",
+                    "n_classes": 5,
+                    "n_features": 100,
+                    "training": {
+                        "n_samples": 2000000
+                    }
+                }
+            ],
+            "maxiter": [100],
+            "tol": [0]
+        },
+        {
+            "algorithm": "svm",
+            "dataset": [
+                {
+                    "source": "csv",
+                    "name": "ijcnn",
+                    "training":
+                    {
+                        "x": "data/ijcnn_x_train.csv",
+                        "y": "data/ijcnn_y_train.csv"
+                    },
+                    "testing":
+                    {
+                        "x": "data/ijcnn_x_test.csv",
+                        "y": "data/ijcnn_y_test.csv"
+                    }
+                }
+            ],
+            "C": [1000.0],
+            "kernel": ["linear"]
+        },
+        {
+            "algorithm": "svm",
+            "dataset": [
+                {
+                    "source": "csv",
+                    "name": "a9a",
+                    "training":
+                    {
+                        "x": "data/a9a_x_train.csv",
+                        "y": "data/a9a_y_train.csv"
+                    },
+                    "testing":
+                    {
+                        "x": "data/a9a_x_test.csv",
+                        "y": "data/a9a_y_test.csv"
+                    }
+                }
+            ],
+            "C": [500.0],
+            "kernel": ["rbf"]
+        },
+        {
+            "algorithm": "svm",
+            "dataset": [
+                {
+                    "source": "csv",
+                    "name": "gisette",
+                    "training":
+                    {
+                        "x": "data/gisette_x_train.csv",
+                        "y": "data/gisette_y_train.csv"
+                    },
+                    "testing":
+                    {
+                        "x": "data/gisette_x_test.csv",
+                        "y": "data/gisette_y_test.csv"
+                    }
+                }
+            ],
+            "C": [1.5e-3],
+            "kernel": ["linear"]
+        },
+        {
+            "algorithm": "svm",
+            "dataset": [
+                {
+                    "source": "csv",
+                    "name": "klaverjas",
+                    "training":
+                    {
+                        "x": "data/klaverjas_x_train.csv",
+                        "y": "data/klaverjas_y_train.csv"
+                    },
+                    "testing":
+                    {
+                        "x": "data/klaverjas_x_test.csv",
+                        "y": "data/klaverjas_y_test.csv"
+                    }
+                }
+            ],
+            "C": [1.0],
+            "kernel": ["rbf"]
+        },
+        {
+            "algorithm": "svm",
+            "dataset": [
+                {
+                    "source": "csv",
+                    "name": "connect4",
+                    "training":
+                    {
+                        "x": "data/connect_x_train.csv",
+                        "y": "data/connect_y_train.csv"
+                    },
+                    "testing":
+                    {
+                        "x": "data/connect_x_test.csv",
+                        "y": "data/connect_y_test.csv"
+                    }
+                }
+            ],
+            "C": [100.0],
+            "kernel": ["linear"]
+        },
+        {
+            "algorithm": "svm",
+            "dataset": [
+                {
+                    "source": "csv",
+                    "name": "mnist",
+                    "training":
+                    {
+                        "x": "data/mnist_x_train.csv",
+                        "y": "data/mnist_y_train.csv"
+                    },
+                    "testing":
+                    {
+                        "x": "data/mnist_x_test.csv",
+                        "y": "data/mnist_y_test.csv"
+                    }
+                }
+            ],
+            "C": [50.0],
+            "kernel": ["rbf"]
+        },
+        {
+            "algorithm": "svm",
+            "dataset": [
+                {
+                    "source": "csv",
+                    "name": "sensit",
+                    "training":
+                    {
+                        "x": "data/sensit_x_train.csv",
+                        "y": "data/sensit_y_train.csv"
+                    },
+                    "testing":
+                    {
+                        "x": "data/sensit_x_test.csv",
+                        "y": "data/sensit_y_test.csv"
+                    }
+                }
+            ],
+            "C": [500.0],
+            "kernel": ["linear"]
+        },
+        {
+            "algorithm": "svm",
+            "dataset": [
+                {
+                    "source": "csv",
+                    "name": "skin_segmentation",
+                    "training":
+                    {
+                        "x": "data/skin_segmentation_x_train.csv",
+                        "y": "data/skin_segmentation_y_train.csv"
+                    },
+                    "testing":
+                    {
+                        "x": "data/skin_segmentation_x_test.csv",
+                        "y": "data/skin_segmentation_y_test.csv"
+                    }
+                }
+            ],
+            "C": [1.0],
+            "kernel": ["rbf"]
+        },
+        {
+            "algorithm": "knn_clsf",
+            "dtype": ["float32"],
+            "dataset": [
+                {
+                    "source": "synthetic",
+                    "type": "classification",
+                    "n_classes": 2,
+                    "n_features": 3,
+                    "training": {
+                        "n_samples": 100000
+                    },
+                    "testing": {
+                        "n_samples": 100000
+                    }
+                },
+                {
+                    "source": "synthetic",
+                    "type": "classification",
+                    "n_classes": 2,
+                    "n_features": 10,
+                    "training": {
+                        "n_samples": 100000
+                    },
+                    "testing": {
+                        "n_samples": 100000
+                    }
+                },
+                {
+                    "source": "synthetic",
+                    "type": "classification",
+                    "n_classes": 2,
+                    "n_features": 50,
+                    "training": {
+                        "n_samples": 20000
+                    },
+                    "testing": {
+                        "n_samples": 20000
+                    }
+                },
+                {
+                    "source": "synthetic",
+                    "type": "classification",
+                    "n_classes": 10,
+                    "n_features": 16,
+                    "training": {
+                        "n_samples": 250000
+                    },
+                    "testing": {
+                        "n_samples": 250000
+                    }
+                }
+            ],
+            "method": ["brute", "kd_tree"]
+        }
+
+
+    ]
+}

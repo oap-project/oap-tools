@@ -44,7 +44,7 @@ To create a new cluster using the uploaded init script, follow the following ste
 ###  Import the notebooks
 You should import the **notebook**  we provided to Workspace to run benchmark notebooks.
 
-1. Download the notebooks **[benchmark_tensorflow.ipynb](./notebooks/benchmark_tensorflow.ipynb)** and **[benchmark_sklearn.ipynb](./notebooks/benchmark_sklearn.ipynb)** to your local folder.
+1. Download the notebooks **[benchmark_tensorflow.ipynb](./benchmark/benchmark_tensorflow.ipynb)** and **[benchmark_sklearn.ipynb](./benchmark/benchmark_sklearn.ipynb)** to your local folder.
 2. Click the  **Workspace** icon or the  **Home** icon in the left sidebar.
 3. Click **Down** caret in the Workspace or a user folder and select Import. 
 
