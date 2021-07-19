@@ -30,7 +30,16 @@ If you want to inherit all configurations of ```repo/confs/spark-oap-emr```, ple
 mkdir ./repo/confs/testconf
 echo "../spark-oap-emr" > ./repo/confs/testconf/.base
 ```
-
+* When you want to use HDFS or S3 for storage, you need to edit `./repo/confs/testconf/.base` and add content like:
+```
+NATIVE_SQL_ENGINE=TRUE
+STORAGE=s3
+S3_BUCKET={bucket_name}
+```
+Note: If you want to use s3 for storage, you must define S3_BUCKET; if you use hdfs for storage, you should only set STORAGE like: 
+```
+STORAGE=hdfs
+```
 
 # Run TPC-DS #
 

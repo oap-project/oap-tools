@@ -70,7 +70,7 @@ make sure to add below configuration to `./repo/confs/gazelle_plugin_performance
 ++spark.driver.extraClassPath     :/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-<oap.version>-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-columnar-core-<oap.version>-jar-with-dependencies.jar
 
 ++spark.executor.extraLibraryPath :/opt/benchmark-tools/oap/lib
-++spark.executor.extraClassPath   :/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-<oap.version>-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-columnar-core-<oap.version>-jar-with-dependencies.jar
+++spark.executor.extraClassPath   :/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-<oap.version>-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-columnar-core-<oap.version>-jar-with-dependencies.jar
 
 spark.executor.defaultJavaOptions -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:OnOutOfMemoryError='kill -9 %p' -XX:MaxDirectMemorySize=40G
 spark.executorEnv.CC                            /opt/benchmark-tools/oap/bin/gcc
