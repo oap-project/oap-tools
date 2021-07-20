@@ -12,7 +12,7 @@ Upload the initialization actions scripts to S3.
 
 2). Upload these scripts to S3.
 
-![upload_init_script and install_benchmark.sh](../dev/integrations/oap/emr/imgs/upload_scripts_to_S3.png)
+![upload_init_script and install_benchmark.sh](../dev/integrations/oap/emr/imgs/upload_scripts_to_S3.PNG)
 
 
 ### 1.2 Create a new cluster using bootstrap script
@@ -89,7 +89,7 @@ Edit the content of `./repo/confs/Intel_MLlib_performance/hibench/hibench.conf` 
 hibench.scale.profile             tiny     # Support tiny, small, large, huge, gigantic, bigdata.
 ```
 
-#### Define te the configurations of kmeans.conf
+#### Define the configurations of kmeans.conf
 
 Edit the content of `./repo/confs/Intel_MLlib_performance/hibench/kmeans.conf`
 ```
@@ -103,7 +103,7 @@ hibench.kmeans.tiny.convergedist            0.5
 ```
 Note: You can use default value of kmeans.conf and no need to change any values. If you want to change the parameters of K-means, you need to modify the value of the corresponding scale profile.
 
-#### Define te the configurations of pca.conf
+#### Define the configurations of pca.conf
 
 Edit the content of `./repo/confs/Intel_MLlib_performance/hibench/pca.conf`
 ```
@@ -114,7 +114,7 @@ hibench.pca.tiny.maxresultsize              "1g"
 ```
 Note: You can use default value of pca.conf and no need to change any values. If you want to change the parameters of PCA, you need to modify the value of the corresponding scale profile.
 
-#### Define te the configurations of als.conf
+#### Define the configurations of als.conf
 
 Edit the content of `./repo/confs/Intel_MLlib_performance/hibench/pca.conf`
 ```
