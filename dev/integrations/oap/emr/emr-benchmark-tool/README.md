@@ -1,9 +1,33 @@
 EMR-benchmark-tool is the project to easily run different workloads by providing minimum configuration parameters. It also provide the function to run workflows.
 
 # Prerequisites
- 
-Make sure the primary node has python2 installed;
 
+## Upload init script 
+
+Upload the init script **[bootstrap_oap.sh](../bootstrap_oap.sh)** to S3:
+    
+1. Download **[bootstrap_oap.sh](../bootstrap_oap.sh)** to a local folder.
+2. Update **[bootstrap_oap.sh](../bootstrap_oap.sh)** to S3.
+
+![upload_init_script and install_benchmark.sh](../imgs/upload_scripts_to_S3.PNG)
+
+
+## Create a new cluster using bootstrap script
+To create a new cluster using the uploaded bootstrap script, follow the following steps:
+
+1. Click the  **Go to advanced options** to custom your cluster.
+2. **Software and Steps:** choose the release of emr and the software you need.
+3. **Hardware:** choose the instance type and other configurations of hardware.
+4. **General Cluster Settings:** add bootstrap action and add **[bootstrap_oap.sh](../bootstrap_oap.sh)** like following picture;
+![Add bootstrap action](../imgs/add-bootstrap-oap.PNG)
+5. **Security:** define the permissions and other security configurations.
+6. Click **Create cluster**. 
+
+![create_cluster](../imgs/create-oap-cluster.png)
+
+## Update the basic configurations for spark
+
+Make sure the primary node has python2 installed;
 If you use AWS EMR, please execute the following commands to update the basic configurations for spark:
 
 ```sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-emr/spark/spark-defaults.conf;```
@@ -168,6 +192,11 @@ After the data is generated, you can execute the following command to run HiBenc
 python benchmark/HBonSparkSQL.py run ./repo/confs/testconf ml/kmeans
 ```
 
+# Run HiBench, TPC-DS, TPC-H with OAP
+
+Please follow the [Gazelle_on_EMR.md](../../../../../docs/Gazelle_on_EMR.md) to run TPC-DS or TPC-H with Gazelle_plugin.
+
+Please follow the [Intel_MLlib_on_EMR.md](../../../../../docs/Intel_MLlib_on_EMR.md) to run K-means, PAC, ALS with Intel-MLlib.
 
 # Run workflow
 
