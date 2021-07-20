@@ -26,7 +26,7 @@ To create a new cluster using the uploaded bootstrap script, follow the followin
 ## 3. Run various workloads easily by using notebooks or benchmark tool
 
 ### 3.1 Using notebooks
-You can visit the [Notebooks User Guide](../notebooks/README.md) to learn how to use notebooks to easily generate data and run TPC-DS with gazelle_plugin:
+You can visit the [Notebooks User Guide](./notebooks/README.md) to learn how to use notebooks to easily generate data and run TPC-DS with gazelle_plugin.
 
 ### 3.2 Using benchmark tool
-You can visit the [Benchmarl tool User Guide](../benchmark/README.md) to learn how to use benchmark tool to easily run TPC-DS, TPC-H and HiBench with OAP:
+You can visit the [Benchmarl tool User Guide](./benchmark/README.md) to learn how to use benchmark tool to easily run TPC-DS, TPC-H and HiBench with OAP.
