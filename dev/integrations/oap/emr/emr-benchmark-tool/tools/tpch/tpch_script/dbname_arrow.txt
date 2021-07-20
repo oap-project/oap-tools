@@ -1,1 +1,0 @@
-use tpch_arrow{%partitioned%}_scale_{%scale%}_db;

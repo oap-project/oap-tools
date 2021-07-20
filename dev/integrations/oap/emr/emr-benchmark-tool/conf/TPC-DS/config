@@ -1,5 +1,0 @@
-scale 1
-partitionTables true
-format parquet
-queries all
-useDoubleForDecimal false

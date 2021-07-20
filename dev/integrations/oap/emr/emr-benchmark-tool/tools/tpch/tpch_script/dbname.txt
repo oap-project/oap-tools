@@ -1,1 +1,0 @@
-use tpch_{%data.format%}{%partitioned%}_scale_{%scale%}_db;

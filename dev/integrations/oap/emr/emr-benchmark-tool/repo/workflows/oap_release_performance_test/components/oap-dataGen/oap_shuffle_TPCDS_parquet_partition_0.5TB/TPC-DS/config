@@ -1,4 +1,0 @@
-scale 2
-partitionTables true
-format parquet
-queries all
