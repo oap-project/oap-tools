@@ -1,4 +1,4 @@
-EMR-benchmark-tool is the project to easily run different workloads by providing minimum configuration parameters. It also provide the function to run workflows.
+This tool is the project to easily run different workloads by providing minimum configuration parameters. It also provide the function to run workflows.
 
 # Prerequisites
 
@@ -18,7 +18,7 @@ To create a new cluster using the uploaded bootstrap script, follow the followin
 1. Click the  **Go to advanced options** to custom your cluster.
 2. **Software and Steps:** choose the release of emr and the software you need.
 3. **Hardware:** choose the instance type and other configurations of hardware.
-4. **General Cluster Settings:** add bootstrap action and add **[bootstrap_oap.sh](../bootstrap_oap.sh)** like following picture;
+4. **General Cluster Settings:** add **[bootstrap_oap.sh](../bootstrap_oap.sh)** (install OAP binary) and **[install_benchmark.sh](../install_benchmark.sh)** (install tpcds-kit, tpch-dbgen, spark-sql-perf, HiBench etc..) like following picture;
 ![Add bootstrap action](../imgs/add-bootstrap-oap.PNG)
 5. **Security:** define the permissions and other security configurations.
 6. Click **Create cluster**. 
