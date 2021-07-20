@@ -62,6 +62,6 @@ You should import the **notebook**  we provided to Workspace to run benchmark no
    
 #### Run benchmark_tensorflow_bertlarge notebook
  1. Create cluster with Databricks ML Runtime or Databricks ML Runtime with Intel Optimized ML libraries as described above. For the Node type, we recommend to use **Standard_F32s_v2**.
- 2. Open the notebook *bertlarge_benchmark_tensorflow* and attached it to the corresponding cluster you created.
+ 2. Open the notebook *benchmark_tensorflow_bertlarge* and attached it to the corresponding cluster you created.
  3. Click **Run All**.
 
