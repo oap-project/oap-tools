@@ -12,7 +12,7 @@ Upload the initialization actions scripts to S3.
 
 2). Upload these scripts to S3.
 
-![upload_init_script and install_benchmark.sh](../dev/integrations/oap/emr/imgs/upload_scripts_to_S3.png)
+![upload_init_script and install_benchmark.sh](../dev/integrations/oap/emr/imgs/upload_scripts_to_S3.PNG)
 
 
 ### 1.2 Create a new cluster using bootstrap script
@@ -96,7 +96,7 @@ spark.executor.userClassPathFirst               true
 
 ```
 
-#### Define te the configurations of TPC-DS
+#### Define the configurations of TPC-DS
 
 Edit the content of `./repo/confs/gazelle_plugin_performance/TPC-DS/config`
 ```
@@ -106,7 +106,7 @@ partitionTables true       // creating partitioned tables
 queries all                // 'all' means running 99 queries, '1,2,4,6' means running q1.sql, q2.sql, q4.sql, q6.sql
 ```
 
-#### Define te the configurations of TPC-H
+#### Define the configurations of TPC-H
 
 Edit the content of `./repo/confs/gazelle_plugin_performance/TPC-H/config`
 ```
