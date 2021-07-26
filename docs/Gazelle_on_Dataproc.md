@@ -5,14 +5,14 @@
 ### 1.1 Uploading initialization actions
 
 Upload the initialization actions scripts to Cloud Storage bucket. 
-**[bootstrap_oap.sh](../dev/integrations/oap/dataproc/bootstrap_oap.sh)** is to help conda install OAP packages and
-**[install_benchmark.sh](../dev/integrations/oap/dataproc/benchmark/install_benchmark.sh)** is to help install necessary tools for TPC-DS, TPC-H and HIBench on Dataproc clusters.
+**[bootstrap_oap.sh](../integrations/oap/dataproc/bootstrap_oap.sh)** is to help conda install OAP packages and
+**[install_benchmark.sh](../integrations/oap/dataproc/benchmark/install_benchmark.sh)** is to help install necessary tools for TPC-DS, TPC-H and HIBench on Dataproc clusters.
     
-1). Download **[bootstrap_oap.sh](../dev/integrations/oap/dataproc/bootstrap_oap.sh)** and **[install_benchmark.sh](../dev/integrations/oap/dataproc/benchmark/install_benchmark.sh)** to a local folder.
+1). Download **[bootstrap_oap.sh](../integrations/oap/dataproc/bootstrap_oap.sh)** and **[install_benchmark.sh](../integrations/oap/dataproc/benchmark/install_benchmark.sh)** to a local folder.
 
 2). Upload these scripts to bucket.
 
-![upload_init_script and install_benchmark.sh](../dev/integrations/oap/dataproc/imgs/upload_scripts_to_bucket.png)
+![upload_init_script and install_benchmark.sh](../integrations/oap/dataproc/imgs/upload_scripts_to_bucket.png)
 
 
 ### 1.2 Create a new cluster with initialization actions
@@ -22,12 +22,12 @@ To create a new cluster with initialization actions, follow the steps below:
 1). Click the  **CREATE CLUSTER** to create and custom your cluster.
 
 2). **Set up cluster:** choose cluster type and Dataproc image version, enable component gateway.
-![Enable_component_gateway](../dev/integrations/oap/dataproc/imgs/component_gateway.png)
+![Enable_component_gateway](../integrations/oap/dataproc/imgs/component_gateway.png)
 
 3). **Configure nodes:** choose the instance type and other configurations of nodes.
 
 4). **Customize cluster:** add initialization actions as below;
-![Add bootstrap action](../dev/integrations/oap/dataproc/imgs/add_scripts.png)
+![Add bootstrap action](../integrations/oap/dataproc/imgs/add_scripts.png)
 
 5). **Manage security:** define the permissions and other security configurations;
 
@@ -63,7 +63,7 @@ Modify `hive-site.xml`, change the default `hive.execution.engine` from `tez` to
 ### 2.2. Config to enable Gazelle
 
 Modify `$SPARK_HOME/conf/spark-defaults.conf`. 
-**[bootstrap_oap.sh](../dev/integrations/oap/dataproc/bootstrap_oap.sh)** will help install all OAP packages under dir `/opt/benchmark-tools/oap`,
+**[bootstrap_oap.sh](../integrations/oap/dataproc/bootstrap_oap.sh)** will help install all OAP packages under dir `/opt/benchmark-tools/oap`,
 make sure to add below configuration to `spark-defaults.conf`.
 
 ```
@@ -142,7 +142,7 @@ spark.dynamicAllocation.executorIdleTimeout 3600s
 
 ## 3. Run TPC-DS
 
-We provide scripts **[run_benchmark.sh](../dev/integrations/oap/dataproc/benchmark/run_benchmark.sh)** to help easily run TPC-DS and TPC-H.
+We provide scripts **[run_benchmark.sh](../integrations/oap/dataproc/benchmark/run_benchmark.sh)** to help easily run TPC-DS and TPC-H.
 
 ```
 Generate data: ./run_benchmark.sh -g|--gen   -w|--workload tpcds -f|--format [parquet|orc] -s|--scaleFactor [10|custom the data scale,the unit is GB] -d|--doubleForDecimal -p|--partitionTables --Port [8020|customed hdfs port]   
