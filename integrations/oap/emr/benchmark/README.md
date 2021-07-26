@@ -194,9 +194,9 @@ python benchmark/HBonSparkSQL.py run ./repo/confs/testconf ml/kmeans
 
 # Run HiBench, TPC-DS, TPC-H with OAP
 
-Please follow the [Gazelle_on_EMR.md](../../../../../docs/Gazelle_on_EMR.md) to run TPC-DS or TPC-H with Gazelle_plugin.
+Please follow the [Gazelle_on_EMR.md](../../../../docs/Gazelle_on_EMR.md) to run TPC-DS or TPC-H with Gazelle_plugin.
 
-Please follow the [Intel_MLlib_on_EMR.md](../../../../../docs/Intel_MLlib_on_EMR.md) to run K-means, PAC, ALS with Intel-MLlib.
+Please follow the [Intel_MLlib_on_EMR.md](../../../../docs/Intel_MLlib_on_EMR.md) to run K-means, PAC, ALS with Intel-MLlib.
 
 # Run workflow
 

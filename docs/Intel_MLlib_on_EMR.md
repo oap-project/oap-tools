@@ -5,14 +5,14 @@
 ### 1.1 Uploading initialization actions
 
 Upload the initialization actions scripts to S3. 
-**[bootstrap_oap.sh](../dev/integrations/oap/emr/bootstrap_oap.sh)** is to help conda install OAP packages and
-**[install_benchmark.sh](../dev/integrations/oap/emr/install_benchmark.sh)** is to help install necessary tools for TPC-DS, TPC-H and HIBench on EMR clusters.
+**[bootstrap_oap.sh](../integrations/oap/emr/bootstrap_oap.sh)** is to help conda install OAP packages and
+**[install_benchmark.sh](../integrations/oap/emr/install_benchmark.sh)** is to help install necessary tools for TPC-DS, TPC-H and HIBench on EMR clusters.
     
-1). Download **[bootstrap_oap.sh](../dev/integrations/oap/emr/bootstrap_oap.sh)** and **[install_benchmark.sh](../dev/integrations/oap/emr/install_benchmark.sh)** to a local folder.
+1). Download **[bootstrap_oap.sh](../integrations/oap/emr/bootstrap_oap.sh)** and **[install_benchmark.sh](../integrations/oap/emr/install_benchmark.sh)** to a local folder.
 
 2). Upload these scripts to S3.
 
-![upload_init_script and install_benchmark.sh](../dev/integrations/oap/emr/imgs/upload_scripts_to_S3.PNG)
+![upload_init_script and install_benchmark.sh](../integrations/oap/emr/imgs/upload_scripts_to_S3.PNG)
 
 
 ### 1.2 Create a new cluster using bootstrap script
@@ -25,8 +25,8 @@ To create a new cluster with initialization actions, follow the steps below:
 
 3). **Hardware:** choose the instance type and other configurations of hardware;
 
-4). **General Cluster Settings:** add bootstrap action and add **[bootstrap_oap.sh](../dev/integrations/oap/emr/bootstrap_oap.sh)** and **[install_benchmark.sh](./dev/integrations/oap/emr/install_benchmark.sh)**like following picture;
-![Add bootstrap action](../dev/integrations/oap/emr/imgs/add-bootstrap-oap.PNG)
+4). **General Cluster Settings:** add bootstrap action and add **[bootstrap_oap.sh](../integrations/oap/emr/bootstrap_oap.sh)** and **[install_benchmark.sh](./integrations/oap/emr/install_benchmark.sh)**like following picture;
+![Add bootstrap action](../integrations/oap/emr/imgs/add-bootstrap-oap.PNG)
 
 5). **Security:** define the permissions and other security configurations.
 
@@ -34,7 +34,7 @@ To create a new cluster with initialization actions, follow the steps below:
 
 ## 2. Using benchmark-tools to easily run K-means, PCA and ALS with Intel-MLlib
 
-You can refer to [benchmark-tool Guide](../dev/integrations/oap/emr/benchmark/README.md) to learn how to use this tool. We switch working directory at ```../dev/integrations/oap/emr/benchmark``` and follow next steps.
+You can refer to [benchmark-tool Guide](../integrations/oap/emr/benchmark/README.md) to learn how to use this tool. We switch working directory at ```../integrations/oap/emr/benchmark``` and follow next steps.
 
 ### 2.1. Update the basic configuration of spark
 
@@ -61,7 +61,7 @@ S3_BUCKET={bucket_name}
 Note: If you want to use s3 for storage, you must define S3_BUCKET; if you use hdfs for storage, you should set STORAGE like ```STORAGE=hdfs```
 
 #### Update the configurations of spark
-**[bootstrap_oap.sh](../dev/integrations/oap/emr/bootstrap_oap.sh)** will help install all OAP packages under dir `/opt/benchmark-tools/oap`,
+**[bootstrap_oap.sh](../integrations/oap/emr/bootstrap_oap.sh)** will help install all OAP packages under dir `/opt/benchmark-tools/oap`,
 make sure to add below configuration to `./repo/confs/Intel_MLlib_performance/hibench/spark.conf`.
 
 ```
