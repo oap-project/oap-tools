@@ -177,7 +177,7 @@ def merge_properties_tree (conf_root, conf_file, output_filename, delimeter):
 
 def get_properties_tree (conf_root, conf_file, delimeter):
     props_base = get_properties_base(conf_root, conf_file, delimeter)
-    print(conf_file)
+
     if( os.path.isfile(conf_file) ) :
         props_from = parse_properties(conf_file, delimeter)
         props_base = merge_properties(props_base, props_from)
