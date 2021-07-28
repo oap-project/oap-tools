@@ -59,5 +59,5 @@ If you just want to build a specific OAP Module, such as `sql-ds-cache`, change 
 
 ```
 # cd oap-tools
-# sh dev/compile-oap.sh --sql-ds-cache
+# sh dev/compile-oap.sh --component=sql-ds-cache
 ```
