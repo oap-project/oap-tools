@@ -133,11 +133,11 @@ After the data is generated, you can execute the following command to run TPCH q
 bash bin/tpc_h.sh run ./repo/confs/testconf 1
 ```
 
-# Run HiBench #
+## 6. Run HiBench ##
 
 You need to refer to the [Hibench Guide](https://github.com/Intel-bigdata/HiBench) to learn more about HiBench.
 
-## Update ##
+### 6.1 Update ###
 
 If you have some changes for spark, you need to create the file ./repo/confs/hibench/spark.conf and add the parameters you want to change such as:
 ```
@@ -153,7 +153,7 @@ bash bin/hibench.sh update ./repo/confs/testconf
 ```
 Note: Updating step is neccessary to be executed even if you don't have any changes.
 
-## Generate data ##
+### 6.2 Generate data ###
 
 HiBench supports various workloads such as K-means, terasort, ALS, PCA etc. And it also provide ```hibench.scale.profile``` to define the data scale for different benchmark. To specify the data scale, you need to create the file ./repo/confs/testconf/hibench/hibench.conf and edit it like:
 
@@ -169,7 +169,7 @@ bash bin/hibench.sh gen_data ./repo/confs/testconf ml/kmeans
 ```
 Note: ```hibench.scale.profile``` support tiny, small, large, huge, gigantic, bigdata. We also need to  input which workload we want to generate data for such as ml/kmeans, micro/terasort, ml/pca etc.
 
-## Run ##
+### 6.3 Run ###
 
 After the data is generated, you can execute the following command to run HiBench workload:
 
@@ -177,16 +177,16 @@ After the data is generated, you can execute the following command to run HiBenc
 bash bin/hibench.sh run ./repo/confs/testconf ml/kmeans
 ```
 
-# Run HiBench, TPC-DS, TPC-H with OAP
+## 7. Run HiBench, TPC-DS, TPC-H with OAP
 
-Please follow the [Gazelle_on_EMR.md](../../../docs/Gazelle_on_EMR.md) to run TPC-DS or TPC-H with Gazelle_plugin.
+Please follow the [Gazelle_on_EMR.md](../emr/benchmark/Gazelle_on_EMR.md) to run TPC-DS or TPC-H with Gazelle_plugin.
 
-Please follow the [Intel_MLlib_on_EMR.md](../../../docs/Intel_MLlib_on_EMR.md) to run K-means, PAC, ALS with Intel-MLlib.
+Please follow the [Intel_MLlib_on_EMR.md](../emr/benchmark/Intel_MLlib_on_EMR.md) to run K-means, PAC, ALS with Intel-MLlib.
 
-# Run workflow
+## 8. Run workflow ##
 
 
-## Prepare workflow  ##
+### 8.1 Prepare workflow  ###
 
 There are one repo in ```./repo/workflows/``` named ```oap_release_performance_test_on_EMR``` which provide default configuration for different cases. Please create a repo  with the same structure and update the values you need.
 
@@ -196,7 +196,7 @@ For example: we create the  workflow floder as ```OAP_1.2_function_test``` in th
 ../oap_release_performance_test_on_EMR
 ```
 
-## Trick release test ##
+### 8.2 Trick release test ###
 
 Exec:
 
