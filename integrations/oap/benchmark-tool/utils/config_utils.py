@@ -177,7 +177,7 @@ def merge_properties_tree (conf_root, conf_file, output_filename, delimeter):
 
 def get_properties_tree (conf_root, conf_file, delimeter):
     props_base = get_properties_base(conf_root, conf_file, delimeter)
-    
+    print(conf_file)
     if( os.path.isfile(conf_file) ) :
         props_from = parse_properties(conf_file, delimeter)
         props_base = merge_properties(props_base, props_from)
@@ -191,8 +191,12 @@ def parse_properties (filename, delimeter):
             #kv = line.split(delimeter)
             kv = line.split(delimeter,1)
             #if line.startswith('#') or len(kv) != 2:
-            if line.startswith('#') or len(kv) < 2:
+            if line.startswith('#'):
                 continue
+            if len(kv) < 2:
+                kv = line.split("=", 1)
+                if len(kv) < 2:
+                    continue
             result[kv[0]] = kv[1].strip('\n')
     
     return result
