@@ -16,17 +16,26 @@ To create a new cluster using the uploaded bootstrap script, follow the followin
 1. Click the  **Go to advanced options** to custom your cluster;
 2. **Software and Steps:** choose the release of emr and the software you need;
 3. **Hardware:** choose the instance type and other configurations of hardware;
-4. **General Cluster Settings:** add **[bootstrap_oap.sh](./bootstrap_oap.sh)** (install OAP binary) and **[install_benchmark.sh](./install_benchmark.sh)** (install tpcds-kit, tpch-dbgen, spark-sql-perf, HiBench etc..) like following picture;
+4. **General Cluster Settings:** add **[bootstrap_oap.sh](./bootstrap_oap.sh)** (install OAP binary) like following picture
+(Note: the version of OAP channel need to be passed to **[bootstrap_oap.sh](./bootstrap_oap.sh)**; the default version of OAP channel is 1.2.0; 1.2.0.emr630 fits to EMR-6.3.0 environment);
 ![Add bootstrap action](./imgs/add-bootstrap-oap.PNG)
 5. **Security:** define the permissions and other security configurations;
 6. Click **Create cluster**. 
 
 ![create_cluster](./imgs/create-oap-cluster.png)
 
-## 3. Run various workloads easily by using notebooks or benchmark tool
+## 3.Enable OAP features
 
-### 3.1 Using notebooks
+After bootstrap action, we have successfully installed OAP binary. If you want to use OAP feature, you still need to change some configuration of spark.
+1. You can visit [Gazelle_on_EMR](../benchmark/Gazelle_on_EMR.md) to quickly enable gazelle_plugin.
+2. You can visit [Intel_MLlib_on_EMR](../benchmark/Intel_MLlib_on_EMR.md) to quickly enable Intel-MLlib.
+
+## 4. Run various workloads easily by using notebooks or benchmark tool
+
+We provide two ways to easily run workloads with OAP feature.
+
+1. Using notebooks
 You can visit the [Notebooks User Guide](./notebooks/README.md) to learn how to use notebooks to easily generate data and run TPC-DS with gazelle_plugin.
 
-### 3.2 Using benchmark tool
-You can visit the [Benchmark tool User Guide](./benchmark/README.md) to learn how to use benchmark tool to easily run TPC-DS, TPC-H and HiBench with OAP.
+2. Using benchmark tool
+You can visit the [Benchmark tool User Guide](../benchmark-tool/README.md) to learn how to use benchmark-tool to easily run TPC-DS, TPC-H and HiBench with OAP.
