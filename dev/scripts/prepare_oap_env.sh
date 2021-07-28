@@ -561,8 +561,7 @@ function oap_build_help() {
 }
 
 check_jdk
-clone_all
-check_os
+
 while [[ $# -gt 0 ]]
 do
 key="$1"
@@ -570,12 +569,16 @@ case $key in
     --prepare_all)
     shift 1 
     echo "Start to install all compile-time dependencies for OAP ..."
+    clone_all
+    check_os
     prepare_all
     exit 0
     ;;
     --prepare_conda_build)
     shift 1
     echo "Start to install all conda compile-time dependencies for OAP ..."
+    clone_all
+    check_os
     prepare_conda_build
     exit 0
     ;;
