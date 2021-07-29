@@ -15,11 +15,11 @@ ARROW_BRANCH="arrow-4.0.0-oap"
 
 
 OAP_VERSION=1.2.0
-OAP_BRANCH="master"
+OAP_BRANCH="branch-1.2"
 
 
 declare -A repo_dic
-repo_dic=([remote-shuffle]="https://github.com/oap-project/remote-shuffle.git" [native-sql-engine]="https://github.com/oap-project/native-sql-engine.git" [pmem-shuffle]="https://github.com/oap-project/pmem-shuffle.git" [oap-mllib]="https://github.com/oap-project/oap-mllib.git" [pmem-spill]="https://github.com/oap-project/pmem-spill.git" [pmem-common]="https://github.com/oap-project/pmem-common.git" [sql-ds-cache]="https://github.com/oap-project/sql-ds-cache.git")
+repo_dic=([remote-shuffle]="https://github.com/oap-project/remote-shuffle.git" [gazelle_plugin]="https://github.com/oap-project/gazelle_plugin.git" [pmem-shuffle]="https://github.com/oap-project/pmem-shuffle.git" [oap-mllib]="https://github.com/oap-project/oap-mllib.git" [pmem-spill]="https://github.com/oap-project/pmem-spill.git" [pmem-common]="https://github.com/oap-project/pmem-common.git" [sql-ds-cache]="https://github.com/oap-project/sql-ds-cache.git")
 
 
 if [ -z "$DEV_PATH" ]; then

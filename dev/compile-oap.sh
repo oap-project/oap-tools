@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # set -e
+ARGS=$(getopt -o c::,p:: --long component::,profile:: -- $@)
+eval set -- "${ARGS}"
 
 OAP_HOME="$(cd "`dirname "$0"`/.."; pwd)"
 
@@ -11,6 +13,47 @@ OAP_VERSION=1.2.0
 SPARK_VERSION=3.1.1
 
 GCC_MIN_VERSION=7.0
+
+BUILD_COMPONENT=""
+PROFILE=""
+
+while true; do
+  case "$1" in
+  -c | --component)
+    case "$2" in
+    "")
+      shift 2
+      ;;
+    *)
+      echo $2
+      BUILD_COMPONENT=$2
+      shift 2
+      ;;
+    esac
+    ;;
+  -p | --profile)
+    case "$2" in
+    "")
+      shift 2
+      ;;
+    *)
+      echo $2
+      PROFILE="-P"$2
+      shift 2
+      ;;
+    esac
+    ;;
+  --)
+    shift
+
+    break
+    ;;
+  *)
+    echo "Internal error!"
+    ;;
+  esac
+done
+echo $PROFILE
 
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
 
@@ -73,8 +116,8 @@ function gather() {
   cp ../sql-ds-cache/Plasma-based-cache/target/*spark-*.jar $target_path
   cp ../sql-ds-cache/HCFS-based-cache/target/*.jar $target_path
   cp ../pmem-common/target/*.jar $target_path
-  cp ../native-sql-engine/arrow-data-source/standard/target/*with-dependencies.jar $target_path
-  cp ../native-sql-engine/native-sql-engine/core/target/*with-dependencies.jar $target_path
+  cp ../gazelle_plugin/arrow-data-source/standard/target/*with-dependencies.jar $target_path
+  cp ../gazelle_plugin/native-sql-engine/core/target/*with-dependencies.jar $target_path
   cp ../remote-shuffle/shuffle-daos/target/*.jar $target_path
   cp ../remote-shuffle/shuffle-hadoop/target/*.jar $target_path
   cp ../pmem-shuffle/core/target/*with-spark*.jar $target_path
@@ -104,9 +147,9 @@ function build_oap(){
     mvn clean package -DskipTests
     ;;
 
-    native-sql-engine)
-    cd $OAP_HOME/native-sql-engine/
-    mvn clean package -am -DskipTests -Dcpp_tests=OFF -Dbuild_arrow=OFF -Dstatic_arrow=OFF  -Dbuild_protobuf=ON
+    gazelle_plugin)
+    cd $OAP_HOME/gazelle_plugin/
+    mvn clean package -am -DskipTests -Dcpp_tests=OFF -Dbuild_arrow=OFF -Dstatic_arrow=OFF  -Dbuild_protobuf=ON $PROFILE
     ;;
 
     oap-mllib )
@@ -156,14 +199,12 @@ esac
 
 check_gcc
 cd $OAP_HOME
-while [[ $# -ge 0 ]]
-do
-key="$1"
-case $key in
+
+case $BUILD_COMPONENT in
     "")
     shift 1
     echo "Start to compile all modules of OAP ..."
-    build_oap native-sql-engine
+    build_oap gazelle_plugin
     build_oap oap-mllib
     build_oap pmem-shuffle
     build_oap pmem-spill
@@ -172,47 +213,42 @@ case $key in
     gather
     exit 0
     ;;
-    --arrow-data-source)
+    gazelle_plugin)
     shift 1
-    build_oap arrow-data-source
+    build_oap gazelle_plugin
     exit 0
     ;;
-    --native-sql-engine)
-    shift 1
-    build_oap native-sql-engine
-    exit 0
-    ;;
-    --oap-mllib )
+    oap-mllib )
     shift 1
     build_oap oap-mllib
     exit 0
     ;;
-    --pmem-common)
+    pmem-common)
     shift 1
     build_oap pmem-common
     exit 0
     ;;
-    --pmem-shuffle)
+    pmem-shuffle)
     shift 1
     build_oap pmem-shuffle
     exit 0
     ;;
-    --pmem-spill)
+    pmem-spill)
     shift 1
     build_oap pmem-spill
     exit 0
     ;;
-    --remote-shuffle)
+    remote-shuffle)
     shift 1
     build_oap remote-shuffle
     exit 0
     ;;
-    --sql-ds-cache)
+    sql-ds-cache)
     shift 1
     build_oap sql-ds-cache
     exit 0
     ;;
-    --oap-conda)
+    oap-conda)
     shift 1
     build_oap oap-mllib
     build_oap pmem-shuffle
@@ -222,7 +258,7 @@ case $key in
     gather
     exit 0
     ;;
-    --gather)
+    gather)
     gather
     exit 0
     ;;
@@ -231,5 +267,4 @@ case $key in
     exit 1
     ;;
 esac
-done
 
