@@ -2,7 +2,7 @@
 
 ## 1. Create a new cluster
 
-To run bencbmark on EMR cluster, you need upload both **[bootstrap_benchmark.sh](../benchmark/bootstrap_benchmark.sh)** and **[bootstrap_oap.sh](../bootstrap_oap.sh)** to S3 and add extra bootstrap action to execute **[bootstrap_benchmark.sh](../benchmark/bootstrap_benchmark.sh)** and **[bootstrap_oap.sh](../bootstrap_oap.sh)**when creating a new cluster.
+To run bencbmark on EMR cluster with OAP, you need upload both **[bootstrap_benchmark.sh](../benchmark/bootstrap_benchmark.sh)** and **[bootstrap_oap.sh](../bootstrap_oap.sh)** to S3 and add extra bootstrap action to execute **[bootstrap_benchmark.sh](../benchmark/bootstrap_benchmark.sh)** and **[bootstrap_oap.sh](../bootstrap_oap.sh)**when creating a new cluster.
 
 ![upload_init_script and install_benchmark.sh](../imgs/upload_all_scripts_to_S3.PNG)
 
