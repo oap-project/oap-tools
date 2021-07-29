@@ -40,4 +40,12 @@ Please refer to [SQL_DS_Cache_on_Dataproc](./benchmark/SQL_DS_Cache_on_Dataproc.
 
 ## 4. Run various workloads easily by benchmark-tool
 
-Please refer to the [Benchmark tool User Guide](../benchmark-tool/README.md) to learn how to use benchmark-tool to easily run TPC-DS, TPC-H and HiBench with OAP.
+We provide 2 ways to easily run workloads with OAP feature.
+
+1. Using notebooks
+
+Please refer to [Notebooks User Guide](./notebooks/README.md) to learn how to use notebooks to easily generate data and run TPC-DS with gazelle_plugin.
+
+2. Using benchmark tool
+
+Please refer to [Benchmark tool User Guide](../benchmark-tool/README.md) to learn how to use benchmark-tool to easily run TPC-DS, TPC-H and HiBench with OAP.
