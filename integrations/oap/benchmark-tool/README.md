@@ -1,16 +1,40 @@
-# The user guide to easily run benchmark on Cloud with OAP
-This tool is the project to easily run different workloads by providing minimum configuration parameters. It also provide the function to run workflows.
+# Running Benchmark Automation on Cloud with OAP
 
-## 1. Create a new cluster
+This guide helps run different workloads easily on Cloud Platforms. It also provides the function to run workflow.
 
-If you are using AWS EMR, you can refer [OAP integrate EMR](../emr/README.md) to create a new cluster. To run bencbmark on EMR cluster, you also need to upload **[bootstrap_benchmark.sh](../emr/benchmark/bootstrap_benchmark.sh)** to S3 and add extra bootstrap action to execute **[bootstrap_benchmark.sh](../emr/benchmark/bootstrap_benchmark.sh)** when creating a new cluster.
+## 1. Create a new cluster on Cloud
+
+### 1.1 AWS EMR
+
+If you are using AWS EMR, you can refer [OAP integrate EMR](../emr/README.md) to create a new cluster. To run benchmark on EMR cluster, you also need to upload **[bootstrap_benchmark.sh](../emr/benchmark/bootstrap_benchmark.sh)** to S3 and add extra bootstrap action to execute **[bootstrap_benchmark.sh](../emr/benchmark/bootstrap_benchmark.sh)** when creating a new cluster.
 
 ![upload_init_script and install_benchmark.sh](../emr/imgs/upload_all_scripts_to_S3.PNG)
 
 ![Add bootstrap action](../emr/imgs/add-bootstrap-benchmark.PNG) 
 
+### 1.2 Google Cloud Dataproc
+
+If you are using Google Cloud Dataproc, please refer to [OAP on Dataproc](../dataproc/README.md) to create a new cluster.
+To run benchmark on Dataproc cluster, you also need to upload **[bootstrap_benchmark.sh](../dataproc/benchmark/bootstrap_benchmark.sh)** to bucket 
+then add initialization actions **[bootstrap_benchmark.sh](../emr/benchmark/bootstrap_benchmark.sh)** as below when creating a new cluster.
+
+![upload_init_script and install_benchmark.sh](../dataproc/imgs/upload_scripts_to_bucket.png)
+
+![Add bootstrap action](../dataproc/imgs/add_scripts.png) 
+
+
+
 
 ## 2. Update the basic configurations for spark
+
+Git clone oap-tools repo to Cloud
+ 
+```
+git clone https://github.com/oap-project/oap-tools.git
+cd oap-tools/integrations/oap/benchmark-tool/
+```
+
+### 2.1 AWS EMR
 
 Make sure the primary node has python2 installed;
 If you use AWS EMR, please execute the following commands to update the basic configurations for spark:
@@ -18,6 +42,16 @@ If you use AWS EMR, please execute the following commands to update the basic co
 ```sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-emr/spark/spark-defaults.conf;```
 
 ```sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-emr/hibench/spark.conf;```
+
+### 2.2 Google Cloud Dataproc
+
+Make sure the primary node has python2 installed.
+
+If you use Dataproc, please execute the following commands to update the basic configurations for spark:
+
+```sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-dataproc/spark/spark-defaults.conf```
+
+```sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-dataproc/hibench/spark.conf```
 
 
 ## 3. Config Rules to Follow && Create a configuration folder ##
@@ -37,11 +71,15 @@ If you want to inherit all configurations of ```repo/confs/spark-oap-emr```, ple
 
 ```
 mkdir ./repo/confs/testconf
+
+#####EMR
 echo "../spark-oap-emr" > ./repo/confs/testconf/.base
+
+#####Dataproc
+echo "../spark-oap-dataproc" > ./repo/confs/testconf/.base
 ```
-* When you want to use HDFS or S3 for storage, you need to edit `./repo/confs/testconf/.base` and add content like:
+* When you want to use HDFS or S3 for storage, you need to edit `./repo/confs/testconf/env.conf` and add content like:
 ```
-NATIVE_SQL_ENGINE=TRUE
 STORAGE=s3
 S3_BUCKET={bucket_name}
 ```
@@ -68,7 +106,11 @@ bash bin/tpc_ds.sh update ./repo/confs/testconf
 Note: Updating step is neccessary to be executed even if you don't have any changes.
 ### 4.2 Generate data ###
 
-The first step to run TPC-DS is to generate data. To specify the data scale, data format you want, in the TPC-DS folder in your conf folder, create a file named ```config``` and add the scale and format value, for example:
+The first step to run TPC-DS is to generate data. To specify the data scale, data format you want, in the TPC-DS folder in your conf folder, create a file named ```config``` :
+```
+vim repo/confs/testconf/config
+```
+and add the scale and format value, such as below:
 
 ```
 scale 1
@@ -179,9 +221,12 @@ bash bin/hibench.sh run ./repo/confs/testconf ml/kmeans
 
 ## 7. Run HiBench, TPC-DS, TPC-H with OAP
 
-Please follow the [Gazelle_on_EMR.md](../emr/benchmark/Gazelle_on_EMR.md) to run TPC-DS or TPC-H with Gazelle_plugin.
+Please follow [Gazelle_on_EMR.md](../emr/benchmark/Gazelle_on_EMR.md) or [Gazelle_on_Dataproc.md](../dataproc/benchmark/Gazelle_on_Dataproc.md) to run TPC-DS or TPC-H with Gazelle_plugin.
 
-Please follow the [Intel_MLlib_on_EMR.md](../emr/benchmark/Intel_MLlib_on_EMR.md) to run K-means, PAC, ALS with Intel-MLlib.
+Please follow [SQL_DS_Cache_on_Dataproc.md](../dataproc/benchmark/SQL_DS_Cache_on_Dataproc.md) to run TPC-DS with SQL DS Cache.
+
+Please follow [Intel_MLlib_on_EMR.md](../emr/benchmark/Intel_MLlib_on_EMR.md) or [OAP_MLlib_on_EMR.md](../dataproc/benchmark/OAP_MLlib_on_Dataproc.md)to run K-means, PAC, ALS with Intel-MLlib.
+
 
 ## 8. Run workflow ##
 
@@ -190,7 +235,7 @@ Please follow the [Intel_MLlib_on_EMR.md](../emr/benchmark/Intel_MLlib_on_EMR.md
 
 There are one repo in ```./repo/workflows/``` named ```oap_release_performance_test_on_EMR``` which provide default configuration for different cases. Please create a repo  with the same structure and update the values you need.
 
-For example: we create the  workflow floder as ```OAP_1.2_function_test``` in the floder ```./repo/workflows/```  and update ```./repo/OAP_1.2_function_test/.base``` to inherit ```./repo/workflows/oap_release_performance_test_on_EMR```
+For example: we create the workflow directory as ```OAP_1.2_function_test``` in the directory ```./repo/workflows/```  and update ```./repo/OAP_1.2_function_test/.base``` to inherit ```./repo/workflows/oap_release_performance_test_on_EMR```
 ```
 # In file .base
 ../oap_release_performance_test_on_EMR

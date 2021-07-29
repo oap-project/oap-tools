@@ -1,18 +1,18 @@
 # Gazelle on GCP Dataproc 2.0
 
-## 1. Creating a cluster on Dataproc
+## 1. Creating a cluster on Dataproc 2.0
 
 ### 1.1 Uploading initialization actions
 
 Upload the initialization actions scripts to Cloud Storage bucket. 
-**[bootstrap_oap.sh](../integrations/oap/dataproc/bootstrap_oap.sh)** is to help conda install OAP packages and
-**[bootstrap_benchmark.sh](../integrations/oap/dataproc/benchmark/bootstrap_benchmark.sh)** is to help install necessary tools for TPC-DS, TPC-H and HIBench on Dataproc clusters.
+**[bootstrap_oap.sh](../bootstrap_oap.sh)** is to help conda install OAP packages and
+**[bootstrap_benchmark.sh](./bootstrap_benchmark.sh)** is to help install necessary tools for TPC-DS, TPC-H and HIBench on Dataproc clusters.
     
-1). Download **[bootstrap_oap.sh](../integrations/oap/dataproc/bootstrap_oap.sh)** and **[bootstrap_benchmark.sh](../integrations/oap/dataproc/benchmark/bootstrap_benchmark.sh)** to a local folder.
+1). Download **[bootstrap_oap.sh](../bootstrap_oap.sh)** and **[bootstrap_benchmark.sh](./bootstrap_benchmark.sh)** to a local folder.
 
 2). Upload these scripts to bucket.
 
-![upload_init_script and install_benchmark.sh](../integrations/oap/dataproc/imgs/upload_scripts_to_bucket.png)
+![upload_init_script and install_benchmark.sh](../imgs/upload_scripts_to_bucket.png)
 
 
 ### 1.2 Create a new cluster with initialization actions
@@ -22,12 +22,12 @@ To create a new cluster with initialization actions, follow the steps below:
 1). Click the  **CREATE CLUSTER** to create and custom your cluster.
 
 2). **Set up cluster:** choose cluster type and Dataproc image version, enable component gateway.
-![Enable_component_gateway](../integrations/oap/dataproc/imgs/component_gateway.png)
+![Enable_component_gateway](../imgs/component_gateway.png)
 
 3). **Configure nodes:** choose the instance type and other configurations of nodes.
 
 4). **Customize cluster:** add initialization actions as below;
-![Add bootstrap action](../integrations/oap/dataproc/imgs/add_scripts.png)
+![Add bootstrap action](../imgs/add_scripts.png)
 
 5). **Manage security:** define the permissions and other security configurations;
 
@@ -35,30 +35,10 @@ To create a new cluster with initialization actions, follow the steps below:
 
 ## 2. Configurations for enabling Gazelle
 
-### 2.1. Modifications on cluster nodes
+### 2.1. Creating a directory on HDFS 
 
-#### HDFS 
-
-Create a directory on HDFS 
 ```
 $ hadoop fs -mkdir /spark-warehouse
-```
-
-#### Hive 
-
-Modify `hive-site.xml` on master, change the default `hive.execution.engine` from `tez` to `spark`
-
-```
- <property>
-    <name>hive.execution.engine</name>
-    <value>spark</value>
- </property>
-```
-
-Then stop HiveServer2 with the following command  
-
-```
-sudo netstat -antlp | grep 10000|awk -F/ '{print $1}'|awk '{print $7}'|sudo xargs kill -9
 ```
 
 
@@ -66,7 +46,7 @@ sudo netstat -antlp | grep 10000|awk -F/ '{print $1}'|awk '{print $7}'|sudo xarg
 
 Modify `$SPARK_HOME/conf/spark-defaults.conf`. 
 
-**[bootstrap_oap.sh](../integrations/oap/dataproc/bootstrap_oap.sh)** will help install all OAP packages under dir `/opt/benchmark-tools/oap`,
+**[bootstrap_oap.sh](../bootstrap_oap.sh)** will help install all OAP packages under dir `/opt/benchmark-tools/oap`,
 make sure to add below configuration to `spark-defaults.conf`.
 
 ```
@@ -143,29 +123,82 @@ spark.dynamicAllocation.executorIdleTimeout 3600s
 
 ```
 
-## 3. Run TPC-DS
+## 3. Run TPC-DS with benchmark-tools
 
-We provide scripts **[run_benchmark.sh](../integrations/oap/dataproc/benchmark/run_benchmark.sh)** to help easily run TPC-DS and TPC-H.
+### 3.1. Update the basic configuration of spark
 
+#### Update the basic configuration of spark
 ```
-Generate data: sh run_benchmark.sh -g|--gen   -w|--workload tpcds -f|--format [parquet|orc] -s|--scaleFactor [10|custom the data scale,the unit is GB] -d|--doubleForDecimal -p|--partitionTables --Port [8020|customed hdfs port]   
-Run benchmark: sh run_benchmark.sh -r|--rerun -w|--workload tpcds -f|--format [parquet|orc|arrow] -i|--iteration [1|custom the interation you want to run]  -s|--scaleFactor [10|custom the data scale,the unit is GB]  -p|--partitionTables --Port [8020|customed hdfs port]   
-```
-
-Only after enabling Gazelle Plugin can you run TPC-DS or TPC-H with arrow format.
-
-Example: generate 1GB Parquet, then run TPC-DS all queries with Gazelle enabled.
-
-```
-# generate data
-sh run_benchmark.sh -g -w tpcds -f parquet  -s 1 -d -p --Port 8020
-
-# run TPC-DS
-sh run_benchmark.sh -r -w tpcds -f arrow -s 1 -i 1 -p --Port  8020
+$ sudo cp /lib/spark/conf/spark-defaults.conf ./repo/confs/spark-oap-dataproc/spark/spark-defaults.conf
 ```
 
-### 4. Run TPC-H:  
+### 3.2. Create the testing repo && Config gazelle_plugin
+
+#### Create the testing repo
 ```
-Generate data: ./run_benchmark.sh -g|--gen   -w|--workload tpch  -f|--format [parquet|orc] -s|--scaleFactor [10|custom the data scale,the unit is GB] -d|--doubleForDecimal -p|--partitionTables --Port [8020|customed hdfs port]  
-Run benchmark: ./run_benchmark.sh -r|--rerun -w|--workload tpch  -f|--format [parquet|orc|arrow] -i|--iteration [1|custom the interation you want to run] -s|--scaleFactor [10|custom the data scale,the unit is GB] -p|--partitionTables --Port [8020|customed hdfs port] 
-``` 
+mkdir ./repo/confs/gazelle_plugin_performance
+```
+#### Update the content of .base to inherit the configuration of ./repo/confs/spark-oap-emr
+```
+echo "../spark-oap-dataproc" > ./repo/confs/gazelle_plugin_performance/.base
+```
+#### Update the content of ./repo/confs/gazelle_plugin_performance/env.conf
+```
+NATIVE_SQL_ENGINE=TRUE
+STORAGE=s3
+S3_BUCKET={bucket_name}
+```
+Note: If you want to use s3 for storage, you must define S3_BUCKET; 
+If you use HDFS for storage, you should set STORAGE like below:
+
+```
+STORAGE=hdfs
+```
+
+#### Define the configurations of TPC-DS
+
+Edit the content of `./repo/confs/gazelle_plugin_performance/TPC-DS/config`
+
+```
+scale 1                    // data scale/GB
+format parquet             // support parquet or orc
+partitionTables true       // creating partitioned tables
+queries all                // 'all' means running 99 queries, '1,2,4,6' means running q1.sql, q2.sql, q4.sql, q6.sql
+```
+
+#### Define the configurations of TPC-H
+
+Edit the content of `./repo/confs/gazelle_plugin_performance/TPC-H/config`
+```
+scale 1                    // data scale 1 GB
+format parquet             // support parquet or orc
+partitionTables true       // creating partitioned tables
+queries all                // 'all' means running 22 queries, '1,2,4,6' means running 1.sql, 2.sql, 4.sql, 6.sql
+```
+
+### 3.3. Run TPC-DS
+
+We provide scripts to help easily run TPC-DS and TPC-H.
+
+```
+###Update: 
+bash bin/tpc_ds.sh update ./repo/confs/gazelle_plugin_performance   
+
+###Generate data: 
+bash bin/tpc_ds.sh gen_data ./repo/confs/gazelle_plugin_performance
+
+### run power test for 1 round.
+
+bash bin/tpc_ds.sh run ./repo/confs/gazelle_plugin_performance 1
+```
+
+### 3.4. Run TPC-H:  
+
+```
+Update: bash bin/tpc_h.sh update ./repo/confs/gazelle_plugin_performance   
+
+bash bin/tpc_h.sh gen_data ./repo/confs/gazelle_plugin_performance
+
+### run power test for 1 round.
+bash bin/tpc_h.sh run ./repo/confs/gazelle_plugin_performance 1
+```
