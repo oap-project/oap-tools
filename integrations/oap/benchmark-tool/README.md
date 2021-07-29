@@ -3,7 +3,7 @@ This tool is the project to easily run different workloads by providing minimum 
 
 ## 1. Create a new cluster
 
-If you are using AWS EMR, you can refer [OAP integrate EMR](../emr/README.md) to create a new cluster. To run bencbmark on EMR cluster, you also need to upload **[bootstrap_benchmark.sh](../emr/benchmark/bootstrap_benchmark.sh)** to S3 and add extra bootstrap action to execute **[bootstrap_benchmark.sh](../emr/benchmark/bootstrap_benchmark.sh)** when creating a new cluster.
+If you are using AWS EMR, you can refer [OAP integrate EMR](../emr/README.md) to create a new cluster. To run bencbmark on EMR cluster, you also need to upload both **[bootstrap_benchmark.sh](../emr/benchmark/bootstrap_benchmark.sh)** and **[bootstrap_oap.sh](../emr/bootstrap_oap.sh)** to S3 and add extra bootstrap action to execute **[bootstrap_benchmark.sh](../emr/benchmark/bootstrap_benchmark.sh)** and **[bootstrap_oap.sh](../emr/bootstrap_oap.sh)** when creating a new cluster.
 
 ![upload_init_script and install_benchmark.sh](../emr/imgs/upload_all_scripts_to_S3.PNG)
 
