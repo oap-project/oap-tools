@@ -11,7 +11,7 @@
 # limitations under the License.
 #
 
-FROM zhixingheyitian/spark-centos:1.2-snapshot-0722
+FROM spark-centos:1.2
 
 MAINTAINER The Optimized Analyitics Package for Spark Platform (OAP) Authors https://github.com/Intel-bigdata/OAP/
 

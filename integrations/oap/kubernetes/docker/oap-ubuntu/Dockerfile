@@ -11,7 +11,7 @@
 # limitations under the License.
 #
 
-FROM zhixingheyitian/spark-ubuntu:1.2-snapshot
+FROM spark-ubuntu:1.2
 
 MAINTAINER The Optimized Analyitics Package for Spark Platform (OAP) Authors https://github.com/Intel-bigdata/OAP/
 
