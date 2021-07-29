@@ -17,12 +17,12 @@ docker build --tag oap-centos:1.2.0 .
 ``` 
 
 ## Run Spark/OAP on Kubernetes
-Before doing this, we assume you have setup Kubernetes enironment and it worked properly. All the tool scripts are under "integration-tests" folder. 
+Before doing this, we assume you have setup Kubernetes enironment and it worked properly. All the tool scripts are under "spark" or "oap" folder. 
 We tested these scripts in Minikube environment. If you are using other Kubernetes distributions, you may need to make some changes to work properly.
 
 ### Create Spark User and Assign Cluster Role
 Spark running on Kubernetes needs edit role of your Kubernetes cluster to create driver or executor pods. 
-Go to integration-tests/spark folder and execute the following command to create "spark" user and assign the role. Make sure you have logged in Kubernetes and have administor role of the cluster.
+Go to spark folder and execute the following command to create "spark" user and assign the role. Make sure you have logged in Kubernetes and have administor role of the cluster.
 ``` 
 sh ./spark-kubernetes-prepare.sh
 ``` 
@@ -118,7 +118,7 @@ Just refer to [Start the Client](#start-the-client).
 After you have started the client pod, you can execute the following command to start the Spark shell into the pod:
 For example:
 
-Go to folder integration-tests/oap
+Go to folder oap
 ``` 
 cat Kmeans-example.scala | sh spark-shell-mllib.sh
 ``` 
@@ -127,7 +127,7 @@ cat Kmeans-example.scala | sh spark-shell-mllib.sh
 After you have started the client pod, you can execute the following command to start the Spark shell into the pod:
 For example:
 
-Go to folder integration-tests/oap
+Go to folder oap
 ``` 
 cat Native-SQL-Engine-example.scala | sh ./spark-shell-native-sql-engine.sh
 ``` 
