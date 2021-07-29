@@ -1,7 +1,9 @@
 # The user guide to easily run benchmark on Cloud with OAP
 This tool is the project to easily run different workloads by providing minimum configuration parameters. It also provide the function to run workflows.
 
-## 1. Create a new cluster
+## 1. Create a new cluster on Cloud
+
+### 1.1 AWS EMR
 
 If you are using AWS EMR, you can refer [OAP integrate EMR](../emr/README.md) to create a new cluster. To run bencbmark on EMR cluster, you also need to upload both **[bootstrap_benchmark.sh](../emr/benchmark/bootstrap_benchmark.sh)** and **[bootstrap_oap.sh](../emr/bootstrap_oap.sh)** to S3 and add extra bootstrap action to execute **[bootstrap_benchmark.sh](../emr/benchmark/bootstrap_benchmark.sh)** and **[bootstrap_oap.sh](../emr/bootstrap_oap.sh)** when creating a new cluster.
 
