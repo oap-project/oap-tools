@@ -21,7 +21,7 @@ To create a new cluster with initialization actions, follow the steps below:
 
 1). Click the  **CREATE CLUSTER** to create and custom your cluster.
 
-2). **Set up cluster:** choose cluster type and Dataproc image version, enable component gateway.
+2). **Set up cluster:** choose cluster type and Dataproc image version `2.0-centos8`, enable component gateway.
 ![Enable_component_gateway](../imgs/component_gateway.png)
 
 3). **Configure nodes:** choose the instance type and other configurations of nodes.
