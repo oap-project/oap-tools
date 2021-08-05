@@ -432,7 +432,7 @@ function prepare_HPNL(){
     git clone https://github.com/Intel-bigdata/HPNL.git
   fi
   cd HPNL
-  git checkout origin/spark-pmof-test --track
+  git checkout wip_rpmp
   git submodule update --init --recursive
   mkdir build
   cd build
@@ -490,14 +490,111 @@ function prepare_libcuckoo() {
   make all && make install
 }
 
+function build_boost() {
+  mkdir -p $DEV_PATH/thirdparty
+  cd $DEV_PATH/thirdparty
+  if [ ! -d "boost_1_64_0" ]; then
+    wget https://boostorg.jfrog.io/artifactory/main/release/1.64.0/source/boost_1_64_0.tar.gz
+    tar zxvf boost_1_64_0.tar.gz
+  fi
+  cd boost_1_64_0/
+  ./bootstrap.sh --prefix=/usr/
+  ./b2 -serialization -system  install
+  cd tools/build/
+  ./bootstrap.sh
+  ./b2  -serialization -system  install --prefix=/usr/
+}
+
+function prepare_boost() {
+
+  if [[ `cat /etc/*release | grep "^ID="` == "ID=fedora" ]]; then
+      yum install -y boost-devel
+  elif [[ `cat /etc/*release | grep "^ID="` == "ID=ubuntu" ]];then
+      apt-get install libboost-all-dev
+  else
+      build_boost
+  fi
+}
+
 function prepare_PMoF() {
   prepare_libfabric
+  prepare_boost
   prepare_HPNL
   prepare_ndctl
   prepare_PMDK
   prepare_libcuckoo
+  check_gcc
+  prepare_hiredis
+  prepare_redisplusplus
+  prepare_jsoncpp
+  prepare_rpmp_native
   cd $DEV_PATH
 }
+
+function prepare_jsoncpp() {
+  cd $DEV_PATH/thirdparty
+
+  if [ ! -d "jsoncpp" ]; then
+    git clone https://github.com/open-source-parsers/jsoncpp.git
+    cd jsoncpp
+  else
+    cd jsoncpp
+    git pull
+  fi
+  mkdir -p build; cd build
+  cmake ..
+  make && make install
+}
+
+function prepare_hiredis() {
+  cd $DEV_PATH/thirdparty
+  if [ ! -d "hiredis" ]; then
+      git clone https://github.com/redis/hiredis
+    cd hiredis
+  else
+    cd hiredis
+    git pull
+  fi
+  mkdir -p  build; cd build
+  cmake ..
+  make && make install
+}
+
+
+function prepare_redisplusplus() {
+  cd $DEV_PATH/thirdparty
+
+  if [ ! -d "redis-plus-plus" ]; then
+    git clone https://github.com/sewenew/redis-plus-plus.git
+    cd redis-plus-plus
+    git checkout 80d44fde5512c55e4fc9dc22ac6e8477b0ec4758
+  else
+    cd redis-plus-plus
+    git checkout 80d44fde5512c55e4fc9dc22ac6e8477b0ec4758
+  fi
+  mkdir -p  build
+  cd build
+  cmake  -DREDIS_PLUS_PLUS_CXX_STANDARD=14 ..
+  make
+  make install
+
+}
+
+
+function prepare_rpmp_native() {
+  cd $OAP_HOME/pmem-shuffle
+  export LD_LIBRARY_PATH=/usr/lib:/usr/local/lib:/usr/local/lib64:$LD_LIBRARY_PATH
+  git submodule update --init --recursive
+  git submodule add -b master https://github.com/redis/hiredis.git rpmp/include/hiredis
+  git submodule add -b master https://github.com/open-source-parsers/jsoncpp.git rpmp/include/jsoncpp
+  git submodule add -b v1.x https://github.com/gabime/spdlog.git rpmp/include/spdlog
+  cd rpmp 
+  mkdir -p  build
+  cd build
+  cmake ..
+  make && make install
+}
+
 
 function prepare_oneAPI() {
   cd $DEV_PATH/
@@ -561,7 +658,6 @@ function oap_build_help() {
 }
 
 check_jdk
-
 while [[ $# -gt 0 ]]
 do
 key="$1"
