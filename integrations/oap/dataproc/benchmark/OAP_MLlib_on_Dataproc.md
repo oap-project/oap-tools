@@ -5,14 +5,14 @@
 ### 1.1 Uploading initialization actions
 
 Upload the initialization actions scripts to Cloud Storage bucket. 
-**[bootstrap_oap.sh](../integrations/oap/dataproc/bootstrap_oap.sh)** is to help conda install OAP packages and
-**[bootstrap_benchmark.sh](../integrations/oap/dataproc/benchmark/bootstrap_benchmark.sh)** is to help install necessary tools for TPC-DS, TPC-H and HIBench on Dataproc clusters.
+**[bootstrap_oap.sh](../bootstrap_oap.sh)** is to help conda install OAP packages and
+**[bootstrap_benchmark.sh](./bootstrap_benchmark.sh)** is to help install necessary tools for TPC-DS, TPC-H and HIBench on Dataproc clusters.
     
-1). Download **[bootstrap_oap.sh](../integrations/oap/dataproc/bootstrap_oap.sh)** and **[bootstrap_benchmark.sh](../integrations/oap/dataproc/benchmark/bootstrap_benchmark.sh)** to a local folder.
+1). Download **[bootstrap_oap.sh](../bootstrap_oap.sh)** and **[bootstrap_benchmark.sh](./bootstrap_benchmark.sh)** to a local folder.
 
 2). Upload these scripts to bucket.
 
-![upload_init_script and bootstrap_benchmark.sh](../integrations/oap/dataproc/imgs/upload_scripts_to_bucket.png)
+![upload_init_script and bootstrap_benchmark.sh](../imgs/upload_scripts_to_bucket.png)
 
 
 ### 1.2 Create a new cluster with initialization actions
@@ -22,12 +22,12 @@ To create a new cluster with initialization actions, follow the steps below:
 1). Click the  **CREATE CLUSTER** to create and custom your cluster.
 
 2). **Set up cluster:** choose cluster type and Dataproc image version `2.0-centos8`, enable component gateway, and add Jupyter Notebook.
-![Enable_component_gateway](../integrations/oap/dataproc/imgs/component_gateway.png)
+![Enable_component_gateway](../imgs/component_gateway.png)
 
 3). **Configure nodes:** choose the instance type and other configurations of nodes.
 
 4). **Customize cluster:** add initialization actions as below;
-![Add bootstrap action](../integrations/oap/dataproc/imgs/add_scripts.png)
+![Add bootstrap action](../imgs/add_scripts.png)
 
 5). **Manage security:** define the permissions and other security configurations;
 
