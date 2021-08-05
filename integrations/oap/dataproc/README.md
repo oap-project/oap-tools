@@ -32,7 +32,7 @@ To create a new cluster with initialization actions, follow the steps below:
 After bootstrap action, you have successfully installed OAP binary on Dataproc Cluster nodes. 
 If you want to use OAP feature, you still need to change some configuration of Spark.
 
-Please refer to [Gazelle_on_Dataproc](./benchmark/Gazelle_Benchmark_on_Dataproc.md) to quickly enable Gazelle Plugin.
+Please refer to [Gazelle_on_Dataproc](./benchmark/Gazelle_on_Dataproc.md) to quickly enable Gazelle Plugin.
 
 Please refer to [SQL_DS_Cache_on_Dataproc](./benchmark/SQL_DS_Cache_on_Dataproc.md) to quickly enable SQL DS Cache.
 
