@@ -498,11 +498,15 @@ function build_boost() {
     tar zxvf boost_1_64_0.tar.gz
   fi
   cd boost_1_64_0/
-  ./bootstrap.sh --prefix=/usr/
-  ./b2 -serialization -system  install
+  ./bootstrap.sh --prefix=/usr/local/boost
+  ./b2 --with=all  install
   cd tools/build/
   ./bootstrap.sh
-  ./b2  -serialization -system  install --prefix=/usr/
+  ./b2 install --prefix=/usr/local/boost
+  export BOOST_ROOT=/usr/local/boost
+  echo 'export BOOST_ROOT=/usr/local/boost' >> ~/.bashrc
+  source ~/.bashrc
+  e
 }
 
 function prepare_boost() {
@@ -593,6 +597,9 @@ function prepare_rpmp_native() {
   cd build
   cmake ..
   make && make install
+
+  cd $OAP_HOME/pmem-shuffle/rpmp/pmpool/client/java/rpmp
+  mvn clean install
 }
 
 
