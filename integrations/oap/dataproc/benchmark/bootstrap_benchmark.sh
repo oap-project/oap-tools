@@ -1,5 +1,5 @@
 #!/bin/bash
-sudo yum -y install git
+
 SOFTWARE_HOME=/opt/benchmark-tools
 sudo mkdir -p $SOFTWARE_HOME
 sudo chown $(whoami):$(whoami) $SOFTWARE_HOME
@@ -14,7 +14,6 @@ function install_sbt() {
 
 function install_maven() {
   cd ${SOFTWARE_HOME}
-  sudo yum -y install wget
   sudo wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
   sudo yum -y install maven
 }
@@ -31,14 +30,13 @@ function install_spark_sql_perf() {
 }
 
 function install_tpcds_kit() {
-  sudo yum -y install gcc make flex bison byacc git
+  sudo yum -y install flex bison byacc
   cd ${SOFTWARE_HOME} && git clone https://github.com/databricks/tpcds-kit.git
   cd tpcds-kit/tools
   make OS=LINUX
 }
 
 function install_tpch_dbgen() {
-  sudo yum -y install make patch unzip
   cd ${SOFTWARE_HOME} && git clone https://github.com/databricks/tpch-dbgen
   cd tpch-dbgen && make clean && make;
 }
