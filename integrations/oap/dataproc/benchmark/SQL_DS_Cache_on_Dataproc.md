@@ -31,68 +31,12 @@ To create a new cluster with initialization actions, follow the steps below:
 
 5). **Manage security:** define the permissions and other security configurations;
 
-6). Click **Create**. 
+6). Click **EQUIVALENT COMMAND LINE**, then click **RUN IN CLOUD SHELL** to add argument ` --initialization-action-timeout 60m ` to your command,
+which sets timeout period for the initialization action to 60 minutes and the default timeout value is 10 minutes. You can also set it larger if the cluster network status is not good.
+Finally press **Enter** at the end of cloud shell command line to start to create a new cluster.
+![Set_init_timeout](../imgs/set_init_timeout.png) 
 
 ## 2. Configurations for enabling SQL-DS-Cache
-
-
-### 2.1. Creating a directory on HDFS 
-
-```
-$ hadoop fs -mkdir /spark-warehouse
-```
-
-### 2.2. Config to enable SQL-DS-Cache
-
-***Modify `$SPARK_HOME/conf/spark-defaults.conf`.***
-
-**[bootstrap_oap.sh](../bootstrap_oap.sh)** will help install all OAP packages under dir `/opt/benchmark-tools/oap`,
-make sure to add below configuration to `spark-defaults.conf`.
-
-```
-spark.executorEnv.LD_LIBRARY_PATH   /opt/benchmark-tools/oap/lib
-spark.driver.extraLibraryPath       /opt/benchmark-tools/oap/lib
-```
-
-Here is an example of `spark-defaults.conf` on a `1 master + 2 workers` Dataproc cluster.
-
-```
-### OAP
-spark.sql.warehouse.dir hdfs://cluster-dev-m/spark-warehouse
-
-spark.files   /opt/benchmark-tools/oap/oap_jars/plasma-sql-ds-cache-1.2.0-snapshot-with-spark-3.1.1.jar,/opt/benchmark-tools/oap/oap_jars/pmem-common-1.2.0-snapshot-with-spark-3.1.1.jar,/opt/benchmark-tools/oap/oap_jars/arrow-plasma-4.0.0.jar
-spark.driver.extraClassPath  /opt/benchmark-tools/oap/oap_jars/plasma-sql-ds-cache-1.2.0-snapshot-with-spark-3.1.1.jar:/opt/benchmark-tools/oap/oap_jars/pmem-common-1.2.0-snapshot-with-spark-3.1.1.jar:/opt/benchmark-tools/oap/oap_jars/arrow-plasma-4.0.0.jar
-spark.executor.extraClassPath  ./plasma-sql-ds-cache-1.2.0-snapshot-with-spark-3.1.1.jar:./pmem-common-1.2.0-snapshot-with-spark-3.1.1.jar:./arrow-plasma-4.0.0.jar
-
-
-spark.master yarn
-spark.kryoserializer.buffer.max       256m
-spark.executor.memory 4g
-spark.deploy-mode client
-spark.executor.cores 2
-
-spark.driver.memory 2g
-spark.network.timeout 3600s
-spark.memory.offHeap.enabled false
-spark.eventLog.enabled true
-spark.executor.instances 4
-spark.driver.maxResultSize  3g
-spark.history.fs.cleaner.enabled true
-spark.history.ui.port 18080
-spark.serializer org.apache.spark.serializer.KryoSerializer
-spark.authenticate false
-
-
-spark.sql.extensions              org.apache.spark.sql.OapExtensions
-# for parquet file format, enable binary cache
-spark.sql.oap.parquet.binary.cache.enabled                   true
-spark.oap.cache.strategy                                     external
-spark.sql.oap.dcpmm.free.wait.threshold                      50000000000
-spark.executor.sql.oap.cache.external.client.pool.size       2
-
-spark.executorEnv.LD_LIBRARY_PATH   /opt/benchmark-tools/oap/lib
-spark.driver.extraLibraryPath       /opt/benchmark-tools/oap/lib
-```
 
 ***Modify `/etc/hadoop/conf/yarn-site.xml`.***
 
@@ -162,26 +106,82 @@ $ sudo cp /lib/spark/conf/spark-defaults.conf ./repo/confs/spark-oap-dataproc/sp
 ```
 mkdir ./repo/confs/sql-ds-cache-performance
 ```
-#### Update the content of .base to inherit the configuration of ./repo/confs/spark-oap-emr
+#### Update the content of .base to inherit the configuration of ./repo/confs/spark-oap-dataproc
 ```
 echo "../spark-oap-dataproc" > ./repo/confs/sql-ds-cache-performance/.base
 ```
 #### Update the content of ./repo/confs/sql-ds-cache-performance/env.conf
 ```
-NATIVE_SQL_ENGINE=TRUE
-STORAGE=s3
-S3_BUCKET={bucket_name}
-```
-Note: If you want to use s3 for storage, you must define S3_BUCKET; 
-If you use HDFS for storage, you should set STORAGE like below:
-
-```
 STORAGE=hdfs
 ```
+#### Modify `spark-defaults.conf`
+
+### 2.2. Config to enable SQL-DS-Cache
+
+***Modify `$SPARK_HOME/conf/spark-defaults.conf`.***
+
+```
+mkdir ./repo/confs/gazelle_plugin_performance/spark
+```
+
+**[bootstrap_oap.sh](../bootstrap_oap.sh)** will help install all OAP packages under dir `/opt/benchmark-tools/oap`,
+make sure to add below configuration to `./repo/confs/gazelle_plugin_performance/spark/spark-defaults.conf`.
+
+```
+spark.executorEnv.LD_LIBRARY_PATH   /opt/benchmark-tools/oap/lib
+spark.driver.extraLibraryPath       /opt/benchmark-tools/oap/lib
+```
+
+Here is an example of `spark-defaults.conf` on a `1 master + 2 workers` Dataproc cluster, 
+you can add these items to your `./repo/confs/sql-ds-cache-performance/spark/spark-defaults.conf` and modify config according to your cluster.
+
+```
+### OAP
+spark.sql.warehouse.dir hdfs:///datagen
+
+spark.files   /opt/benchmark-tools/oap/oap_jars/plasma-sql-ds-cache-1.2.0-snapshot-with-spark-3.1.1.jar,/opt/benchmark-tools/oap/oap_jars/pmem-common-1.2.0-snapshot-with-spark-3.1.1.jar,/opt/benchmark-tools/oap/oap_jars/arrow-plasma-4.0.0.jar
+spark.driver.extraClassPath  /opt/benchmark-tools/oap/oap_jars/plasma-sql-ds-cache-1.2.0-snapshot-with-spark-3.1.1.jar:/opt/benchmark-tools/oap/oap_jars/pmem-common-1.2.0-snapshot-with-spark-3.1.1.jar:/opt/benchmark-tools/oap/oap_jars/arrow-plasma-4.0.0.jar
+spark.executor.extraClassPath  ./plasma-sql-ds-cache-1.2.0-snapshot-with-spark-3.1.1.jar:./pmem-common-1.2.0-snapshot-with-spark-3.1.1.jar:./arrow-plasma-4.0.0.jar
+
+
+spark.master yarn
+spark.kryoserializer.buffer.max       256m
+spark.executor.memory 4g
+spark.deploy-mode client
+spark.executor.cores 2
+
+spark.driver.memory 2g
+spark.network.timeout 3600s
+spark.memory.offHeap.enabled false
+spark.eventLog.enabled true
+spark.executor.instances 4
+spark.driver.maxResultSize  3g
+spark.history.fs.cleaner.enabled true
+spark.history.ui.port 18080
+spark.serializer org.apache.spark.serializer.KryoSerializer
+spark.authenticate false
+
+
+spark.sql.extensions              org.apache.spark.sql.OapExtensions
+# for parquet file format, enable binary cache
+spark.sql.oap.parquet.binary.cache.enabled                   true
+spark.oap.cache.strategy                                     external
+spark.sql.oap.dcpmm.free.wait.threshold                      50000000000
+spark.executor.sql.oap.cache.external.client.pool.size       2
+
+spark.executorEnv.LD_LIBRARY_PATH   /opt/benchmark-tools/oap/lib
+spark.driver.extraLibraryPath       /opt/benchmark-tools/oap/lib
+```
+
 
 #### Define the configurations of TPC-DS
 
-Edit the content of `./repo/confs/sql-ds-cache-performance/TPC-DS/config`
+```
+mkdir  ./repo/confs/sql-ds-cache-performance/TPC-DS
+vim ./repo/confs/sql-ds-cache-performance/TPC-DS/config
+```
+
+Add the below content to `./repo/confs/sql-ds-cache-performance/TPC-DS/config`, which will generate 1GB Parquet.
 
 ```
 scale 1                    // data scale/GB

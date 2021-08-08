@@ -22,16 +22,22 @@ To create a new cluster with initialization actions, follow the steps below:
 1). Click the  **CREATE CLUSTER** to create and custom your cluster.
 
 2). **Set up cluster:** choose cluster type and Dataproc image version `2.0-centos8`, enable component gateway, and add Jupyter Notebook.
+
 ![Enable_component_gateway](../imgs/component_gateway.png)
 
 3). **Configure nodes:** choose the instance type and other configurations of nodes.
 
 4). **Customize cluster:** add initialization actions as below;
+
 ![Add bootstrap action](../imgs/add_scripts.png)
 
 5). **Manage security:** define the permissions and other security configurations;
 
-6). Click **Create**. 
+6). Click **EQUIVALENT COMMAND LINE**, then click **RUN IN CLOUD SHELL** to add argument ` --initialization-action-timeout 60m ` to your command,
+which sets timeout period for the initialization action to 60 minutes and the default timeout value is 10 minutes. You can also set it larger if the cluster network status is not good.
+Finally press **Enter** at the end of cloud shell command line to start to create a new cluster.
+
+![Set_init_timeout](../imgs/set_init_timeout.png)
 
 
 ## 2. Using benchmark-tools to easily run K-means, PCA and ALS with OAP MLlib

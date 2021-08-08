@@ -25,34 +25,36 @@ then add initialization actions **[bootstrap_benchmark.sh](../emr/benchmark/boot
 
 
 
-## 2. Update the basic configurations for spark
+## 2. Update the basic configurations for Spark
 
-Git clone oap-tools repo to Cloud
- 
-```
-git clone https://github.com/oap-project/oap-tools.git
-cd oap-tools/integrations/oap/benchmark-tool/
-```
-
-### 2.1 AWS EMR
+### AWS EMR
 
 Make sure the primary node has python2 installed;
 If you use AWS EMR, please execute the following commands to update the basic configurations for spark:
 
-```sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-emr/spark/spark-defaults.conf;```
+```
+git clone https://github.com/oap-project/oap-tools.git
+cd oap-tools/integrations/oap/benchmark-tool/
+sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-emr/spark/spark-defaults.conf
+sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-emr/hibench/spark.conf
+```
 
-```sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-emr/hibench/spark.conf;```
+### Google Cloud Dataproc
 
-### 2.2 Google Cloud Dataproc
+Run below the command to change the owner of directory`/opt/benchmark-tools`:
 
-Make sure the primary node has python2 installed.
+```
+sudo chown $(whoami):$(whoami) -R /opt/benchmark-tools
+```
 
-If you use Dataproc, please execute the following commands to update the basic configurations for spark:
+Run the following commands to update the basic configurations for Spark:
 
-```sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-dataproc/spark/spark-defaults.conf```
-
-```sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-dataproc/hibench/spark.conf```
-
+```
+git clone https://github.com/oap-project/oap-tools.git
+cd oap-tools/integrations/oap/benchmark-tool/
+sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-dataproc/spark/spark-defaults.conf
+sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-dataproc/hibench/spark.conf
+```
 
 ## 3. Config Rules to Follow && Create a configuration folder ##
 
@@ -69,15 +71,22 @@ You can inherit from the conf in repo by creating a ```.base``` file in your con
 Please follow prerequisites to update default configurations of spark. 
 If you want to inherit all configurations of ```repo/confs/spark-oap-emr```, please create a new directory in ```./repo/confs```with a meaningful name which will act as your configuration root for your workload and update the content of ```.base```.
 
+### 3.1 `.base`
+
 ```
 mkdir ./repo/confs/testconf
 
-#####EMR
+#####if on EMR, then 
 echo "../spark-oap-emr" > ./repo/confs/testconf/.base
 
-#####Dataproc
+#####if on Dataproc, then
 echo "../spark-oap-dataproc" > ./repo/confs/testconf/.base
 ```
+
+### 3.2 `env.conf`
+
+#### AWS EMR
+
 * When you want to use HDFS or S3 for storage, you need to edit `./repo/confs/testconf/env.conf` and add content like:
 ```
 STORAGE=s3
@@ -88,27 +97,38 @@ Note: If you want to use s3 for storage, you must define S3_BUCKET; if you use h
 STORAGE=hdfs
 ```
 
+#### Google Could Dataproc
+
+edit `./repo/confs/testconf/env.conf`, add below item to set HDFS as storage.
+
+```
+STORAGE=hdfs
+```
+
 ## 4. Run TPC-DS #
 
 ### 4.1 Update ###
 
-If you have made some changes in the parameter and need to reapply the parameters to the cluster configuration, such as some changes for spark, you need to edit ./repo/confs/testconf/spark/spark-defaults.conf like:
+Update Spark configuration
 ```
-spark.sql.autoBroadcastJoinThreshold 31457280
-spark.sql.broadcastTimeout 3600
-spark.dynamicAllocation.executorIdleTimeout 7200000s
+mkdir ./repo/confs/testconf/spark
+touch ./repo/confs/testconf/spark/spark-defaults.conf
+
+###if on Dataproc
+echo "spark.sql.warehouse.dir=hdfs:///datagen" >> ./repo/confs/testconf/spark/spark-defaults.conf
 ```
-Then you can execute update action:
+Then:
 
 ```
 bash bin/tpc_ds.sh update ./repo/confs/testconf
 ```
-Note: Updating step is neccessary to be executed even if you don't have any changes.
+
 ### 4.2 Generate data ###
 
 The first step to run TPC-DS is to generate data. To specify the data scale, data format you want, in the TPC-DS folder in your conf folder, create a file named ```config``` :
 ```
-vim repo/confs/testconf/config
+mkdir repo/confs/testconf/TPC-DS
+vim repo/confs/testconf/TPC-DS/config
 ```
 and add the scale and format value, such as below:
 
@@ -134,7 +154,7 @@ Once the data is generated, you can execute the following command to run TPCDS q
 bash bin/tpc_ds.sh run ./repo/confs/testconf 1
 ```
 
-The third parameter above is the iteration to run.
+The 3rd parameter `1` means the how many times the workload will be run.
 
 
 ## 5. Run TPC-H ##
@@ -146,7 +166,8 @@ The step of updating for TPC-H is similar to TPC-DS.
 ```
 bash bin/tpc_h.sh update ./repo/confs/testconf
 ```
-Note: Updating step is neccessary to be executed even if you don't have any changes.
+Note: Updating step is necessary to be executed even if you don't have any changes.
+
 ### 5.2 Generate data ###
 
 To specify the data scale, data format you want, in the TPC-H folder in your conf folder, create a file named ```config``` and add the scale and format value, for example:
