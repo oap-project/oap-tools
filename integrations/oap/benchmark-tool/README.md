@@ -155,7 +155,7 @@ The 3rd parameter `1` means the how many times the workload will be run.
 
 ## 5. Run TPC-H ##
 
-### 5.1 Modify Spark and TPC-DS configuration ###
+### 5.1 Modify Spark and TPC-H configuration ###
 
 #### Update Spark configuration ####
 ```
@@ -165,7 +165,7 @@ touch ./repo/confs/testconf/spark/spark-defaults.conf
 ###if on Dataproc
 echo "spark.sql.warehouse.dir=hdfs:///datagen" >> ./repo/confs/testconf/spark/spark-defaults.conf
 ```
-#### Update TPC-DS configuration ####
+#### Update TPC-H configuration ####
 
 ```
 mkdir ./repo/confs/gazelle_plugin_performance/TPC-H
@@ -251,7 +251,7 @@ Please follow [Gazelle_on_EMR.md](../emr/benchmark/Gazelle_on_EMR.md) or [Gazell
 
 Please follow [SQL_DS_Cache_on_Dataproc.md](../dataproc/benchmark/SQL_DS_Cache_on_Dataproc.md) to run TPC-DS with SQL DS Cache.
 
-Please follow [Intel_MLlib_on_EMR.md](../emr/benchmark/Intel_MLlib_on_EMR.md) or [OAP_MLlib_on_EMR.md](../dataproc/benchmark/OAP_MLlib_on_Dataproc.md)to run K-means, PAC, ALS with Intel-MLlib.
+Please follow [Intel_MLlib_on_EMR.md](../emr/benchmark/Intel_MLlib_on_EMR.md) or [OAP_MLlib_on_EMR.md](../dataproc/benchmark/OAP_MLlib_on_Dataproc.md)to run K-means, PAC, ALS with OAP MLlib.
 
 
 ## 8. Run workflow ##
