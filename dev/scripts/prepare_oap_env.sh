@@ -503,10 +503,10 @@ function build_boost() {
     tar zxvf boost_1_64_0.tar.gz
   fi
   cd boost_1_64_0/
-  ./bootstrap.sh --prefix=/usr/local/boost
+  ./bootstrap.sh --prefix=/usr/local
   ./b2 --with=all  install
-  export BOOST_ROOT=/usr/local/boost
-  echo 'export BOOST_ROOT=/usr/local/boost' >> ~/.bashrc
+  export BOOST_ROOT=/usr/local
+  echo 'export BOOST_ROOT=/usr/local' >> ~/.bashrc
   source ~/.bashrc
   e
 }
@@ -601,7 +601,7 @@ function prepare_rpmp_native() {
   make && make install
 
   cd $OAP_HOME/pmem-shuffle/rpmp/pmpool/client/java/rpmp
-  mvn clean install
+  mvn clean install -DskipTests
 }
 
 
