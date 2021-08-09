@@ -20,9 +20,7 @@ then add initialization actions **[bootstrap_benchmark.sh](../emr/benchmark/boot
 
 ![upload_init_script and install_benchmark.sh](../dataproc/imgs/upload_scripts_to_bucket.png)
 
-![Add bootstrap action](../dataproc/imgs/add_scripts.png) 
-
-
+![Set_init_timeout](../dataproc/imgs/set_init_timeout.png) 
 
 
 ## 2. Update the basic configurations for Spark
@@ -107,9 +105,9 @@ STORAGE=hdfs
 
 ## 4. Run TPC-DS #
 
-### 4.1 Update ###
+### 4.1 Modify Spark and TPC-DS configuration ###
 
-Update Spark configuration
+#### Update Spark configuration ####
 ```
 mkdir ./repo/confs/testconf/spark
 touch ./repo/confs/testconf/spark/spark-defaults.conf
@@ -117,13 +115,7 @@ touch ./repo/confs/testconf/spark/spark-defaults.conf
 ###if on Dataproc
 echo "spark.sql.warehouse.dir=hdfs:///datagen" >> ./repo/confs/testconf/spark/spark-defaults.conf
 ```
-Then:
-
-```
-bash bin/tpc_ds.sh update ./repo/confs/testconf
-```
-
-### 4.2 Generate data ###
+#### Update TPC-DS configuration ####
 
 The first step to run TPC-DS is to generate data. To specify the data scale, data format you want, in the TPC-DS folder in your conf folder, create a file named ```config``` :
 ```
@@ -139,10 +131,14 @@ partitionTables true
 useDoubleForDecimal false
 queries all
 ```
+This configuration is to generate 1GB scale, parquet format and partitioned table. Refer to ```./conf/TPC-DS/config``` if you want to change other aspects. 
 
-config to generate 1GB scale, parquet format and partitioned table. Refer to ```./conf/TPC-DS/config``` if you want to change other aspects. And then execute the below command to gen data.
+#### 4.2 Generate data ####
+
+Run the below command to update all configuration and generate data.
 
 ```
+bash bin/tpc_ds.sh update ./repo/confs/testconf
 bash bin/tpc_ds.sh gen_data ./repo/confs/testconf
 ```
 
@@ -159,16 +155,22 @@ The 3rd parameter `1` means the how many times the workload will be run.
 
 ## 5. Run TPC-H ##
 
-### 5.1 Update ###
+### 5.1 Modify Spark and TPC-DS configuration ###
 
-The step of updating for TPC-H is similar to TPC-DS.
+#### Update Spark configuration ####
+```
+mkdir ./repo/confs/testconf/spark
+touch ./repo/confs/testconf/spark/spark-defaults.conf
+
+###if on Dataproc
+echo "spark.sql.warehouse.dir=hdfs:///datagen" >> ./repo/confs/testconf/spark/spark-defaults.conf
+```
+#### Update TPC-DS configuration ####
 
 ```
-bash bin/tpc_h.sh update ./repo/confs/testconf
+mkdir ./repo/confs/gazelle_plugin_performance/TPC-H
+vim ./repo/confs/gazelle_plugin_performance/TPC-H/config
 ```
-Note: Updating step is necessary to be executed even if you don't have any changes.
-
-### 5.2 Generate data ###
 
 To specify the data scale, data format you want, in the TPC-H folder in your conf folder, create a file named ```config``` and add the scale and format value, for example:
 
@@ -181,7 +183,10 @@ partitionTables true
 useDoubleForDecimal false
 ```
 
-Refer to ```./conf/TPC-H/config``` if you want to change other aspects. And then execute the below command to gen data.
+### 5.2 Generate data ###
+
+Refer to ```./conf/TPC-H/config``` if you want to change other aspects. 
+Run the below command to update all configuration and generate data.
 
 ```
 bash bin/tpc_h.sh update ./repo/confs/testconf
@@ -190,7 +195,7 @@ bash bin/tpc_h.sh gen_data ./repo/confs/testconf
 
 ### 5.3 Run ###
 
-After the data is generated, you can execute the following command to run TPCH queries:
+After the data is generated, you can execute the following command to run TPC-H queries:
 
 ```
 bash bin/tpc_h.sh run ./repo/confs/testconf 1
@@ -214,7 +219,7 @@ Then you can update the parameters for the cluster:
 ```
 bash bin/hibench.sh update ./repo/confs/testconf
 ```
-Note: Updating step is neccessary to be executed even if you don't have any changes.
+Note: Updating step is necessary to be executed even if you don't have any changes.
 
 ### 6.2 Generate data ###
 

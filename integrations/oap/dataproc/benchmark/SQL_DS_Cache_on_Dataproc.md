@@ -21,24 +21,28 @@ To create a new cluster with initialization actions, follow the steps below:
 
 1). Click the  **CREATE CLUSTER** to create and custom your cluster.
 
-2). **Set up cluster:** choose cluster type and Dataproc image version `2.0-centos8`, enable component gateway, and add Jupyter Notebook.
+2). **Set up cluster:** choose cluster type and Dataproc image version `2.0-centos8`, enable component gateway, and add Jupyter Notebook, ZooKeeper.
 ![Enable_component_gateway](../imgs/component_gateway.png)
 
 3). **Configure nodes:** choose the instance type and other configurations of nodes.
 
 4). **Customize cluster:** add initialization actions as below;
-![Add bootstrap action](../imgs/add_scripts.png)
 
 5). **Manage security:** define the permissions and other security configurations;
 
 6). Click **EQUIVALENT COMMAND LINE**, then click **RUN IN CLOUD SHELL** to add argument ` --initialization-action-timeout 60m ` to your command,
 which sets timeout period for the initialization action to 60 minutes and the default timeout value is 10 minutes. You can also set it larger if the cluster network status is not good.
 Finally press **Enter** at the end of cloud shell command line to start to create a new cluster.
+
 ![Set_init_timeout](../imgs/set_init_timeout.png) 
 
-## 2. Configurations for enabling SQL-DS-Cache
+## 2. Configuration for enabling YARN services Rest API on ResourceManager
 
-***Modify `/etc/hadoop/conf/yarn-site.xml`.***
+***Modify `/etc/hadoop/conf/yarn-site.xml` on master***
+
+```
+sudo vim /etc/hadoop/conf/yarn-site.xml
+```
 
 Delete the property below:
 
@@ -62,74 +66,46 @@ and add the property to enable YARN services Rest API on ResourceManager.
     <value>true</value>
 </property>
 ```
-
-***Use Yarn to start Plasma service***
-
-When using Yarn(Hadoop version >= 3.1) to start Plasma service, you should provide a json file `/tmp/plasmaLaunch.json` as below.
-
-```
-{
-  "name": "plasma-store-services",
-  "version": 1,
-  "components" :
-  [
-   {
-     "name": "plasma-store-service",
-     "number_of_containers": 2,
-     "launch_command": "/opt/benchmark-tools/oap/bin/plasma-store-server -m 15000000000 -s /tmp/plasmaStore -d /mnt/pmem",
-     "resource": {
-       "cpus": 1,
-       "memory": 512
-     }
-   }
-  ]
-}
-
-```
-Run command `yarn app -launch oap-plasma-store-service /tmp/plasmaLaunch.json` to start Plasma server.
-Run `yarn app -stop plasma-store-service` to stop it.
-Run `yarn app -destroy plasma-store-service` to destroy it.
-
+Then **restart** this cluster.
 
 ## 3. Run TPC-DS with benchmark-tools
 
 ### 3.1. Update the basic configuration of spark
 
-#### Update the basic configuration of spark
+Run below the command to change the owner of directory`/opt/benchmark-tools`:
+
 ```
-$ sudo cp /lib/spark/conf/spark-defaults.conf ./repo/confs/spark-oap-dataproc/spark/spark-defaults.conf
+sudo chown $(whoami):$(whoami) -R /opt/benchmark-tools
 ```
 
-### 3.2. Create the testing repo && Config gazelle_plugin
+Run the following commands to update the basic configurations for Spark:
+
+```
+git clone https://github.com/oap-project/oap-tools.git
+cd oap-tools/integrations/oap/benchmark-tool/
+sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-dataproc/spark/spark-defaults.conf
+```
+
+### 3.2. Create the testing repo && Config SQL DS Cache
 
 #### Create the testing repo
 ```
 mkdir ./repo/confs/sql-ds-cache-performance
 ```
-#### Update the content of .base to inherit the configuration of ./repo/confs/spark-oap-dataproc
+#### Update the content of `.base` to inherit the configuration of `./repo/confs/spark-oap-dataproc`
 ```
 echo "../spark-oap-dataproc" > ./repo/confs/sql-ds-cache-performance/.base
 ```
-#### Update the content of ./repo/confs/sql-ds-cache-performance/env.conf
+#### Update the content of `./repo/confs/sql-ds-cache-performance/env.conf`
 ```
+OAP_with_external=TRUE
 STORAGE=hdfs
 ```
-#### Modify `spark-defaults.conf`
-
-### 2.2. Config to enable SQL-DS-Cache
-
-***Modify `$SPARK_HOME/conf/spark-defaults.conf`.***
+#### Modify `spark-defaults.conf` to enable SQL DS Cache
 
 ```
-mkdir ./repo/confs/gazelle_plugin_performance/spark
-```
-
-**[bootstrap_oap.sh](../bootstrap_oap.sh)** will help install all OAP packages under dir `/opt/benchmark-tools/oap`,
-make sure to add below configuration to `./repo/confs/gazelle_plugin_performance/spark/spark-defaults.conf`.
-
-```
-spark.executorEnv.LD_LIBRARY_PATH   /opt/benchmark-tools/oap/lib
-spark.driver.extraLibraryPath       /opt/benchmark-tools/oap/lib
+mkdir ./repo/confs/sql-ds-cache-performance/spark
+vim ./repo/confs/sql-ds-cache-performance/spark/spark-defaults.conf
 ```
 
 Here is an example of `spark-defaults.conf` on a `1 master + 2 workers` Dataproc cluster, 
@@ -184,22 +160,24 @@ vim ./repo/confs/sql-ds-cache-performance/TPC-DS/config
 Add the below content to `./repo/confs/sql-ds-cache-performance/TPC-DS/config`, which will generate 1GB Parquet.
 
 ```
-scale 1                    // data scale/GB
-format parquet             // support parquet or orc
-partitionTables true       // creating partitioned tables
-queries all                // 'all' means running 99 queries, '1,2,4,6' means running q1.sql, q2.sql, q4.sql, q6.sql
+scale 1                  
+format parquet           
+partitionTables true     
+queries all             
 ```
 
 
 ### 3.3. Run TPC-DS
 
-We provide scripts to help easily run TPC-DS and TPC-H.
+We provide scripts to help easily run TPC-DS.
 
 ```
-###Update: 
+### Update all configuration: 
+
 bash bin/tpc_ds.sh update ./repo/confs/sql-ds-cache-performance
 
-###Generate data: 
+### Generate data: 
+
 bash bin/tpc_ds.sh gen_data ./repo/confs/sql-ds-cache-performance
 
 ### run power test for 1 round.
