@@ -21,15 +21,13 @@ To create a new cluster with initialization actions, follow the steps below:
 
 1). Click the  **CREATE CLUSTER** to create and custom your cluster.
 
-2). **Set up cluster:** choose cluster type and Dataproc image version `2.0-centos8`, enable component gateway, and add Jupyter Notebook.
+2). **Set up cluster:** choose cluster type and Dataproc image version `2.0-centos8`, enable component gateway, and add Jupyter Notebook, ZooKeeper.
 
 ![Enable_component_gateway](../imgs/component_gateway.png)
 
 3). **Configure nodes:** choose the instance type and other configurations of nodes.
 
 4). **Customize cluster:** add initialization actions as below;
-
-![Add bootstrap action](../imgs/add_scripts.png)
 
 5). **Manage security:** define the permissions and other security configurations;
 
@@ -42,34 +40,37 @@ Finally press **Enter** at the end of cloud shell command line to start to creat
 
 ## 2. Using benchmark-tools to easily run K-means, PCA and ALS with OAP MLlib
 
+Run below the command to change the owner of directory`/opt/benchmark-tools`:
+
+```
+sudo chown $(whoami):$(whoami) -R /opt/benchmark-tools
+```
+
 Modify `/opt/benchmark-tools/HiBench/conf/hadoop.conf`:
 ```
 hibench.hadoop.home               /usr/lib/hadoop/
 ```
 
-Git clone oap-tools repo to master:
- 
+
+### 2.1. Update the basic configuration of Spark
+
+#### Update the basic configuration of Spark
+
 ```
 git clone https://github.com/oap-project/oap-tools.git
-cd oap-tools/integrations/oap/benchmark-tool/
+cd oap-tools/integrations/oap/benchmark-tool
+sudo cp /lib/spark/conf/spark-defaults.conf ./repo/confs/spark-oap-dataproc/hibench/spark.conf;
 ```
 
-### 2.1. Update the basic configuration of spark
-
-#### Update the basic configuration of spark
-```
-$ sudo cp /lib/spark/conf/spark-defaults.conf ./repo/confs/spark-oap-emr/hibench/spark.conf;
-```
-
-### 2.2. Create the testing repo && Config Intel-MLlib
+### 2.2. Create the testing repo && Config OAP-MLlib
 
 #### Create the testing repo
 ```
 mkdir ./repo/confs/OAP_MLlib_performance
 ```
-#### Update the content of .base to inherit the configuration of ./repo/confs/spark-oap-emr
+#### Update the content of .base to inherit the configuration of ./repo/confs/spark-oap-dataproc
 ```
-echo "../spark-oap-emr" > ./repo/confs/OAP_MLlib_performance/.base
+echo "../spark-oap-dataproc" > ./repo/confs/OAP_MLlib_performance/.base
 ```
 #### Update the content of ./repo/confs/OAP_MLlib_performance/env.conf
 ```
@@ -84,16 +85,20 @@ Note: If you want to use s3 for storage, you must define S3_BUCKET; if you use h
 make sure to add below configuration to `./repo/confs/OAP_MLlib_performance/hibench/spark.conf`.
 
 ```
-spark.files                       /opt/benchmark-tools/oap/oap_jars/oap-mllib-1.1.1.jar
-spark.executor.extraClassPath     ./oap-mllib-1.1.1.jar
-spark.driver.extraClassPath       /opt/benchmark-tools/oap/oap_jars/oap-mllib-1.1.1.jar
+spark.files                       /opt/benchmark-tools/oap/oap_jars/oap-mllib-1.2.0.jar
+spark.executor.extraClassPath     ./oap-mllib-1.2.0.jar
+spark.driver.extraClassPath       /opt/benchmark-tools/oap/oap_jars/oap-mllib-1.2.0.jar
 
-spark.executor.memoryOverhead               512m     # Make it enough to cache training data
-hibench.yarn.executor.num                   2        # Refer to the default value of spark.executor.cores of /lib/spark/conf/spark-defaults.conf
-hibench.yarn.executor.cores                 2        # Divide the sum of vcores by hibench.yarn.executor.num
-
-spark.default.parallelism                   4        # Equal to the sum of vcores
-spark.sql.shuffle.partitions                4        # Equal to the sum of vcores
+# Make it enough to cache training data
+spark.executor.memoryOverhead               512m   
+# Refer to the default value of spark.executor.cores of /lib/spark/conf/spark-defaults.conf  
+hibench.yarn.executor.num                   2 
+# Divide the sum of vcores by hibench.yarn.executor.num       
+hibench.yarn.executor.cores                 2        
+# Equal to the sum of vcores
+spark.default.parallelism                   4        
+ # Equal to the sum of vcores
+spark.sql.shuffle.partitions                4       
 ```
 
 
@@ -101,7 +106,8 @@ spark.sql.shuffle.partitions                4        # Equal to the sum of vcore
 
 Edit the content of `./repo/confs/OAP_MLlib_performance/hibench/hibench.conf` to change the 
 ```
-hibench.scale.profile                       tiny     # Support tiny, small, large, huge, gigantic, bigdata.
+# Support tiny, small, large, huge, gigantic, bigdata.
+hibench.scale.profile                       tiny     
 ```
 
 #### Define the configurations of kmeans.conf
@@ -143,30 +149,47 @@ Note: You can use default value of als.conf and no need to change any values. If
 ### 2.3. Run K-means
 
 ```
-Update: bash bin/hibench.sh update ./repo/confs/OAP_MLlib_performance   
+### Update: 
 
-Generate data: bash bin/hibench.sh gen_data ./repo/confs/OAP_MLlib_performance ml/kmeans
+bash bin/hibench.sh update ./repo/confs/OAP_MLlib_performance   
 
-Run benchmark: bash bin/hibench.sh run ./repo/confs/OAP_MLlib_performance ml/kmeans
+### Generate data:
+ 
+bash bin/hibench.sh gen_data ./repo/confs/OAP_MLlib_performance ml/kmeans
+
+### Run benchmark: 
+
+bash bin/hibench.sh run ./repo/confs/OAP_MLlib_performance ml/kmeans
 ```
 
 ### 2.4. Run PCA:  
 
 ```
-Update: bash bin/hibench.sh update ./repo/confs/OAP_MLlib_performance   
+### Update: 
+bash bin/hibench.sh update ./repo/confs/OAP_MLlib_performance   
 
-Generate data: bash bin/hibench.sh gen_data ./repo/confs/OAP_MLlib_performance ml/pca
+### Generate data: 
 
-Run benchmark: bash bin/hibench.sh run ./repo/confs/OAP_MLlib_performance ml/pca
+bash bin/hibench.sh gen_data ./repo/confs/OAP_MLlib_performance ml/pca
+
+### Run benchmark: 
+
+bash bin/hibench.sh run ./repo/confs/OAP_MLlib_performance ml/pca
 ```
 
 ### 2.4. Run ALS:  
 
 ```
-Update: bash bin/hibench.sh update ./repo/confs/OAP_MLlib_performance   
+### Update: 
 
-Generate data: bash bin/hibench.sh gen_data ./repo/confs/OAP_MLlib_performance ml/als
+bash bin/hibench.sh update ./repo/confs/OAP_MLlib_performance   
 
-Run benchmark: bash bin/hibench.sh run ./repo/confs/OAP_MLlib_performance ml/als
+### Generate data: 
+
+bash bin/hibench.sh gen_data ./repo/confs/OAP_MLlib_performance ml/als
+
+### Run benchmark: 
+
+bash bin/hibench.sh run ./repo/confs/OAP_MLlib_performance ml/als
 ```
 

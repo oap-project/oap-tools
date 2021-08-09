@@ -21,15 +21,13 @@ To create a new cluster with initialization actions, follow the steps below:
 
 1). Click the  **CREATE CLUSTER** to create and custom your cluster.
 
-2). **Set up cluster:** choose cluster type and Dataproc image version `2.0-centos8`, enable component gateway, and add Jupyter Notebook.
+2). **Set up cluster:** choose cluster type and Dataproc image version `2.0-centos8`, enable component gateway, and add Jupyter Notebook, ZooKeeper.
 
 ![Enable_component_gateway](../imgs/component_gateway.png)
 
 3). **Configure nodes:** choose the instance type and other configurations of nodes.
 
 4). **Customize cluster:** add initialization actions as below;
-
-![Add bootstrap action](../imgs/add_scripts.png)
 
 5). **Manage security:** define the permissions and other security configurations;
 
@@ -44,8 +42,19 @@ Finally press **Enter** at the end of cloud shell command line to start to creat
 ### 2.1. Update the basic configuration of Spark
 
 #### Update the basic configuration of Spark
+
+Run below the command to change the owner of directory`/opt/benchmark-tools`:
+
 ```
-sudo cp /lib/spark/conf/spark-defaults.conf ./repo/confs/spark-oap-dataproc/spark/spark-defaults.conf
+sudo chown $(whoami):$(whoami) -R /opt/benchmark-tools
+```
+
+Run the following commands to update the basic configurations for Spark:
+
+```
+git clone https://github.com/oap-project/oap-tools.git
+cd oap-tools/integrations/oap/benchmark-tool/
+sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-dataproc/spark/spark-defaults.conf
 ```
 
 ### 2.2. Create the testing repo && config for Gazelle Plugin
@@ -165,7 +174,12 @@ queries all
 
 #### Define the configurations of TPC-H
 
-Edit the content of `./repo/confs/gazelle_plugin_performance/TPC-H/config` like below
+```
+mkdir ./repo/confs/gazelle_plugin_performance/TPC-H
+vim ./repo/confs/gazelle_plugin_performance/TPC-H/config
+```
+
+Add the content to `./repo/confs/gazelle_plugin_performance/TPC-H/config` like below
 ```
 scale 1                     
 format parquet              
