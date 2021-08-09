@@ -434,9 +434,14 @@ function prepare_HPNL(){
   cd HPNL
   git checkout wip_rpmp
   git submodule update --init --recursive
-  mkdir build
+  mkdir -p build
   cd build
-  cmake -DWITH_VERBS=ON -DWITH_JAVA=ON ..
+  if $ENABLE_RDMA
+  then
+    cmake -DWITH_VERBS=ON .. 
+  else
+    cmake -DWITH_VERBS=OFF  .. 
+  fi
   make -j && make install
   cd ../java/hpnl
   mvn  install -DskipTests
@@ -500,9 +505,6 @@ function build_boost() {
   cd boost_1_64_0/
   ./bootstrap.sh --prefix=/usr/local/boost
   ./b2 --with=all  install
-  cd tools/build/
-  ./bootstrap.sh
-  ./b2 install --prefix=/usr/local/boost
   export BOOST_ROOT=/usr/local/boost
   echo 'export BOOST_ROOT=/usr/local/boost' >> ~/.bashrc
   source ~/.bashrc
