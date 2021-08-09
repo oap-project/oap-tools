@@ -70,6 +70,7 @@ echo "../spark-oap-dataproc" > ./repo/confs/gazelle_plugin_performance/.base
 #### Update the content of `./repo/confs/gazelle_plugin_performance/env.conf`
 
 ```
+NATIVE_SQL_ENGINE=TRUE
 STORAGE=hdfs
 ```
 #### Update the content of `./repo/confs/gazelle_plugin_performance/spark/spark-defaults.conf`
