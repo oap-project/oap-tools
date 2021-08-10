@@ -109,9 +109,6 @@ function check_gcc() {
     if [ ! -f "$DEV_PATH/thirdparty/gcc7/bin/gcc" ]; then
       install_gcc7
     fi
-    export CXX=$DEV_PATH/thirdparty/gcc7/bin/g++
-    export CC=$DEV_PATH/thirdparty/gcc7/bin/gcc
-    export LD_LIBRARY_PATH=$DEV_PATH/thirdparty/gcc7/lib64:$LD_LIBRARY_PATH
   fi
 }
 
@@ -297,7 +294,7 @@ function install_gcc7() {
 
   cd gcc-7.3.0/
   mkdir -p $DEV_PATH/thirdparty/gcc7
-  ./configure --prefix=$DEV_PATH/thirdparty/gcc7 --disable-multilib
+  ./configure --prefix=/usr --disable-multilib 
   make -j
   make install
 }
@@ -496,6 +493,7 @@ function prepare_libcuckoo() {
 }
 
 function build_boost() {
+  yum remove -y boost*
   mkdir -p $DEV_PATH/thirdparty
   cd $DEV_PATH/thirdparty
   if [ ! -d "boost_1_64_0" ]; then
