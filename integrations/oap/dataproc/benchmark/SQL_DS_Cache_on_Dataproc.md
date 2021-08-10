@@ -171,16 +171,18 @@ queries all
 
 We provide scripts to help easily run TPC-DS.
 
+To make the configuration above to be valid, run the following command (Note: every time you change Spark and TPC-DS configuration above, make sure to re-run this command.)
+
 ```
-### Update all configuration: 
-
 bash bin/tpc_ds.sh update ./repo/confs/sql-ds-cache-performance
+```
 
-### Generate data: 
-
+Generate data:
+``` 
 bash bin/tpc_ds.sh gen_data ./repo/confs/sql-ds-cache-performance
+```
 
-### run power test for 1 round.
-
+Run power test for 1 round.
+```
 bash bin/tpc_ds.sh run ./repo/confs/sql-ds-cache-performance 1
 ```
