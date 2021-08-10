@@ -60,20 +60,29 @@ sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-dataproc/spark/
 ### 2.2. Create the testing repo && config for Gazelle Plugin
 
 #### Create the testing repo
+
+Run the following command:
+
 ```
 mkdir ./repo/confs/gazelle_plugin_performance
 ```
 #### Update the content of `.base` to inherit the configuration of `./repo/confs/spark-oap-dataproc`
+
+Run the following command:
 ```
 echo "../spark-oap-dataproc" > ./repo/confs/gazelle_plugin_performance/.base
 ```
 #### Update the content of `./repo/confs/gazelle_plugin_performance/env.conf`
+
+Edit the `./repo/confs/gazelle_plugin_performance/env.conf` to add items below
 
 ```
 NATIVE_SQL_ENGINE=TRUE
 STORAGE=hdfs
 ```
 #### Update the content of `./repo/confs/gazelle_plugin_performance/spark/spark-defaults.conf`
+
+Run the following command:
 
 ```
 mkdir ./repo/confs/gazelle_plugin_performance/spark
@@ -87,16 +96,7 @@ spark.executor.extraLibraryPath              /opt/benchmark-tools/oap/lib
 spark.executorEnv.LIBARROW_DIR               /opt/benchmark-tools/oap
 spark.executorEnv.CC                         /opt/benchmark-tools/oap/bin/gcc
 ```
-Then make sure use below command to add some environment variables before start Gazelle, you can also add them to `~/.bashrc`.
-```
-export CC=/opt/benchmark-tools/oap/bin/gcc
-export LIBARROW_DIR=/opt/benchmark-tools/oap
-export LD_LIBRARY_PATH=/opt/benchmark-tools/oap/lib/:$LD_LIBRARY_PATH
-```
-then run
-```
-source ~/.bashrc
-```
+
 Here is an example of `spark-defaults.conf` on a `1 master + 2 workers` Dataproc cluster, 
 you can add these items to your `./repo/confs/gazelle_plugin_performance/spark/spark-defaults.conf` and modify config according to your cluster.
 
@@ -190,27 +190,33 @@ queries all
 
 ### 2.3. Run TPC-DS
 
-We provide scripts to help easily run TPC-DS and TPC-H.
-
+To make the configuration above to be valid, run the following command (Note: every time you change Spark and TPC-DS configuration above, make sure to re-run this command.)
 ```
-###Update: 
 bash bin/tpc_ds.sh update ./repo/confs/gazelle_plugin_performance   
+```
 
-###Generate data: 
+Generate data: 
+```
 bash bin/tpc_ds.sh gen_data ./repo/confs/gazelle_plugin_performance
+```
 
-### run power test for 1 round.
-
+Run power test for 1 round.
+```
 bash bin/tpc_ds.sh run ./repo/confs/gazelle_plugin_performance 1
 ```
 
 ### 2.4. Run TPC-H:  
 
+To make the configuration above to be valid, run the following command (Note: every time you change Spark and TPC-H configuration above, make sure to re-run this command.)
 ```
-Update: bash bin/tpc_h.sh update ./repo/confs/gazelle_plugin_performance   
+bash bin/tpc_h.sh update ./repo/confs/gazelle_plugin_performance   
+```
 
+Generate data: 
+```
 bash bin/tpc_h.sh gen_data ./repo/confs/gazelle_plugin_performance
-
-### run power test for 1 round.
+```
+Run power test for 1 round.
+```
 bash bin/tpc_h.sh run ./repo/confs/gazelle_plugin_performance 1
 ```

@@ -135,16 +135,20 @@ This configuration is to generate 1GB scale, parquet format and partitioned tabl
 
 #### 4.2 Generate data ####
 
-Run the below command to update all configuration and generate data.
+To make the configuration above to be valid, run the following command (Note: every time you change the Spark and TPC-DS configuration above, make sure to re-run this command.)
 
 ```
 bash bin/tpc_ds.sh update ./repo/confs/testconf
+```
+
+Generate data:
+```
 bash bin/tpc_ds.sh gen_data ./repo/confs/testconf
 ```
 
 ### 4.3 Run ###
 
-Once the data is generated, you can execute the following command to run TPCDS queries:
+Once the data is generated, you can execute the following command to run TPC-DS queries:
 
 ```
 bash bin/tpc_ds.sh run ./repo/confs/testconf 1
@@ -185,13 +189,18 @@ useDoubleForDecimal false
 
 ### 5.2 Generate data ###
 
-Refer to ```./conf/TPC-H/config``` if you want to change other aspects. 
-Run the below command to update all configuration and generate data.
+To make the configuration above to be valid, run the following command (Note: every time you change the configuration above, make sure to re-run this command.)
 
 ```
 bash bin/tpc_h.sh update ./repo/confs/testconf
+```
+Generate data:
+
+```
 bash bin/tpc_h.sh gen_data ./repo/confs/testconf
 ```
+
+Refer to ```./conf/TPC-H/config``` if you want to change other items.
 
 ### 5.3 Run ###
 
