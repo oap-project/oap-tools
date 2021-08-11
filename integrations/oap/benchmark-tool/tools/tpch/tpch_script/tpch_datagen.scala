@@ -1,7 +1,7 @@
 import com.databricks.spark.sql.perf.tpch._
 
 val tools_path = "{%tpch.home%}"
-val data_path="{%storage%}://{%s3.bucket%}/datagen/tpch_{%data.format%}{%partitioned%}/{%scale%}"
+val data_path="{%storage%}://{%bucket%}/datagen/tpch_{%data.format%}{%partitioned%}/{%scale%}"
 val scaleFactor = "{%scale%}"
 val numPartitions ={%partition%}
 val databaseName = "tpch_{%data.format%}{%partitioned%}_scale_{%scale%}_db"

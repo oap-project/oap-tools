@@ -74,7 +74,7 @@ echo "../spark-oap-dataproc" > ./repo/confs/gazelle_plugin_performance/.base
 ```
 #### Update the content of `./repo/confs/gazelle_plugin_performance/env.conf`
 
-Edit the `./repo/confs/gazelle_plugin_performance/env.conf` to add items below
+Edit the `./repo/confs/gazelle_plugin_performance/env.conf` to add items below, Gazelle doesn't support GCS as storage, so choose HDFS here.
 
 ```
 NATIVE_SQL_ENGINE=TRUE
