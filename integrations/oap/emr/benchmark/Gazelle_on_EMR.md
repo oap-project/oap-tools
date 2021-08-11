@@ -33,9 +33,9 @@ echo "../spark-oap-emr" > ./repo/confs/gazelle_plugin_performance/.base
 ```
 NATIVE_SQL_ENGINE=TRUE
 STORAGE=s3
-S3_BUCKET={bucket_name}
+BUCKET={bucket_name}
 ```
-Note: If you want to use s3 for storage, you must define S3_BUCKET; if you use hdfs for storage, you should set STORAGE like ```STORAGE=hdfs```
+Note: If you want to use s3 for storage, you must define BUCKET; if you use hdfs for storage, you should set STORAGE like ```STORAGE=hdfs```
 
 #### Update the configurations of spark
 **[bootstrap_oap.sh](../bootstrap_oap.sh)** will help install all OAP packages under dir `/opt/benchmark-tools/oap`,

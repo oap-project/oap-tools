@@ -70,7 +70,7 @@ def gen_test_dict(custom_conf ,beaver_env, mode=[]):
     data_format = config_dict.get("format").strip()
     tables_partition = config_dict.get("partitionTables").strip()
     queries = config_dict.get("queries").strip()
-    s3_bucket = beaver_env.get("S3_BUCKET")
+    bucket = beaver_env.get("BUCKET")
     dict["{%partitionTables%}"] = tables_partition
     dict["{%scale%}"] = data_scale
     dict["{%data.format%}"] = data_format
@@ -86,10 +86,10 @@ def gen_test_dict(custom_conf ,beaver_env, mode=[]):
     else:
         dict["{%arrow_enable%}"] = 'false'
 
-    if beaver_env.get("STORAGE") == "s3":
-        dict["{%s3.bucket%}"] = s3_bucket
+    if beaver_env.get("STORAGE") == "s3" or "gs":
+        dict["{%bucket%}"] = bucket
     else:
-        dict["{%s3.bucket%}"] = ""
+        dict["{%bucket%}"] = ""
 
     if config_dict.get("partitionTables").strip() == "true":
         dict["{%partitioned%}"] = "_partition"
@@ -118,7 +118,7 @@ def gen_tpch_test_dict(custom_conf ,beaver_env, mode=[]):
     ifPartitioned = config_dict.get("partitionTables").strip()
     tables_partition = config_dict.get("partition").strip()
     queries = config_dict.get("queries").strip()
-    s3_bucket = beaver_env.get("S3_BUCKET")
+    bucket = beaver_env.get("BUCKET")
     dict["{%partitionTables%}"] = ifPartitioned
     dict["{%scale%}"] = data_scale
     dict["{%data.format%}"] = data_format
@@ -135,10 +135,10 @@ def gen_tpch_test_dict(custom_conf ,beaver_env, mode=[]):
     else:
         dict["{%arrow_enable%}"] = 'false'
 
-    if beaver_env.get("STORAGE") == "s3":
-        dict["{%s3.bucket%}"] = s3_bucket
+    if beaver_env.get("STORAGE") == "s3" or "gs":
+        dict["{%bucket%}"] = bucket
     else:
-        dict["{%s3.bucket%}"] = ""
+        dict["{%bucket%}"] = ""
 
     if config_dict.get("partitionTables").strip() == "true":
         dict["{%partitioned%}"] = "_partition"

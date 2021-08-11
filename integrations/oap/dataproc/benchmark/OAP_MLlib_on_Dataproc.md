@@ -75,9 +75,9 @@ echo "../spark-oap-dataproc" > ./repo/confs/OAP_MLlib_performance/.base
 #### Update the content of ./repo/confs/OAP_MLlib_performance/env.conf
 ```
 STORAGE=s3
-S3_BUCKET={bucket_name}
+BUCKET={bucket_name}
 ```
-Note: If you want to use s3 for storage, you must define S3_BUCKET; if you use hdfs for storage, you should set STORAGE like ```STORAGE=hdfs```
+Note: If you want to use s3 for storage, you must define BUCKET; if you use hdfs for storage, you should set STORAGE like ```STORAGE=hdfs```
 
 #### Update the configurations of Spark
 

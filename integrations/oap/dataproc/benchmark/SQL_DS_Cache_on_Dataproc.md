@@ -66,7 +66,17 @@ and add the property to enable YARN services Rest API on ResourceManager.
     <value>true</value>
 </property>
 ```
-Then **restart** this cluster.
+Then **restart** ResourceManager with below command:
+
+```
+###change to root user
+sudo -i
+systemctl restart hadoop-yarn-resourcemanager
+```
+Then change back to your account with below command:
+```
+exit
+```
 
 ## 3. Run TPC-DS with benchmark-tools
 
@@ -97,10 +107,19 @@ mkdir ./repo/confs/sql-ds-cache-performance
 echo "../spark-oap-dataproc" > ./repo/confs/sql-ds-cache-performance/.base
 ```
 #### Update the content of `./repo/confs/sql-ds-cache-performance/env.conf`
+
+If you use HDFS as storage, add items below:
 ```
 OAP_with_external=TRUE
 STORAGE=hdfs
 ```
+If you use Google Cloud Storage as storage, add items below:
+```
+OAP_with_external=TRUE
+STORAGE=gs
+BUCKET={your_bucket}
+```
+
 #### Modify `spark-defaults.conf` to enable SQL DS Cache
 
 ```
@@ -108,12 +127,20 @@ mkdir ./repo/confs/sql-ds-cache-performance/spark
 vim ./repo/confs/sql-ds-cache-performance/spark/spark-defaults.conf
 ```
 
+If choosing HDFS, add below item to `./repo/confs/sql-ds-cache-performance/spark/spark-defaults.conf`
+```
+spark.sql.warehouse.dir hdfs:///datagen 
+```
+
+If choosing GCS, add below item to `./repo/confs/sql-ds-cache-performance/spark/spark-defaults.conf`
+```
+spark.sql.warehouse.dir  gs://<your_bucket>
+```
 Here is an example of `spark-defaults.conf` on a `1 master + 2 workers` Dataproc cluster, 
 you can add these items to your `./repo/confs/sql-ds-cache-performance/spark/spark-defaults.conf` and modify config according to your cluster.
 
 ```
 ### OAP
-spark.sql.warehouse.dir hdfs:///datagen
 
 spark.files   /opt/benchmark-tools/oap/oap_jars/plasma-sql-ds-cache-1.2.0-snapshot-with-spark-3.1.1.jar,/opt/benchmark-tools/oap/oap_jars/pmem-common-1.2.0-snapshot-with-spark-3.1.1.jar,/opt/benchmark-tools/oap/oap_jars/arrow-plasma-4.0.0.jar
 spark.driver.extraClassPath  /opt/benchmark-tools/oap/oap_jars/plasma-sql-ds-cache-1.2.0-snapshot-with-spark-3.1.1.jar:/opt/benchmark-tools/oap/oap_jars/pmem-common-1.2.0-snapshot-with-spark-3.1.1.jar:/opt/benchmark-tools/oap/oap_jars/arrow-plasma-4.0.0.jar

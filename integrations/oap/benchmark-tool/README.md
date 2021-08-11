@@ -88,9 +88,9 @@ echo "../spark-oap-dataproc" > ./repo/confs/testconf/.base
 * When you want to use HDFS or S3 for storage, you need to edit `./repo/confs/testconf/env.conf` and add content like:
 ```
 STORAGE=s3
-S3_BUCKET={bucket_name}
+BUCKET={bucket_name}
 ```
-Note: If you want to use s3 for storage, you must define S3_BUCKET; if you use hdfs for storage, you should only set STORAGE like: 
+Note: If you want to use s3 for storage, you must define BUCKET; if you use hdfs for storage, you should only set STORAGE like: 
 ```
 STORAGE=hdfs
 ```
@@ -103,6 +103,12 @@ edit `./repo/confs/testconf/env.conf`, add below item to set HDFS as storage.
 STORAGE=hdfs
 ```
 
+If you want to use gs(Google Cloud Storage) for storage, you must define BUCKET, so add below items to `./repo/confs/testconf/env.conf`
+```
+STORAGE=gs
+BUCKET={bucket_name}
+```
+
 ## 4. Run TPC-DS #
 
 ### 4.1 Modify Spark and TPC-DS configuration ###
@@ -112,8 +118,10 @@ STORAGE=hdfs
 mkdir ./repo/confs/testconf/spark
 touch ./repo/confs/testconf/spark/spark-defaults.conf
 
-###if on Dataproc
+###if using HDFS as storage on Dataproc
 echo "spark.sql.warehouse.dir=hdfs:///datagen" >> ./repo/confs/testconf/spark/spark-defaults.conf
+###if using Google Gloud Storage as storage on Dataproc
+echo "spark.sql.warehouse.dir=gs://<your_bucket>" >> ./repo/confs/testconf/spark/spark-defaults.conf
 ```
 #### Update TPC-DS configuration ####
 
@@ -212,11 +220,13 @@ bash bin/tpc_h.sh run ./repo/confs/testconf 1
 
 ## 6. Run HiBench ##
 
-You need to refer to the [Hibench Guide](https://github.com/Intel-bigdata/HiBench) to learn more about HiBench.
-
 ### 6.1 Update ###
 
-If you have some changes for spark, you need to create the file ./repo/confs/hibench/spark.conf and add the parameters you want to change such as:
+```
+mkdir ./repo/confs/hibench
+vim ./repo/confs/hibench/spark.conf
+```
+If you have some changes for Spark, you need to create the file `./repo/confs/hibench/spark.conf` and add the parameters you want to change such as:
 ```
 hibench.yarn.executor.num     2
 hibench.yarn.executor.cores   4
@@ -226,13 +236,13 @@ Note: If you use HiBench scripts to submit spark job, you must define the parame
 Then you can update the parameters for the cluster:
 
 ```
-bash bin/hibench.sh update ./repo/confs/testconf
+bash bin/hibench.sh update ./repo/confs/hibench
 ```
 Note: Updating step is necessary to be executed even if you don't have any changes.
 
 ### 6.2 Generate data ###
 
-HiBench supports various workloads such as K-means, terasort, ALS, PCA etc. And it also provide ```hibench.scale.profile``` to define the data scale for different benchmark. To specify the data scale, you need to create the file ./repo/confs/testconf/hibench/hibench.conf and edit it like:
+HiBench supports various workloads such as K-means, terasort, ALS, PCA etc. And it also provide ```hibench.scale.profile``` to define the data scale for different benchmark. To specify the data scale, you need to create the file `./repo/confs/testconf/hibench/hibench.conf` and edit it like:
 
 ```
 hibench.scale.profile                small
@@ -253,6 +263,8 @@ After the data is generated, you can execute the following command to run HiBenc
 ```
 bash bin/hibench.sh run ./repo/confs/testconf ml/kmeans
 ```
+
+Please refer to the [Hibench Guide](https://github.com/Intel-bigdata/HiBench) to learn more about HiBench.
 
 ## 7. Run HiBench, TPC-DS, TPC-H with OAP
 
