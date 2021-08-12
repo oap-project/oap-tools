@@ -223,10 +223,10 @@ bash bin/tpc_h.sh run ./repo/confs/testconf 1
 ### 6.1 Update ###
 
 ```
-mkdir ./repo/confs/hibench
-vim ./repo/confs/hibench/spark.conf
+mkdir ./repo/confs/testconf/hibench
+vim ./repo/confs/testconf/hibench/spark.conf
 ```
-If you have some changes for Spark, you need to create the file `./repo/confs/hibench/spark.conf` and add the parameters you want to change such as:
+If you have some changes for Spark, you need to create the file `./repo/confs/testconf/hibench/spark.conf` and add the parameters you want to change such as:
 ```
 hibench.yarn.executor.num     2
 hibench.yarn.executor.cores   4
@@ -236,7 +236,7 @@ Note: If you use HiBench scripts to submit spark job, you must define the parame
 Then you can update the parameters for the cluster:
 
 ```
-bash bin/hibench.sh update ./repo/confs/hibench
+bash bin/hibench.sh update ./repo/confs/testconf
 ```
 Note: Updating step is necessary to be executed even if you don't have any changes.
 

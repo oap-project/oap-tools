@@ -46,9 +46,9 @@ Run below the command to change the owner of directory`/opt/benchmark-tools`:
 sudo chown $(whoami):$(whoami) -R /opt/benchmark-tools
 ```
 
-Modify `/opt/benchmark-tools/HiBench/conf/hadoop.conf`:
+Modify `/opt/benchmark-tools/HiBench/conf/hadoop.conf`, if you choose GCS,change the below item:
 ```
-hibench.hadoop.home               /usr/lib/hadoop/
+hibench.hdfs.master           gs://<your_bucket>
 ```
 
 
@@ -59,7 +59,7 @@ hibench.hadoop.home               /usr/lib/hadoop/
 ```
 git clone https://github.com/oap-project/oap-tools.git
 cd oap-tools/integrations/oap/benchmark-tool
-sudo cp /lib/spark/conf/spark-defaults.conf ./repo/confs/spark-oap-dataproc/hibench/spark.conf;
+sudo cp /lib/spark/conf/spark-defaults.conf ./repo/confs/spark-oap-dataproc/hibench/spark.conf
 ```
 
 ### 2.2. Create the testing repo && Config OAP-MLlib
@@ -72,17 +72,22 @@ mkdir ./repo/confs/OAP_MLlib_performance
 ```
 echo "../spark-oap-dataproc" > ./repo/confs/OAP_MLlib_performance/.base
 ```
-#### Update the content of ./repo/confs/OAP_MLlib_performance/env.conf
+#### Update the content of `./repo/confs/OAP_MLlib_performance/env.conf`
 ```
-STORAGE=s3
+STORAGE=gs
 BUCKET={bucket_name}
 ```
-Note: If you want to use s3 for storage, you must define BUCKET; if you use hdfs for storage, you should set STORAGE like ```STORAGE=hdfs```
+Note: If you want to use GCS for storage, you must define BUCKET; if you use ONLY for storage, you should only set STORAGE like ```STORAGE=hdfs```
 
 #### Update the configurations of Spark
 
-**[bootstrap_oap.sh](../bootstrap_oap.sh)** will help install all OAP packages under dir `/opt/benchmark-tools/oap`,
-make sure to add below configuration to `./repo/confs/OAP_MLlib_performance/hibench/spark.conf`.
+**[bootstrap_oap.sh](../bootstrap_oap.sh)** will help install all OAP packages under dir `/opt/benchmark-tools/oap`.
+
+```
+mkdir -p ./repo/confs/OAP_MLlib_performance/hibench
+vim ./repo/confs/OAP_MLlib_performance/hibench/spark.conf
+```
+Add below configuration to `./repo/confs/OAP_MLlib_performance/hibench/spark.conf`.
 
 ```
 spark.files                       /opt/benchmark-tools/oap/oap_jars/oap-mllib-1.2.0.jar
@@ -137,7 +142,7 @@ Note: You can use default value of pca.conf and no need to change any values. If
 
 #### Define the configurations of als.conf
 
-Edit the content of `./repo/confs/OAP_MLlib_performance/hibench/pca.conf`
+Edit the content of `./repo/confs/OAP_MLlib_performance/hibench/als.conf`
 ```
 hibench.als.tiny.users                     100
 hibench.als.tiny.products                  100
