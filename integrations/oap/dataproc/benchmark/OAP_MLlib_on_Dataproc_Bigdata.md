@@ -48,7 +48,7 @@ sudo chown $(whoami):$(whoami) -R /opt/benchmark-tools
 
 Modify `/opt/benchmark-tools/HiBench/conf/hadoop.conf`, if you choose GCS,change the below item:
 ```
-hibench.hdfs.master           gs://<your_bucket>/
+hibench.hdfs.master           gs://<your_bucket>
 ```
 
 
@@ -98,11 +98,11 @@ spark.driver.extraClassPath       /opt/benchmark-tools/oap/oap_jars/oap-mllib-1.
 spark.executor.memoryOverhead               512m   
 # Refer to the default value of spark.executor.cores of /lib/spark/conf/spark-defaults.conf  
 hibench.yarn.executor.num                   2 
-# Divide the sum of vcores by hibench.yarn.executor.num       
+# Divide the sum of vcores with hibench.yarn.executor.num       
 hibench.yarn.executor.cores                 2        
 # Equal to the sum of vcores
 spark.default.parallelism                   4        
- # Equal to the sum of vcores
+# Equal to the sum of vcores
 spark.sql.shuffle.partitions                4       
 ```
 
@@ -112,20 +112,20 @@ spark.sql.shuffle.partitions                4
 Edit the content of `./repo/confs/OAP_MLlib_performance/hibench/hibench.conf` to change the 
 ```
 # Support tiny, small, large, huge, gigantic, bigdata.
-hibench.scale.profile                       tiny     
+hibench.scale.profile                       bigdata    
 ```
 
 #### Define the configurations of kmeans.conf
 
 Edit the content of `./repo/confs/OAP_MLlib_performance/hibench/kmeans.conf`
 ```
-hibench.kmeans.tiny.num_of_clusters         5
-hibench.kmeans.tiny.dimensions              3
-hibench.kmeans.tiny.num_of_samples          30000
-hibench.kmeans.tiny.samples_per_inputfile   6000
-hibench.kmeans.tiny.max_iteration           5
-hibench.kmeans.tiny.k                       10
-hibench.kmeans.tiny.convergedist            0.5
+hibench.kmeans.bigdata.num_of_clusters          5
+hibench.kmeans.bigdata.dimensions               1000
+hibench.kmeans.bigdata.num_of_samples           25000000
+hibench.kmeans.bigdata.samples_per_inputfile    10000
+hibench.kmeans.bigdata.k                        300
+hibench.kmeans.bigdata.max_iteration            40
+hibench.kmeans.storage.level                    MEMORY_ONLY
 ```
 Note: You can use default value of kmeans.conf and no need to change any values. If you want to change the parameters of K-means, you need to modify the value of the corresponding scale profile.
 
@@ -133,10 +133,10 @@ Note: You can use default value of kmeans.conf and no need to change any values.
 
 Edit the content of `./repo/confs/OAP_MLlib_performance/hibench/pca.conf`
 ```
-hibench.pca.tiny.examples                   10
-hibench.pca.tiny.features                   10
-hibench.pca.tiny.k                          3
-hibench.pca.tiny.maxresultsize              "1g"
+hibench.pca.bigdata.examples            800000
+hibench.pca.bigdata.features            5000
+hibench.pca.bigdata.k                   50
+hibench.pca.bigdata.maxresultsize       "8g"
 ```
 Note: You can use default value of pca.conf and no need to change any values. If you want to change the parameters of PCA, you need to modify the value of the corresponding scale profile.
 
@@ -144,10 +144,13 @@ Note: You can use default value of pca.conf and no need to change any values. If
 
 Edit the content of `./repo/confs/OAP_MLlib_performance/hibench/als.conf`
 ```
-hibench.als.tiny.users                     100
-hibench.als.tiny.products                  100
-hibench.als.tiny.ratings                   200
-hibench.als.tiny.implicitprefs	           true
+hibench.als.bigdata.users               4000000
+hibench.als.bigdata.products            1000000
+hibench.als.bigdata.ratings             100000000
+hibench.als.bigdata.implicitprefs       true
+hibench.als.rank                        50
+hibench.als.numIterations               10
+hibench.als.Lambda                      0.1
 ```
 Note: You can use default value of als.conf and no need to change any values. If you want to change the parameters of ALS, you need to modify the value of the corresponding scale profile.
 
