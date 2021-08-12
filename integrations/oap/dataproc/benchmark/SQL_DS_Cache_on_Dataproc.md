@@ -137,7 +137,7 @@ spark.sql.warehouse.dir hdfs:///datagen
 
 If choosing GCS, add below item to `./repo/confs/sql-ds-cache-performance/spark/spark-defaults.conf`
 ```
-spark.sql.warehouse.dir  gs://<your_bucket>
+spark.sql.warehouse.dir  gs://<your_bucket>/
 ```
 Here is an example of `spark-defaults.conf` on a `1 master + 2 workers` Dataproc cluster, 
 you can add these items to your `./repo/confs/sql-ds-cache-performance/spark/spark-defaults.conf` and modify config according to your cluster.
@@ -179,7 +179,7 @@ spark.executorEnv.LD_LIBRARY_PATH   /opt/benchmark-tools/oap/lib
 spark.driver.extraLibraryPath       /opt/benchmark-tools/oap/lib
 ```
 
-#### Modify `<replace-with-cache-storage-path>`  in  `plasmaLaunch.json`
+#### Modify `<replace-with-cache-storage-path>`  in  `tools/plasma/plasmaLaunch.json`
 
 ```
  "launch_command": "{%oap.home%}/bin/plasma-store-server -m {%plasma.cache.size%} -s /tmp/plasmaStore -d <replace-with-cache-storage-path>",
