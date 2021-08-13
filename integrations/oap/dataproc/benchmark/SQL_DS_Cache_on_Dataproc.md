@@ -173,6 +173,7 @@ spark.sql.oap.parquet.binary.cache.enabled                   true
 spark.oap.cache.strategy                                     external
 spark.sql.oap.dcpmm.free.wait.threshold                      50000000000
 spark.executor.sql.oap.cache.external.client.pool.size       2
+# cache size 
 spark.executor.sql.oap.cache.persistent.memory.initial.size  50g
 
 spark.executorEnv.LD_LIBRARY_PATH   /opt/benchmark-tools/oap/lib
@@ -184,8 +185,8 @@ spark.driver.extraLibraryPath       /opt/benchmark-tools/oap/lib
 ```
  "launch_command": "{%oap.home%}/bin/plasma-store-server -m {%plasma.cache.size%} -s /tmp/plasmaStore -d <replace-with-cache-storage-path>",
 ```
-For example, replace the <replace-with-cache-storage-path> to disk path `/mnt/1` or PMem path.
-If you put disk path like `/mnt/1` to use as storage path, please chmod its mode of each worker as below, if you are not root user:
+Replace the <replace-with-cache-storage-path> to disk path  or PMem path.
+If you put disk path like `/mnt/1` to use as data **Caching** path when running queries, please change its mode of each worker as below, if you are not root user:
 ```
 sudo -i
 chmod 777 /mnt/1
