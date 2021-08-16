@@ -1,5 +1,5 @@
 # Use Plasma SQL DS CACHE 
-### 1. Start Plasma Store Server POD
+### 1. Prepare yaml file for Plasma Store Server POD
 ```
 // plasma-store-server.yaml 
 apiVersion: apps/v1
@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: plasma-store-server
-        image: oap-centos:1.3.0
+        image: $CONTAINER_IMAGE 
         imagePullPolicy: IfNotPresent
         command: ["/bin/sh"]
         # /var/log/plasmaStore is the Unix Socket for future connection, set it as value of spark.sql.oap.external.cache.socket.path in Spark conf
@@ -47,11 +47,6 @@ spec:
           # Path to PMem that plasma-store-server will launch on
           path: /mnt/pmem
 
-```
-
-Launch plasma-store-server:
-```
-kubectl apply -f plasma-store-server.yaml
 ```
 
 ### 2. Spark Configuration
@@ -133,6 +128,10 @@ Go to folder integrations/oap/kubernetes/spark/ and do following steps:
 sh ./spark-client.sh start --image oap-centos:1.2.0 --spark_conf ./conf
 # Start spark shell
 sh ./spark-shell-client.sh --conf spark.executor.instances=1
+# Launch plasma-store-server:
+```
+kubectl apply -f plasma-store-server.yaml
+```
 # use following scala to trigger cache
 spark.sql(s"""CREATE TABLE oap_test(a INT, b STRING) USING parquet OPTIONS(path '/var/log/test')""".stripMargin)
 val data = (1 to 30000).map { i => (i, s"this is test $i") }.toDF().createOrReplaceTempView("t")
