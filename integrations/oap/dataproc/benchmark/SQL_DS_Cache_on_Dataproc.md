@@ -103,9 +103,12 @@ sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-dataproc/spark/
 mkdir ./repo/confs/sql-ds-cache-performance
 ```
 #### Update the content of `.base` to inherit the configuration of `./repo/confs/spark-oap-dataproc`
+
+Run the following command:
 ```
 echo "../spark-oap-dataproc" > ./repo/confs/sql-ds-cache-performance/.base
 ```
+
 #### Update the content of `./repo/confs/sql-ds-cache-performance/env.conf`
 
 If you use HDFS as storage, add items below:
@@ -134,7 +137,7 @@ spark.sql.warehouse.dir hdfs:///datagen
 
 If choosing GCS, add below item to `./repo/confs/sql-ds-cache-performance/spark/spark-defaults.conf`
 ```
-spark.sql.warehouse.dir  gs://<your_bucket>
+spark.sql.warehouse.dir  gs://<your_bucket>/
 ```
 Here is an example of `spark-defaults.conf` on a `1 master + 2 workers` Dataproc cluster, 
 you can add these items to your `./repo/confs/sql-ds-cache-performance/spark/spark-defaults.conf` and modify config according to your cluster.
@@ -164,18 +167,31 @@ spark.history.ui.port 18080
 spark.serializer org.apache.spark.serializer.KryoSerializer
 spark.authenticate false
 
-
 spark.sql.extensions              org.apache.spark.sql.OapExtensions
 # for parquet file format, enable binary cache
 spark.sql.oap.parquet.binary.cache.enabled                   true
 spark.oap.cache.strategy                                     external
 spark.sql.oap.dcpmm.free.wait.threshold                      50000000000
 spark.executor.sql.oap.cache.external.client.pool.size       2
+# cache size 
+spark.executor.sql.oap.cache.persistent.memory.initial.size  50g
 
 spark.executorEnv.LD_LIBRARY_PATH   /opt/benchmark-tools/oap/lib
 spark.driver.extraLibraryPath       /opt/benchmark-tools/oap/lib
 ```
 
+#### Modify `<replace-with-cache-storage-path>`  in  `tools/plasma/plasmaLaunch.json`
+
+```
+ "launch_command": "{%oap.home%}/bin/plasma-store-server -m {%plasma.cache.size%} -s /tmp/plasmaStore -d <replace-with-cache-storage-path>",
+```
+Replace the <replace-with-cache-storage-path> to disk path  or PMem path.
+If you put disk path like `/mnt/1` to use as data **Caching** path when running queries, please change its mode of each worker as below, if you are not root user:
+```
+sudo -i
+chmod 777 /mnt/1
+exit
+``` 
 
 #### Define the configurations of TPC-DS
 
