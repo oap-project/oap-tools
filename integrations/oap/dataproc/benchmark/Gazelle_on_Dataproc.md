@@ -110,9 +110,9 @@ spark.executorEnv.LIBARROW_DIR               /opt/benchmark-tools/oap
 spark.executorEnv.CC                         /opt/benchmark-tools/oap/bin/gcc
 
 spark.sql.extensions  com.intel.oap.ColumnarPlugin
-spark.files   /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.2.0-snapshot-jar-with-dependencies.jar,/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.2.0-snapshot-jar-with-dependencies.jar
-spark.driver.extraClassPath  /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.2.0-snapshot-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.2.0-snapshot-jar-with-dependencies.jar
-spark.executor.extraClassPath  /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.2.0-snapshot-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.2.0-snapshot-jar-with-dependencies.jar
+spark.files   /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.2.0-jar-with-dependencies.jar,/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.2.0-jar-with-dependencies.jar
+spark.driver.extraClassPath  /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.2.0-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.2.0-jar-with-dependencies.jar
+spark.executor.extraClassPath  /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.2.0-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.2.0-jar-with-dependencies.jar
 
 spark.master yarn
 spark.deploy-mode client
