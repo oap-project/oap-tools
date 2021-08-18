@@ -27,15 +27,18 @@ def start_plasma_service(beaver_env):
         # stop plasma service first
         print(colors.LIGHT_BLUE + "Stop plasma service" + colors.ENDC)
         stop_plasma_service(beaver_env)
-        time.sleep(10)
+        time.sleep(20)
         print (colors.LIGHT_BLUE + "Start plasma service" + colors.ENDC)
         update_plasma_conf(beaver_env)
         os.system("yarn app -launch plasma-store-service /tmp/plasmaLaunch.json")
+        time.sleep(100)
 
 def stop_plasma_service(beaver_env):
-    update_plasma_conf(beaver_env)
-    os.system("yarn app -launch plasma-store-service /tmp/plasmaLaunch.json")
-    os.system("yarn app -destroy plasma-store-service")
+    if beaver_env.get("OAP_with_external").lower() == "true":
+        update_plasma_conf(beaver_env)
+        os.system("yarn app -stop plasma-store-service")
+        os.system("yarn app -destroy plasma-store-service")
+
 
 def update_plasma_conf(beaver_env):
     dict = gen_plasma_dict(beaver_env)

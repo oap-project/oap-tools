@@ -7,7 +7,7 @@ Upload the initialization actions script **[bootstrap_oap.sh](./bootstrap_oap.sh
 1. Download **[bootstrap_oap.sh](./bootstrap_oap.sh)** to a local folder.
 2. Upload **[bootstrap_oap.sh](./bootstrap_oap.sh)** to bucket.
 
-![upload_init_script and install_benchmark.sh](./imgs/upload_scripts_to_bucket.png)
+![upload_init_script and bootstrap_benchmark.sh](./imgs/upload_bootstrap_oap_to_bucket.png)
 
 
 ## 2. Create a new cluster using bootstrap script
@@ -15,71 +15,43 @@ To create a new cluster with initialization actions, follow the steps below:
 
 1). Click the  **CREATE CLUSTER** to create and custom your cluster.
 
-2). **Set up cluster:** choose cluster type and Dataproc image version, enable component gateway.
+2). **Set up cluster:** choose cluster type and Dataproc image version `2.0-centos8`, enable component gateway, and add Jupyter Notebook, ZooKeeper.
+
 ![Enable_component_gateway](./imgs/component_gateway.png)
 
 3). **Configure nodes:** choose the instance type and other configurations of nodes.
 
 4). **Customize cluster:** add initialization actions as below;
-![Add bootstrap action](./imgs/add_scripts.png)
+
+![Add bootstrap action](./imgs/add_boostrap_oap.png)
 
 5). **Manage security:** define the permissions and other security configurations;
 
-6). Click **Create**. 
+6). Click **EQUIVALENT COMMAND LINE**, then click **RUN IN CLOUD SHELL** to add argument ` --initialization-action-timeout 60m ` to your command,
+which sets timeout period for the initialization action to 60 minutes and the default timeout value is 10 minutes. You can also set it larger if the cluster network status is not good.
+Finally press **Enter** at the end of cloud shell command line to start to create a new cluster.
 
-## 3. Run benchmark easily by using **[run_benchmark.sh](./benchmark/run_benchmark.sh)**
+![Set_init_timeout](./imgs/set_init_timeout.png)
 
-The script supports to run TPC-DS, TPC-H and HiBench easily. Before you use **[run_benchmark.sh](./benchmark/run_benchmark.sh)**, you should add **[install_benchmark.sh](./benchmark/install_benchmark.sh)** script for bootstrap action when creating a cluster.(Note: you can refer to the step to add **[bootstrap_oap.sh](./bootstrap_oap.sh)**.)  
-![Add bootstrap action](./imgs/add_scripts.png)
+## 3. Enable OAP features
 
-If you want to run benchmark by using [OAP](https://github.com/oap-project/sql-ds-cache.git), you should follow the [OAP user guild](https://github.com/oap-project/oap-tools/blob/v1.1.1-spark-3.1.1/docs/OAP-Installation-Guide.md) to configure `/usr/lib/spark/conf/spark-defaults.conf` when running TPC-DS and TPC-H or configure `/opt/benchmark-tools/HiBench/conf/spark.conf` when running HiBench.  
+After creating a cluster with initialization actions, you have successfully installed OAP binary on Dataproc Cluster nodes. 
+If you want to use OAP feature, you still need to change some configuration of Spark.
 
-### 1. Run HiBench
-You need to follow the [Hibench Guide](https://github.com/Intel-bigdata/HiBench) to config `/opt/benchmark-tools/HiBench/conf/spark.conf` and `/opt/benchmark-tools/HiBench/conf/hadoop.conf`. This is the example to run K-means by using OAP-MLlib:
+Please refer to [Gazelle_on_Dataproc](./benchmark/Gazelle_on_Dataproc.md) to quickly enable Gazelle Plugin.
 
-To edit `/opt/benchmark-tools/HiBench/conf/spark.conf`:
-```
-hibench.spark.home                /usr/lib/spark/
-hibench.spark.master              yarn
-spark.files                       /opt/benchmark-tools/oap/oap_jars/oap-mllib-1.1.1.jar
-spark.executor.extraClassPath     ./oap-mllib-1.1.1.jar
-spark.driver.extraClassPath       /opt/benchmark-tools/oap/oap_jars/oap-mllib-1.1.1.jar
-hibench.yarn.executor.num         2
-hibench.yarn.executor.cores       4
-spark.executor.memory             2g
-spark.executor.memoryOverhead     1g
-spark.driver.memory               1g
-```
-To edit `/opt/benchmark-tools/HiBench/conf/hadoop.conf`:
-```
-hibench.hadoop.home               /usr/lib/hadoop/
-```
-To generate data or run workload:
-```  
-Generate data: ./run_benchmark.sh -g|--gen   -w|--workload hibench -W|--hibenchWorkload [ml/kmeans|micro/terasort|..] -P|--hibenchProfile [tiny|small|large|huge|gigantic|bigdata] --Port [8020|customed hdfs port]  
-Run benchmark: ./run_benchmark.sh -r|--rerun -w|--workload hibench -W|--hibenchWorkload [ml/kmeans|micro/terasort|..] -P|--hibenchProfile [tiny|small|large|huge|gigantic|bigdata] --Port [8020|customed hdfs port]
-```
+Please refer to [SQL_DS_Cache_on_Dataproc](./benchmark/SQL_DS_Cache_on_Dataproc.md) to quickly enable SQL DS Cache.
 
-### 3. Run TPC-DS:  
-```
-Generate data: ./run_benchmark.sh -g|--gen   -w|--workload tpcds -f|--format [parquet|orc] -s|--scaleFactor [10|custom the data scale,the unit is GB] -d|--doubleForDecimal -p|--partitionTables --Port [8020|customed hdfs port]   
-Run benchmark: ./run_benchmark.sh -r|--rerun -w|--workload tpcds -f|--format [parquet|orc|arrow] -i|--iteration [1|custom the interation you want to run]  -s|--scaleFactor [10|custom the data scale,the unit is GB]  -p|--partitionTables --Port [8020|customed hdfs port]   
-```
-Only after enabling Gazelle Plugin can you run TPC-DS or TPC-H with arrow format.
 
-Example: generate 1GB Parquet, then run TPC-DS all queries with Gazelle enabled.
 
-```
-# generate data
-./run_benchmark.sh -g -w tpcds -f parquet  -s 1 -d -p --Port 8020
+## 4. Run various workloads easily by benchmark-tool
 
-# run TPC-DS
-./run_benchmark.sh -r -w tpcds -f arrow -s 1 -i 1 -p --Port  8020
-```
+We provide 2 ways to easily run workloads with OAP feature.
 
-### 4. Run TPC-H:  
-```
-Generate data: ./run_benchmark.sh -g|--gen   -w|--workload tpch  -f|--format [parquet|orc] -s|--scaleFactor [10|custom the data scale,the unit is GB] -d|--doubleForDecimal -p|--partitionTables --Port [8020|customed hdfs port]  
-Run benchmark: ./run_benchmark.sh -r|--rerun -w|--workload tpch  -f|--format [parquet|orc|arrow] -i|--iteration [1|custom the interation you want to run] -s|--scaleFactor [10|custom the data scale,the unit is GB] -p|--partitionTables --Port [8020|customed hdfs port] 
-``` 
+1. Using notebooks
 
+Please refer to [Notebooks User Guide](./notebooks/README.md) to learn how to use notebooks to easily generate data and run TPC-DS with gazelle_plugin.
+
+2. Using benchmark tool
+
+Please refer to [Benchmark tool User Guide](../benchmark-tool/README.md) to learn how to use benchmark-tool to easily run TPC-DS, TPC-H and HiBench with OAP.

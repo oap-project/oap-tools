@@ -214,15 +214,16 @@ def get_properties_base (conf_root, conf_file, delimeter):
 
 def merge_properties(props, props_from) :
     for k, v in props_from.items():
-        if k.startswith("-"):
-            k = k.replace(k[0], "", 1)
-            props.pop(k, "nokey")
-        elif k.startswith("++"):
-            k = k.replace(k[0], "", 2)
-            props[k] = props[k].strip() + str(v).strip()
-        elif k.startswith("--"):
+        if k.startswith("--"):
             k = k.replace(k[0], "", 2)
             props[k] = props[k].replace(str(v).strip(), '')
+        elif k.startswith("++"):
+            k = k.replace(k[0], "", 2)
+            props[k] = props[k].replace(str(v).strip(), '')
+            props[k] = props[k].strip() + str(v).strip()
+        elif k.startswith("-"):
+            k = k.replace(k[0], "", 1)
+            props.pop(k, "nokey")
         else:
             props[k] = v
     return props
