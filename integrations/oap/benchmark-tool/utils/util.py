@@ -86,12 +86,12 @@ def get_hibench_replace_dict(beaver_env):
         hibench_hadoop_examples_test_jars = subprocess.check_output(
         "find " + os.path.join(os.path.dirname(beaver_env.get("HADOOP_HOME")), "hadoop-mapreduce") + " -name hadoop-mapreduce-client-jobclient-*tests.jar", shell=True).decode('utf-8').strip('\r\n')
     hibench_version = hibench_get_build_version(beaver_env)
-    s3_bucket = beaver_env.get("S3_BUCKET")
+    bucket = beaver_env.get("BUCKET")
     dict["{%storage%}"] = beaver_env.get("STORAGE")
-    if beaver_env.get("STORAGE") == "s3":
-        dict["{%s3.bucket%}"] = s3_bucket
+    if beaver_env.get("STORAGE") == "s3" or "gs":
+        dict["{%bucket%}"] = bucket
     else:
-        dict["{%s3.bucket%}"] = ""
+        dict["{%bucket%}"] = ""
     dict["master_hostname"] = hostname
     dict["{%hadoop.home%}"] = beaver_env.get("HADOOP_HOME")
     dict["{%spark.home%}"] = beaver_env.get("SPARK_HOME")

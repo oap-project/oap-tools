@@ -27,8 +27,8 @@ To create a new cluster using the uploaded bootstrap script, follow the followin
 ## 3.Enable OAP features
 
 After bootstrap action, we have successfully installed OAP binary. If you want to use OAP feature, you still need to change some configuration of spark.
-1. You can visit [Gazelle_on_EMR](../benchmark/Gazelle_on_EMR.md) to quickly enable gazelle_plugin.
-2. You can visit [Intel_MLlib_on_EMR](../benchmark/Intel_MLlib_on_EMR.md) to quickly enable Intel-MLlib.
+1. You can visit [Gazelle_on_EMR](./benchmark/Gazelle_on_EMR.md) to quickly enable gazelle_plugin.
+2. You can visit [Intel_MLlib_on_EMR](./benchmark/Intel_MLlib_on_EMR.md) to quickly enable Intel-MLlib.
 
 ## 4. Run various workloads easily by using notebooks or benchmark tool
 

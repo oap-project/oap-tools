@@ -15,7 +15,7 @@ if (use_arrow){
     val data_format = "{%data.format%}"
     val scale = {%scale%}
     val partitionTables = {%partitionTables%}
-    val data_path=s"{%storage%}://{%s3.bucket%}/datagen/tpch_${data_format}{%partitioned%}/${scale}"
+    val data_path=s"{%storage%}://{%bucket%}/datagen/tpch_${data_format}{%partitioned%}/${scale}"
     val databaseName = s"tpch_arrow{%partitioned%}_scale_${scale}_db"
     val tables = Seq("customer", "lineitem", "nation", "orders", "part", "partsupp", "region", "supplier")
 

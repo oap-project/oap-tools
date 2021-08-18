@@ -1,24 +1,58 @@
-# The user guide to easily run benchmark on Cloud with OAP
-This tool is the project to easily run different workloads by providing minimum configuration parameters. It also provide the function to run workflows.
+# Running Benchmark Automation on Cloud with OAP
 
-## 1. Create a new cluster
+This guide helps run different workloads easily on Cloud Platforms. It also provides the function to run workflow.
 
-If you are using AWS EMR, you can refer [OAP integrate EMR](../emr/README.md) to create a new cluster. To run bencbmark on EMR cluster, you also need to upload **[bootstrap_benchmark.sh](../emr/benchmark/bootstrap_benchmark.sh)** to S3 and add extra bootstrap action to execute **[bootstrap_benchmark.sh](../emr/benchmark/bootstrap_benchmark.sh)** when creating a new cluster.
+## 1. Create a new cluster on Cloud
+
+### 1.1 AWS EMR
+
+If you are using AWS EMR, you can refer [OAP integrate EMR](../emr/README.md) to create a new cluster. To run benchmark on EMR cluster with OAP, you also need to upload both **[bootstrap_benchmark.sh](../emr/benchmark/bootstrap_benchmark.sh)** and **[bootstrap_oap.sh](../emr/bootstrap_oap.sh)** to S3 and add extra bootstrap action to execute **[bootstrap_benchmark.sh](../emr/benchmark/bootstrap_benchmark.sh)** and **[bootstrap_oap.sh](../emr/bootstrap_oap.sh)** when creating a new cluster.
 
 ![upload_init_script and install_benchmark.sh](../emr/imgs/upload_all_scripts_to_S3.PNG)
 
 ![Add bootstrap action](../emr/imgs/add-bootstrap-benchmark.PNG) 
 
+### 1.2 Google Cloud Dataproc
 
-## 2. Update the basic configurations for spark
+If you are using Google Cloud Dataproc, please refer to [OAP on Dataproc](../dataproc/README.md) to create a new cluster.
+To run benchmark on Dataproc cluster, you also need to upload **[bootstrap_benchmark.sh](../dataproc/benchmark/bootstrap_benchmark.sh)** to bucket 
+then add initialization actions **[bootstrap_benchmark.sh](../emr/benchmark/bootstrap_benchmark.sh)** as below when creating a new cluster.
+
+![upload_init_script and install_benchmark.sh](../dataproc/imgs/upload_scripts_to_bucket.png)
+
+![Set_init_timeout](../dataproc/imgs/set_init_timeout.png) 
+
+
+## 2. Update the basic configurations for Spark
+
+### AWS EMR
 
 Make sure the primary node has python2 installed;
 If you use AWS EMR, please execute the following commands to update the basic configurations for spark:
 
-```sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-emr/spark/spark-defaults.conf;```
+```
+git clone https://github.com/oap-project/oap-tools.git
+cd oap-tools/integrations/oap/benchmark-tool/
+sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-emr/spark/spark-defaults.conf
+sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-emr/hibench/spark.conf
+```
 
-```sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-emr/hibench/spark.conf;```
+### Google Cloud Dataproc
 
+Run below the command to change the owner of directory`/opt/benchmark-tools`:
+
+```
+sudo chown $(whoami):$(whoami) -R /opt/benchmark-tools
+```
+
+Run the following commands to update the basic configurations for Spark:
+
+```
+git clone https://github.com/oap-project/oap-tools.git
+cd oap-tools/integrations/oap/benchmark-tool/
+sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-dataproc/spark/spark-defaults.conf
+sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-dataproc/hibench/spark.conf
+```
 
 ## 3. Config Rules to Follow && Create a configuration folder ##
 
@@ -35,40 +69,68 @@ You can inherit from the conf in repo by creating a ```.base``` file in your con
 Please follow prerequisites to update default configurations of spark. 
 If you want to inherit all configurations of ```repo/confs/spark-oap-emr```, please create a new directory in ```./repo/confs```with a meaningful name which will act as your configuration root for your workload and update the content of ```.base```.
 
+### 3.1 `.base`
+
 ```
 mkdir ./repo/confs/testconf
+
+#####if on EMR, then 
 echo "../spark-oap-emr" > ./repo/confs/testconf/.base
+
+#####if on Dataproc, then
+echo "../spark-oap-dataproc" > ./repo/confs/testconf/.base
 ```
-* When you want to use HDFS or S3 for storage, you need to edit `./repo/confs/testconf/.base` and add content like:
+
+### 3.2 `env.conf`
+
+#### AWS EMR
+
+* When you want to use HDFS or S3 for storage, you need to edit `./repo/confs/testconf/env.conf` and add content like:
 ```
-NATIVE_SQL_ENGINE=TRUE
 STORAGE=s3
-S3_BUCKET={bucket_name}
+BUCKET={bucket_name}
 ```
-Note: If you want to use s3 for storage, you must define S3_BUCKET; if you use hdfs for storage, you should only set STORAGE like: 
+Note: If you want to use s3 for storage, you must define BUCKET; if you use hdfs for storage, you should only set STORAGE like: 
 ```
 STORAGE=hdfs
 ```
 
+#### Google Could Dataproc
+
+edit `./repo/confs/testconf/env.conf`, add below item to set HDFS as storage.
+
+```
+STORAGE=hdfs
+```
+
+If you want to use gs(Google Cloud Storage) for storage, you must define BUCKET, so add below items to `./repo/confs/testconf/env.conf`
+```
+STORAGE=gs
+BUCKET={bucket_name}
+```
+
 ## 4. Run TPC-DS #
 
-### 4.1 Update ###
+### 4.1 Modify Spark and TPC-DS configuration ###
 
-If you have made some changes in the parameter and need to reapply the parameters to the cluster configuration, such as some changes for spark, you need to edit ./repo/confs/testconf/spark/spark-defaults.conf like:
+#### Update Spark configuration ####
 ```
-spark.sql.autoBroadcastJoinThreshold 31457280
-spark.sql.broadcastTimeout 3600
-spark.dynamicAllocation.executorIdleTimeout 7200000s
-```
-Then you can execute update action:
+mkdir ./repo/confs/testconf/spark
+touch ./repo/confs/testconf/spark/spark-defaults.conf
 
+###if using HDFS as storage on Dataproc
+echo "spark.sql.warehouse.dir=hdfs:///datagen" >> ./repo/confs/testconf/spark/spark-defaults.conf
+###if using Google Gloud Storage as storage on Dataproc
+echo "spark.sql.warehouse.dir=gs://<your_bucket>" >> ./repo/confs/testconf/spark/spark-defaults.conf
 ```
-bash bin/tpc_ds.sh update ./repo/confs/testconf
-```
-Note: Updating step is neccessary to be executed even if you don't have any changes.
-### 4.2 Generate data ###
+#### Update TPC-DS configuration ####
 
-The first step to run TPC-DS is to generate data. To specify the data scale, data format you want, in the TPC-DS folder in your conf folder, create a file named ```config``` and add the scale and format value, for example:
+The first step to run TPC-DS is to generate data. To specify the data scale, data format you want, in the TPC-DS folder in your conf folder, create a file named ```config``` :
+```
+mkdir repo/confs/testconf/TPC-DS
+vim repo/confs/testconf/TPC-DS/config
+```
+and add the scale and format value, such as below:
 
 ```
 scale 1
@@ -77,35 +139,50 @@ partitionTables true
 useDoubleForDecimal false
 queries all
 ```
+This configuration is to generate 1GB scale, parquet format and partitioned table. Refer to ```./conf/TPC-DS/config``` if you want to change other aspects. 
 
-config to generate 1GB scale, parquet format and partitioned table. Refer to ```./conf/TPC-DS/config``` if you want to change other aspects. And then execute the below command to gen data.
+#### 4.2 Generate data ####
 
+To make the configuration above to be valid, run the following command (Note: every time you change the Spark and TPC-DS configuration above, make sure to re-run this command.)
+
+```
+bash bin/tpc_ds.sh update ./repo/confs/testconf
+```
+
+Generate data:
 ```
 bash bin/tpc_ds.sh gen_data ./repo/confs/testconf
 ```
 
 ### 4.3 Run ###
 
-Once the data is generated, you can execute the following command to run TPCDS queries:
+Once the data is generated, you can execute the following command to run TPC-DS queries:
 
 ```
 bash bin/tpc_ds.sh run ./repo/confs/testconf 1
 ```
 
-The third parameter above is the iteration to run.
+The 3rd parameter `1` means the how many times the workload will be run.
 
 
 ## 5. Run TPC-H ##
 
-### 5.1 Update ###
+### 5.1 Modify Spark and TPC-H configuration ###
 
-The step of updating for TPC-H is similar to TPC-DS.
+#### Update Spark configuration ####
+```
+mkdir ./repo/confs/testconf/spark
+touch ./repo/confs/testconf/spark/spark-defaults.conf
+
+###if on Dataproc
+echo "spark.sql.warehouse.dir=hdfs:///datagen" >> ./repo/confs/testconf/spark/spark-defaults.conf
+```
+#### Update TPC-H configuration ####
 
 ```
-bash bin/tpc_h.sh update ./repo/confs/testconf
+mkdir ./repo/confs/gazelle_plugin_performance/TPC-H
+vim ./repo/confs/gazelle_plugin_performance/TPC-H/config
 ```
-Note: Updating step is neccessary to be executed even if you don't have any changes.
-### 5.2 Generate data ###
 
 To specify the data scale, data format you want, in the TPC-H folder in your conf folder, create a file named ```config``` and add the scale and format value, for example:
 
@@ -118,16 +195,24 @@ partitionTables true
 useDoubleForDecimal false
 ```
 
-Refer to ```./conf/TPC-H/config``` if you want to change other aspects. And then execute the below command to gen data.
+### 5.2 Generate data ###
+
+To make the configuration above to be valid, run the following command (Note: every time you change the configuration above, make sure to re-run this command.)
 
 ```
 bash bin/tpc_h.sh update ./repo/confs/testconf
+```
+Generate data:
+
+```
 bash bin/tpc_h.sh gen_data ./repo/confs/testconf
 ```
 
+Refer to ```./conf/TPC-H/config``` if you want to change other items.
+
 ### 5.3 Run ###
 
-After the data is generated, you can execute the following command to run TPCH queries:
+After the data is generated, you can execute the following command to run TPC-H queries:
 
 ```
 bash bin/tpc_h.sh run ./repo/confs/testconf 1
@@ -135,11 +220,13 @@ bash bin/tpc_h.sh run ./repo/confs/testconf 1
 
 ## 6. Run HiBench ##
 
-You need to refer to the [Hibench Guide](https://github.com/Intel-bigdata/HiBench) to learn more about HiBench.
-
 ### 6.1 Update ###
 
-If you have some changes for spark, you need to create the file ./repo/confs/hibench/spark.conf and add the parameters you want to change such as:
+```
+mkdir ./repo/confs/testconf/hibench
+vim ./repo/confs/testconf/hibench/spark.conf
+```
+If you have some changes for Spark, you need to create the file `./repo/confs/testconf/hibench/spark.conf` and add the parameters you want to change such as:
 ```
 hibench.yarn.executor.num     2
 hibench.yarn.executor.cores   4
@@ -151,11 +238,11 @@ Then you can update the parameters for the cluster:
 ```
 bash bin/hibench.sh update ./repo/confs/testconf
 ```
-Note: Updating step is neccessary to be executed even if you don't have any changes.
+Note: Updating step is necessary to be executed even if you don't have any changes.
 
 ### 6.2 Generate data ###
 
-HiBench supports various workloads such as K-means, terasort, ALS, PCA etc. And it also provide ```hibench.scale.profile``` to define the data scale for different benchmark. To specify the data scale, you need to create the file ./repo/confs/testconf/hibench/hibench.conf and edit it like:
+HiBench supports various workloads such as K-means, terasort, ALS, PCA etc. And it also provide ```hibench.scale.profile``` to define the data scale for different benchmark. To specify the data scale, you need to create the file `./repo/confs/testconf/hibench/hibench.conf` and edit it like:
 
 ```
 hibench.scale.profile                small
@@ -177,11 +264,16 @@ After the data is generated, you can execute the following command to run HiBenc
 bash bin/hibench.sh run ./repo/confs/testconf ml/kmeans
 ```
 
+Please refer to the [Hibench Guide](https://github.com/Intel-bigdata/HiBench) to learn more about HiBench.
+
 ## 7. Run HiBench, TPC-DS, TPC-H with OAP
 
-Please follow the [Gazelle_on_EMR.md](../emr/benchmark/Gazelle_on_EMR.md) to run TPC-DS or TPC-H with Gazelle_plugin.
+Please follow [Gazelle_on_EMR.md](../emr/benchmark/Gazelle_on_EMR.md) or [Gazelle_on_Dataproc.md](../dataproc/benchmark/Gazelle_on_Dataproc.md) to run TPC-DS or TPC-H with Gazelle_plugin.
 
-Please follow the [Intel_MLlib_on_EMR.md](../emr/benchmark/Intel_MLlib_on_EMR.md) to run K-means, PAC, ALS with Intel-MLlib.
+Please follow [SQL_DS_Cache_on_Dataproc.md](../dataproc/benchmark/SQL_DS_Cache_on_Dataproc.md) to run TPC-DS with SQL DS Cache.
+
+Please follow [Intel_MLlib_on_EMR.md](../emr/benchmark/Intel_MLlib_on_EMR.md) or [OAP_MLlib_on_EMR.md](../dataproc/benchmark/OAP_MLlib_on_Dataproc.md)to run K-means, PAC, ALS with OAP MLlib.
+
 
 ## 8. Run workflow ##
 
@@ -190,7 +282,7 @@ Please follow the [Intel_MLlib_on_EMR.md](../emr/benchmark/Intel_MLlib_on_EMR.md
 
 There are one repo in ```./repo/workflows/``` named ```oap_release_performance_test_on_EMR``` which provide default configuration for different cases. Please create a repo  with the same structure and update the values you need.
 
-For example: we create the  workflow floder as ```OAP_1.2_function_test``` in the floder ```./repo/workflows/```  and update ```./repo/OAP_1.2_function_test/.base``` to inherit ```./repo/workflows/oap_release_performance_test_on_EMR```
+For example: we create the workflow directory as ```OAP_1.2_function_test``` in the directory ```./repo/workflows/```  and update ```./repo/OAP_1.2_function_test/.base``` to inherit ```./repo/workflows/oap_release_performance_test_on_EMR```
 ```
 # In file .base
 ../oap_release_performance_test_on_EMR
