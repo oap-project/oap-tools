@@ -16,10 +16,10 @@ spec:
     spec:
       containers:
       - name: plasma-store-server
-        image: oap-centos:1.2.0
+        image: $CONTAINER_IMAGE
         imagePullPolicy: IfNotPresent
         command: ["/bin/sh"]
-        args: ["-c", "export LD_LIBRARY_PATH=/opt/home/conda/envs/oap-1.2.0/lib:$LD_LIBRARY_PATH; echo $LD_LIBRARY_PATH; export PMEM_PATH=/mnt/pmem; export PMEM_SIZE=5000000000; /opt/home/conda/envs/oap-1.2.0/bin/plasma-store-server -m $PMEM_SIZE -d $PMEM_PATH -s /var/log/plasmaStore;"]
+        args: ["-c", "export LD_LIBRARY_PATH=$OAP_DIR/lib:$LD_LIBRARY_PATH; echo $LD_LIBRARY_PATH; $OAP_DIR/bin/plasma-store-server -m $PMEM_SIZE -d $PMEM_PATH -s /var/log/plasmaStore;"]
         resources:
           limits:
             memory: 200Mi

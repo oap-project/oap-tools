@@ -24,7 +24,7 @@ spec:
         imagePullPolicy: IfNotPresent
         command: ["/bin/sh"]
         # /var/log/plasmaStore is the Unix Socket for future connection, set it as value of spark.sql.oap.external.cache.socket.path in Spark conf
-        args: ["-c", "export LD_LIBRARY_PATH=/opt/home/conda/envs/oap-1.2.0/lib:$LD_LIBRARY_PATH; echo $LD_LIBRARY_PATH; export PMEM_PATH=/mnt/pmem; export PMEM_SIZE=5000000000; /opt/home/conda/envs/oap-1.2.0/bin/plasma-store-server -m $PMEM_SIZE -d $PMEM_PATH -s /var/log/plasmaStore;"]
+        args: ["-c", "export LD_LIBRARY_PATH=$OAP_DIR/lib:$LD_LIBRARY_PATH; echo $LD_LIBRARY_PATH; $OAP_DIR/bin/plasma-store-server -m $PMEM_SIZE -d $PMEM_PATH -s /var/log/plasmaStore;"]
         resources:
           limits:
             memory: 200Mi
@@ -50,43 +50,7 @@ spec:
 ```
 
 ### 2. Spark Configuration
-a. update integrations/oap/kubernetes/spark/spark-client.yaml to make sure executor pods can access to plasma unix socket
-```
-apiVersion: v1
-kind: Pod
-metadata:
-  name: spark-client
-  labels:
-    app: spark-client
-spec:
-  serviceAccountName: spark
-  containers:
-  - name: spark-client-container
-    imagePullPolicy: IfNotPresent
-    image: $CONTAINER_IMAGE
-    args: ["/opt/home/entrypoint-nop.sh"]
-    volumeMounts:
-      - name: spark-conf-volume
-        mountPath: /opt/home/conf
-      # add plasma unix socket path
-      - mountPath: /var/log
-        name: plasma-socket
-    envFrom:
-    - configMapRef:
-        name: spark-client-configmap
-  volumes:
-    # add plasma unix socket path 
-    - name: plasma-socket
-      hostPath:
-        path: /var/log
-        type: Directory
-    - name: spark-conf-volume
-      configMap:
-        # Provide the name of the ConfigMap containing the files you want
-        # to add to the container
-        name: spark-client-conf
-```
-b. Update spark conf(integrations/oap/kubernetes/spark/conf/spark-default.conf) to use Plasma cache backend
+Update spark conf(integrations/oap/kubernetes/spark/conf/spark-default.conf) to use Plasma cache backend
 ```
 #OAP: libraries to load
 spark.executorEnv.LD_LIBRARY_PATH /opt/home/conda/envs/oap-1.2.0/lib/
@@ -129,9 +93,11 @@ sh ./spark-client.sh start --image oap-centos:1.2.0 --spark_conf ./conf
 # Start spark shell
 sh ./spark-shell-client.sh --conf spark.executor.instances=1
 # Launch plasma-store-server:
-```
-kubectl apply -f plasma-store-server.yaml
-```
+export OAP_DIR=/opt/home/conda/envs/oap-1.2.0
+export PMEM_PATH=/mnt/pmem
+export PMEM_SIZE=5000000000
+export CONTAINER_IMAGE=oap-centos:1.2.0
+envsubst < plasma-store-server.yaml | kubectl apply -f -
 # use following scala to trigger cache
 spark.sql(s"""CREATE TABLE oap_test(a INT, b STRING) USING parquet OPTIONS(path '/var/log/test')""".stripMargin)
 val data = (1 to 30000).map { i => (i, s"this is test $i") }.toDF().createOrReplaceTempView("t")
