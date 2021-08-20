@@ -24,4 +24,23 @@ cat tpcds_datagen.scala | sh ../spark/spark-shell-client.sh --jars /opt/home/too
 ``` 
 
 ### Run TPCDS benchmark
+Go to folder benchmark, open the tpcds_run.scala and modify the below variables based on integration environments.
+```
+val scale = "1"
+val format = "parquet"
+val storage_path = "s3a://aws-emr-resources-348941870272-us-east-2/eks/"
+// how many times to run the whole set of queries
+val iterations = 1
+// Seq() == all queries
+// Seq("q26-v2.4", "q27-v2.4") // run subset of queries
+val query_filter = Seq("q26-v2.4", "q27-v2.4")
+```
+
+Then execute the following command.
+```
+cat tpcds_run.scala | sh ../spark/spark-shell-client.sh --jars /opt/home/tools/spark-sql-perf_2.12-0.5.1-SNAPSHOT.jar
+```
+
+
+
 
