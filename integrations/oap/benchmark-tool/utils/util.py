@@ -88,7 +88,7 @@ def get_hibench_replace_dict(beaver_env):
     hibench_version = hibench_get_build_version(beaver_env)
     bucket = beaver_env.get("BUCKET")
     dict["{%storage%}"] = beaver_env.get("STORAGE")
-    if beaver_env.get("STORAGE") == "s3" or "gs":
+    if beaver_env.get("STORAGE") == "s3" or beaver_env.get("STORAGE") == "gs":
         dict["{%bucket%}"] = bucket
     else:
         dict["{%bucket%}"] = ""

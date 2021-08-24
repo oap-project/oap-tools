@@ -41,4 +41,4 @@ To create a new cluster using the uploaded init script, follow the following ste
 
 ## 3. Run benchmark notebooks for performance comparisons
 
-Please refer to the [Benchmark Guide](../benchmark/README.md) to learn how to use notebooks to easily run performance comparisons.
+Please refer to the [Benchmark Guide](./benchmark/README.md) to learn how to use notebooks to easily run performance comparisons.

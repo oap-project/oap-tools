@@ -180,8 +180,8 @@ echo "spark.sql.warehouse.dir=hdfs:///datagen" >> ./repo/confs/testconf/spark/sp
 #### Update TPC-H configuration ####
 
 ```
-mkdir ./repo/confs/gazelle_plugin_performance/TPC-H
-vim ./repo/confs/gazelle_plugin_performance/TPC-H/config
+mkdir ./repo/confs/testconf/TPC-H
+vim ./repo/confs/testconf/TPC-H/config
 ```
 
 To specify the data scale, data format you want, in the TPC-H folder in your conf folder, create a file named ```config``` and add the scale and format value, for example:
@@ -272,7 +272,7 @@ Please follow [Gazelle_on_EMR.md](../emr/benchmark/Gazelle_on_EMR.md) or [Gazell
 
 Please follow [SQL_DS_Cache_on_Dataproc.md](../dataproc/benchmark/SQL_DS_Cache_on_Dataproc.md) to run TPC-DS with SQL DS Cache.
 
-Please follow [Intel_MLlib_on_EMR.md](../emr/benchmark/Intel_MLlib_on_EMR.md) or [OAP_MLlib_on_EMR.md](../dataproc/benchmark/OAP_MLlib_on_Dataproc.md)to run K-means, PAC, ALS with OAP MLlib.
+Please follow [Intel_MLlib_on_EMR.md](../emr/benchmark/Intel_MLlib_on_EMR.md) or [OAP_MLlib_on_Dataproc.md](../dataproc/benchmark/OAP_MLlib_on_Dataproc.md)to run K-means, PAC, ALS with OAP MLlib.
 
 
 ## 8. Run workflow ##

@@ -86,7 +86,7 @@ def gen_test_dict(custom_conf ,beaver_env, mode=[]):
     else:
         dict["{%arrow_enable%}"] = 'false'
 
-    if beaver_env.get("STORAGE") == "s3" or "gs":
+    if beaver_env.get("STORAGE") == "s3" or beaver_env.get("STORAGE") == "gs":
         dict["{%bucket%}"] = bucket
     else:
         dict["{%bucket%}"] = ""
@@ -135,7 +135,7 @@ def gen_tpch_test_dict(custom_conf ,beaver_env, mode=[]):
     else:
         dict["{%arrow_enable%}"] = 'false'
 
-    if beaver_env.get("STORAGE") == "s3" or "gs":
+    if beaver_env.get("STORAGE") == "s3" or beaver_env.get("STORAGE") == "gs":
         dict["{%bucket%}"] = bucket
     else:
         dict["{%bucket%}"] = ""
