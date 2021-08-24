@@ -625,7 +625,7 @@ function clone_all(){
         else
             cd $key
             git pull
-            git checkout  $OAP_BRANCH 
+            git checkout -f $OAP_BRANCH 
         fi
     
     done
