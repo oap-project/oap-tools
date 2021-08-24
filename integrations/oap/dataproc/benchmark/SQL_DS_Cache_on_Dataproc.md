@@ -185,13 +185,9 @@ spark.driver.extraLibraryPath       /opt/benchmark-tools/oap/lib
 ```
  "launch_command": "{%oap.home%}/bin/plasma-store-server -m {%plasma.cache.size%} -s /tmp/plasmaStore -d <replace-with-cache-storage-path>",
 ```
-Replace the <replace-with-cache-storage-path> to disk path  or PMem path.
-If you put disk path like `/mnt/1` to use as data **Caching** path when running queries, please change its mode of each worker as below, if you are not root user:
-```
-sudo -i
-chmod 777 /mnt/1
-exit
-``` 
+Replace the <replace-with-cache-storage-path> to PMem or disk path on workers which is set 777 permission.
+
+For example, the first SSD will be mounted on `/mnt/1`, and you choose the first SSD as caching path, then you can use `/mnt/1/hadoop/spark` path which is set 777 permission on workers by default. 
 
 #### Define the configurations of TPC-DS
 
