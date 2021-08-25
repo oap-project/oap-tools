@@ -102,10 +102,12 @@ hibench.yarn.executor.num                   2
 hibench.yarn.executor.cores                 2        
 # Equal to the sum of vcores
 spark.default.parallelism                   4        
- # Equal to the sum of vcores
+# Equal to the sum of vcores
 spark.sql.shuffle.partitions                4       
 ```
 
+**Note:** OAP MLlib adopted oneDAL as implementation backend. oneDAL requires enough native memory allocated for each executor. For large dataset, depending on algorithms, you may need to tune `spark.executor.memoryOverhead` to allocate enough native memory. 
+Setting this value to larger than __dataset size / executor number__ is a good starting point.
 
 #### Define te the configurations of hibench.conf
 
