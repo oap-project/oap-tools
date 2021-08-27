@@ -624,8 +624,9 @@ function clone_all(){
             git clone ${repo_dic[$key]} -b $OAP_BRANCH 
         else
             cd $key
-            git pull
+            git reset --hard HEAD^
             git checkout -f $OAP_BRANCH 
+            git pull
         fi
     
     done
