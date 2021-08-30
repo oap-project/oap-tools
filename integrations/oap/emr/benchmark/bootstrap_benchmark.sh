@@ -51,13 +51,6 @@ function install_hibench() {
   else
     cd HiBench && git pull
   fi
-  cp hadoopbench/mahout/pom.xml hadoopbench/mahout/pom.xml.bak
-  cat hadoopbench/mahout/pom.xml \
-      | sed 's|<repo2>http://archive.cloudera.com</repo2>|<repo2>https://archive.apache.org</repo2>|' \
-      | sed 's|cdh5/cdh/5/mahout-0.9-cdh5.1.0.tar.gz|dist/mahout/0.9/mahout-distribution-0.9.tar.gz|' \
-      | sed 's|aa953e0353ac104a22d314d15c88d78f|09b999fbee70c9853789ffbd8f28b8a3|' \
-      > ./pom.xml.tmp
-  mv ./pom.xml.tmp hadoopbench/mahout/pom.xml
   mvn -Psparkbench -Dmodules -Pml -Pmicro -Dspark=3.0 -Dscala=2.12 -DskipTests clean package
 }
 
