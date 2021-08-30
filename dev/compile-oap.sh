@@ -15,7 +15,7 @@ SPARK_VERSION=3.1.1
 GCC_MIN_VERSION=7.0
 
 BUILD_COMPONENT=""
-PROFILE=""
+PROFILE="-Phadoop-3.2"
 
 while true; do
   case "$1" in
