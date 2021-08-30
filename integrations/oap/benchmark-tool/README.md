@@ -6,7 +6,7 @@ This guide helps run different workloads easily on Cloud Platforms. It also prov
 
 ### 1.1 AWS EMR
 
-If you are using AWS EMR, you can refer [OAP integrate EMR](../emr/README.md) to create a new cluster. To run benchmark on EMR cluster with OAP, you also need to upload both **[bootstrap_benchmark.sh](../emr/benchmark/bootstrap_benchmark.sh)** and **[bootstrap_oap.sh](../emr/bootstrap_oap.sh)** to S3 and add extra bootstrap action to execute **[bootstrap_benchmark.sh](../emr/benchmark/bootstrap_benchmark.sh)** and **[bootstrap_oap.sh](../emr/bootstrap_oap.sh)** when creating a new cluster.
+If you are using AWS EMR, you can refer [OAP integrate EMR](../emr/README.md) to create a new cluster. To run benchmark on EMR cluster with OAP, you also need to upload both **[bootstrap_benchmark.sh](https://raw.githubusercontent.com/oap-project/oap-tools/master/integrations/oap/emr/benchmark/bootstrap_benchmark.sh)** and **[bootstrap_oap.sh](https://raw.githubusercontent.com/oap-project/oap-tools/master/integrations/oap/emr/bootstrap_oap.sh)** to S3 and add extra bootstrap action to execute **[bootstrap_benchmark.sh](https://raw.githubusercontent.com/oap-project/oap-tools/master/integrations/oap/emr/benchmark/bootstrap_benchmark.sh)** and **[bootstrap_oap.sh](https://raw.githubusercontent.com/oap-project/oap-tools/master/integrations/oap/emr/bootstrap_oap.sh)** when creating a new cluster.
 
 ![upload_init_script and install_benchmark.sh](../emr/imgs/upload_all_scripts_to_S3.PNG)
 
@@ -268,11 +268,11 @@ Please refer to the [Hibench Guide](https://github.com/Intel-bigdata/HiBench) to
 
 ## 7. Run HiBench, TPC-DS, TPC-H with OAP
 
-Please follow [Gazelle_on_EMR.md](../emr/benchmark/Gazelle_on_EMR.md) or [Gazelle_on_Dataproc.md](../dataproc/benchmark/Gazelle_on_Dataproc.md) to run TPC-DS or TPC-H with Gazelle_plugin.
+Please follow [Gazelle on EMR](../emr/benchmark/Gazelle_on_EMR.md) or [Gazelle on Dataproc](../dataproc/benchmark/Gazelle_on_Dataproc.md) to run TPC-DS or TPC-H with Gazelle_plugin.
 
-Please follow [SQL_DS_Cache_on_Dataproc.md](../dataproc/benchmark/SQL_DS_Cache_on_Dataproc.md) to run TPC-DS with SQL DS Cache.
+Please follow [SQL-DS-Cache on Dataproc](../dataproc/benchmark/SQL_DS_Cache_on_Dataproc.md) to run TPC-DS with SQL DS Cache.
 
-Please follow [Intel_MLlib_on_EMR.md](../emr/benchmark/Intel_MLlib_on_EMR.md) or [OAP_MLlib_on_Dataproc.md](../dataproc/benchmark/OAP_MLlib_on_Dataproc.md)to run K-means, PAC, ALS with OAP MLlib.
+Please follow [Intel MLlib on EMR](../emr/benchmark/Intel_MLlib_on_EMR.md) or [OAP MLlib on Dataproc](../dataproc/benchmark/OAP_MLlib_on_Dataproc.md)to run K-means, PAC, ALS with OAP MLlib.
 
 
 ## 8. Run workflow ##
