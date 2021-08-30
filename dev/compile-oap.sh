@@ -81,7 +81,7 @@ function install_gcc7() {
 
   cd gcc-7.3.0/
   mkdir -p $DEV_PATH/thirdparty/gcc7
-  ./configure --prefix=$DEV_PATH/thirdparty/gcc7 --disable-multilib
+  ./configure --prefix=/usr --disable-multilib 
   make -j
   make install
 }
@@ -98,8 +98,6 @@ function check_gcc() {
       if [ ! -f "$DEV_PATH/thirdparty/gcc7/bin/gcc" ]; then
         install_gcc7
       fi 
-      export CXX=$DEV_PATH/thirdparty/gcc7/bin/g++
-      export CC=$DEV_PATH/thirdparty/gcc7/bin/gcc
     fi
 
   fi
@@ -156,7 +154,7 @@ function build_oap(){
     cd $OAP_HOME/oap-mllib/mllib-dal
     source /opt/intel/oneapi/setvars.sh
     source /tmp/oneCCL/build/_install/env/setvars.sh
-    mvn clean package  -Dmaven.test.skip=true  -Pspark-3.1.1
+    ./build.sh
     ;;
 
     pmem-common)    

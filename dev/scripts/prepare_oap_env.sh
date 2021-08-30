@@ -11,7 +11,7 @@ GCC_MIN_VERSION=7.0
 LLVM_MIN_VERSION=7.0
 rx='^([0-9]+\.){0,2}(\*|[0-9]+)$'
 INTEL_ARROW_REPO="https://github.com/oap-project/arrow.git"
-ARROW_BRANCH="arrow-4.0.0-oap"
+ARROW_BRANCH="arrow-4.0.0-oap-1.2"
 
 
 OAP_VERSION=1.2.0
@@ -109,9 +109,6 @@ function check_gcc() {
     if [ ! -f "$DEV_PATH/thirdparty/gcc7/bin/gcc" ]; then
       install_gcc7
     fi
-    export CXX=$DEV_PATH/thirdparty/gcc7/bin/g++
-    export CC=$DEV_PATH/thirdparty/gcc7/bin/gcc
-    export LD_LIBRARY_PATH=$DEV_PATH/thirdparty/gcc7/lib64:$LD_LIBRARY_PATH
   fi
 }
 
@@ -297,7 +294,7 @@ function install_gcc7() {
 
   cd gcc-7.3.0/
   mkdir -p $DEV_PATH/thirdparty/gcc7
-  ./configure --prefix=$DEV_PATH/thirdparty/gcc7 --disable-multilib
+  ./configure --prefix=/usr --disable-multilib 
   make -j
   make install
 }
@@ -432,11 +429,16 @@ function prepare_HPNL(){
     git clone https://github.com/Intel-bigdata/HPNL.git
   fi
   cd HPNL
-  git checkout origin/spark-pmof-test --track
+  git checkout wip_rpmp
   git submodule update --init --recursive
-  mkdir build
+  mkdir -p build
   cd build
-  cmake -DWITH_VERBS=ON -DWITH_JAVA=ON ..
+  if $ENABLE_RDMA
+  then
+    cmake -DWITH_VERBS=ON .. 
+  else
+    cmake -DWITH_VERBS=OFF  .. 
+  fi
   make -j && make install
   cd ../java/hpnl
   mvn  install -DskipTests
@@ -490,14 +492,116 @@ function prepare_libcuckoo() {
   make all && make install
 }
 
+function build_boost() {
+  yum remove -y boost*
+  mkdir -p $DEV_PATH/thirdparty
+  cd $DEV_PATH/thirdparty
+  if [ ! -d "boost_1_64_0" ]; then
+    wget https://boostorg.jfrog.io/artifactory/main/release/1.64.0/source/boost_1_64_0.tar.gz
+    tar zxvf boost_1_64_0.tar.gz
+  fi
+  cd boost_1_64_0/
+  ./bootstrap.sh --prefix=/usr/local
+  ./b2 --with=all  install
+  export BOOST_ROOT=/usr/local
+  echo 'export BOOST_ROOT=/usr/local' >> ~/.bashrc
+  source ~/.bashrc
+  e
+}
+
+function prepare_boost() {
+
+  if [[ `cat /etc/*release | grep "^ID="` == "ID=fedora" ]]; then
+      yum install -y boost-devel
+  elif [[ `cat /etc/*release | grep "^ID="` == "ID=ubuntu" ]];then
+      apt-get install libboost-all-dev
+  else
+      build_boost
+  fi
+}
+
 function prepare_PMoF() {
   prepare_libfabric
+  prepare_boost
   prepare_HPNL
   prepare_ndctl
   prepare_PMDK
   prepare_libcuckoo
+  check_gcc
+  prepare_hiredis
+  prepare_redisplusplus
+  prepare_jsoncpp
+  prepare_rpmp_native
   cd $DEV_PATH
 }
+
+function prepare_jsoncpp() {
+  cd $DEV_PATH/thirdparty
+
+  if [ ! -d "jsoncpp" ]; then
+    git clone https://github.com/open-source-parsers/jsoncpp.git
+    cd jsoncpp
+  else
+    cd jsoncpp
+    git pull
+  fi
+  mkdir -p build; cd build
+  cmake ..
+  make && make install
+}
+
+function prepare_hiredis() {
+  cd $DEV_PATH/thirdparty
+  if [ ! -d "hiredis" ]; then
+      git clone https://github.com/redis/hiredis
+    cd hiredis
+  else
+    cd hiredis
+    git pull
+  fi
+  mkdir -p  build; cd build
+  cmake ..
+  make && make install
+}
+
+
+function prepare_redisplusplus() {
+  cd $DEV_PATH/thirdparty
+
+  if [ ! -d "redis-plus-plus" ]; then
+    git clone https://github.com/sewenew/redis-plus-plus.git
+    cd redis-plus-plus
+    git checkout 80d44fde5512c55e4fc9dc22ac6e8477b0ec4758
+  else
+    cd redis-plus-plus
+    git checkout 80d44fde5512c55e4fc9dc22ac6e8477b0ec4758
+  fi
+  mkdir -p  build
+  cd build
+  cmake  -DREDIS_PLUS_PLUS_CXX_STANDARD=14 ..
+  make
+  make install
+
+}
+
+
+function prepare_rpmp_native() {
+  cd $OAP_HOME/pmem-shuffle
+  export LD_LIBRARY_PATH=/usr/lib:/usr/local/lib:/usr/local/lib64:$LD_LIBRARY_PATH
+  git submodule update --init --recursive
+  git submodule add -b master https://github.com/redis/hiredis.git rpmp/include/hiredis
+  git submodule add -b master https://github.com/open-source-parsers/jsoncpp.git rpmp/include/jsoncpp
+  git submodule add -b v1.x https://github.com/gabime/spdlog.git rpmp/include/spdlog
+  cd rpmp 
+  mkdir -p  build
+  cd build
+  cmake ..
+  make && make install
+
+  cd $OAP_HOME/pmem-shuffle/rpmp/pmpool/client/java/rpmp
+  mvn clean install -DskipTests
+}
+
 
 function prepare_oneAPI() {
   cd $DEV_PATH/
@@ -521,7 +625,7 @@ function clone_all(){
         else
             cd $key
             git pull
-            git checkout  $OAP_BRANCH 
+            git checkout -f $OAP_BRANCH 
         fi
     
     done
@@ -561,7 +665,6 @@ function oap_build_help() {
 }
 
 check_jdk
-
 while [[ $# -gt 0 ]]
 do
 key="$1"
