@@ -2,7 +2,7 @@
 
 ## 1. Create a new cluster
 
-To run bencbmark on EMR cluster with OAP, you need upload both **[bootstrap_benchmark.sh](../benchmark/bootstrap_benchmark.sh)** and **[bootstrap_oap.sh](../bootstrap_oap.sh)** to S3 and add extra bootstrap action to execute **[bootstrap_benchmark.sh](../benchmark/bootstrap_benchmark.sh)** and **[bootstrap_oap.sh](../bootstrap_oap.sh)**when creating a new cluster.
+To run bencbmark on EMR cluster with OAP, you need upload both **[bootstrap_benchmark.sh](https://raw.githubusercontent.com/oap-project/oap-tools/master/integrations/oap/emr/benchmark/bootstrap_benchmark.sh)** and **[bootstrap_oap.sh](https://raw.githubusercontent.com/oap-project/oap-tools/master/integrations/oap/emr/bootstrap_oap.sh)** to S3 and add extra bootstrap action to execute **[bootstrap_benchmark.sh](https://raw.githubusercontent.com/oap-project/oap-tools/master/integrations/oap/emr/benchmark/bootstrap_benchmark.sh)** and **[bootstrap_oap.sh](https://raw.githubusercontent.com/oap-project/oap-tools/master/integrations/oap/emr/bootstrap_oap.sh)** when creating a new cluster.
 
 ![upload_init_script and install_benchmark.sh](../imgs/upload_all_scripts_to_S3.PNG)
 
@@ -38,7 +38,7 @@ BUCKET={bucket_name}
 Note: If you want to use s3 for storage, you must define BUCKET; if you use hdfs for storage, you should set STORAGE like ```STORAGE=hdfs```
 
 #### Update the configurations of spark
-**[bootstrap_oap.sh](../bootstrap_oap.sh)** will help install all OAP packages under dir `/opt/benchmark-tools/oap`,
+**[bootstrap_oap.sh](https://raw.githubusercontent.com/oap-project/oap-tools/master/integrations/oap/emr/bootstrap_oap.sh)** will help install all OAP packages under dir `/opt/benchmark-tools/oap`,
 make sure to add below configuration to `./repo/confs/gazelle_plugin_performance/spark/spark-defaults.conf`.
 
 ```
