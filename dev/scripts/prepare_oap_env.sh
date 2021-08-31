@@ -23,8 +23,8 @@ repo_dic=([remote-shuffle]="https://github.com/oap-project/remote-shuffle.git" [
 
 
 if [ -z "$DEV_PATH" ]; then
-  OAP_HOME="$(cd "`dirname "$0"`/../.."; pwd)"
-  DEV_PATH=$OAP_HOME/dev/
+  OAP_DEV_HOME="$(cd "`dirname "$0"`/../.."; pwd)"
+  DEV_PATH=$OAP_DEV_HOME/dev/
 fi
 
 function check_jdk() {
@@ -586,7 +586,7 @@ function prepare_redisplusplus() {
 
 
 function prepare_rpmp_native() {
-  cd $OAP_HOME/pmem-shuffle
+  cd $OAP_DEV_HOME/pmem-shuffle
   export LD_LIBRARY_PATH=/usr/lib:/usr/local/lib:/usr/local/lib64:$LD_LIBRARY_PATH
   git submodule update --init --recursive
   git submodule add -b master https://github.com/redis/hiredis.git rpmp/include/hiredis
@@ -598,7 +598,7 @@ function prepare_rpmp_native() {
   cmake ..
   make && make install
 
-  cd $OAP_HOME/pmem-shuffle/rpmp/pmpool/client/java/rpmp
+  cd $OAP_DEV_HOME/pmem-shuffle/rpmp/pmpool/client/java/rpmp
   mvn clean install -DskipTests
 }
 
@@ -619,7 +619,7 @@ function clone_all(){
     for key in $(echo ${!repo_dic[*]})
     do
         echo "$key : ${repo_dic[$key]}"
-        cd $OAP_HOME
+        cd $OAP_DEV_HOME
         if [ ! -d $key ]; then
             git clone ${repo_dic[$key]} -b $OAP_BRANCH 
         else
