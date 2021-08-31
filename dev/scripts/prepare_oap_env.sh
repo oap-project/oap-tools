@@ -42,6 +42,14 @@ function check_os {
   fi  
 }
 
+function check_os_docker {
+  if [  -n "$(cat /etc/redhat-release | grep CentOS)" ]; then
+    install_redhat_lib
+  else
+    install_ubuntu_lib
+  fi  
+}
+
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
 
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
@@ -723,6 +731,7 @@ case $key in
     ;;
     --prepare_PMDK)
     shift 1 
+    check_os_docker
     prepare_PMDK
     exit 0
     ;;
