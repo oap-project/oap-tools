@@ -1,0 +1,9 @@
+name: oap-1.2.0
+channels:
+  - intel
+  - conda-forge
+  - defaults
+dependencies:
+  - oap=1.2.0
+
+

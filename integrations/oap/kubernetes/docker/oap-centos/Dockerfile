@@ -11,12 +11,12 @@
 # limitations under the License.
 #
 
-FROM spark-centos:1.2
+FROM spark-centos:1.2.0
 
 MAINTAINER The Optimized Analyitics Package for Spark Platform (OAP) Authors https://github.com/Intel-bigdata/OAP/
 
 #oap
-ARG OAP_VERSION=1.2.0
+ARG OAP_VERSION=1.2.0.hadoop320
 ENV OAP_VERSION                       ${OAP_VERSION}
 ENV OAP_HOME              /opt/home/conda/envs/oap-${OAP_VERSION}
 
