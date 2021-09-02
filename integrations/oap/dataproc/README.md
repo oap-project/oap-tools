@@ -4,13 +4,14 @@
 
 Upload the initialization actions script **[bootstrap_oap.sh](./bootstrap_oap.sh)** to Cloud Storage staging bucket:
     
-1. Download **[bootstrap_oap.sh](./bootstrap_oap.sh)** to a local folder.
+1. Download **[bootstrap_oap.sh](https://raw.githubusercontent.com/oap-project/oap-tools/master/integrations/oap/dataproc/bootstrap_oap.sh)** to a local folder.
 2. Upload **[bootstrap_oap.sh](./bootstrap_oap.sh)** to bucket.
 
 ![upload_init_script and bootstrap_benchmark.sh](./imgs/upload_bootstrap_oap_to_bucket.png)
 
 
 ## 2. Create a new cluster using bootstrap script
+
 To create a new cluster with initialization actions, follow the steps below:
 
 1). Click the  **CREATE CLUSTER** to create and custom your cluster.
