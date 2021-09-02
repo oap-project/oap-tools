@@ -6,9 +6,9 @@
 
 Upload the initialization actions scripts to Cloud Storage bucket. 
 **[bootstrap_oap.sh](../bootstrap_oap.sh)** is to help conda install OAP packages and
-**[bootstrap_benchmark.sh](./bootstrap_benchmark.sh)** is to help install necessary tools for TPC-DS, TPC-H and HIBench on Dataproc clusters.
+**[bootstrap_benchmark.sh](./bootstrap_benchmark.sh)** is to help install necessary tools for TPC-DS and HiBench on Dataproc clusters.
     
-1). Download **[bootstrap_oap.sh](../bootstrap_oap.sh)** and **[bootstrap_benchmark.sh](./bootstrap_benchmark.sh)** to a local folder.
+1). Download **[bootstrap_oap.sh](https://raw.githubusercontent.com/oap-project/oap-tools/master/integrations/oap/dataproc/bootstrap_oap.sh)** and **[bootstrap_benchmark.sh](https://raw.githubusercontent.com/oap-project/oap-tools/master/integrations/oap/dataproc/benchmark/bootstrap_benchmark.sh)** to a local folder.
 
 2). Upload these scripts to bucket.
 
@@ -173,21 +173,6 @@ partitionTables true
 queries all                
 ```
 
-#### Define the configurations of TPC-H
-
-```
-mkdir ./repo/confs/gazelle_plugin_performance/TPC-H
-vim ./repo/confs/gazelle_plugin_performance/TPC-H/config
-```
-
-Add the content to `./repo/confs/gazelle_plugin_performance/TPC-H/config` like below
-```
-scale 1                     
-format parquet              
-partitionTables true        
-queries all               
-```
-
 ### 2.3. Run TPC-DS
 
 To make the configuration above to be valid, run the following command (Note: every time you change Spark and TPC-DS configuration above, make sure to re-run this command.)
@@ -203,20 +188,4 @@ bash bin/tpc_ds.sh gen_data ./repo/confs/gazelle_plugin_performance
 Run power test for 1 round.
 ```
 bash bin/tpc_ds.sh run ./repo/confs/gazelle_plugin_performance 1
-```
-
-### 2.4. Run TPC-H:  
-
-To make the configuration above to be valid, run the following command (Note: every time you change Spark and TPC-H configuration above, make sure to re-run this command.)
-```
-bash bin/tpc_h.sh update ./repo/confs/gazelle_plugin_performance   
-```
-
-Generate data: 
-```
-bash bin/tpc_h.sh gen_data ./repo/confs/gazelle_plugin_performance
-```
-Run power test for 1 round.
-```
-bash bin/tpc_h.sh run ./repo/confs/gazelle_plugin_performance 1
 ```
