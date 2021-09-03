@@ -10,7 +10,7 @@ Upload the initialization actions scripts to Cloud Storage Buckets.
 
 **[bootstrap_benchmark.sh](../integrations/oap/dataproc/benchmark/bootstrap_benchmark.sh)** is to help install necessary tools for TPC-DS, TPC-H and HiBench on Dataproc clusters.
     
-1). Download **[bootstrap_oap.sh](../integrations/oap/dataproc/bootstrap_oap.sh)** and **[bootstrap_benchmark.sh](../integrations/oap/dataproc/benchmark/bootstrap_benchmark.sh)** to a local folder.
+1). Download **[bootstrap_oap.sh](https://github.com/oap-project/oap-tools/blob/master/integrations/oap/dataproc/bootstrap_oap.sh)** and **[bootstrap_benchmark.sh](https://github.com/oap-project/oap-tools/blob/master/integrations/oap/dataproc/benchmark/bootstrap_benchmark.sh)** to a local folder.
 
 2). Upload these scripts to Bucket.
 
@@ -39,10 +39,74 @@ To create a new cluster with initialization actions, follow the steps below:
     
 ![Set_init_timeout](../integrations/oap/dataproc/imgs/set_init_timeout.png)
 
+## 2. Enabling Gazelle Plugin on Dataproc 2.0
 
-## 2. Run TPC-DS with notebooks
+Here is an example of `spark-defaults.conf` on a `1 master + 2 workers` Dataproc cluster, 
+you can add these items to your `/etc/spark/conf/spark-defaults.conf` and modify corresponding configuration according to your cluster.
 
-### 2.1 Generate data
+```
+###Enabling Gazelle Plugin###
+
+spark.driver.extraLibraryPath                /opt/benchmark-tools/oap/lib
+spark.executorEnv.LD_LIBRARY_PATH            /opt/benchmark-tools/oap/lib
+spark.executor.extraLibraryPath              /opt/benchmark-tools/oap/lib
+spark.executorEnv.LIBARROW_DIR               /opt/benchmark-tools/oap
+spark.executorEnv.CC                         /opt/benchmark-tools/oap/bin/gcc
+
+spark.sql.extensions  com.intel.oap.ColumnarPlugin
+spark.files   /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.2.0-jar-with-dependencies.jar,/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.2.0-jar-with-dependencies.jar
+spark.driver.extraClassPath  /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.2.0-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.2.0-jar-with-dependencies.jar
+spark.executor.extraClassPath  /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.2.0-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.2.0-jar-with-dependencies.jar
+
+spark.executor.memoryOverhead 2989
+spark.memory.offHeap.enabled false
+spark.memory.offHeap.size 3g
+
+spark.shuffle.manager     org.apache.spark.shuffle.sort.ColumnarShuffleManager
+spark.oap.sql.columnar.sortmergejoin  true
+spark.oap.sql.columnar.preferColumnar true
+spark.oap.sql.columnar.joinOptimizationLevel 12
+
+spark.sql.autoBroadcastJoinThreshold 31457280
+spark.sql.adaptive.enabled true
+spark.sql.inMemoryColumnarStorage.batchSize 20480
+spark.sql.sources.useV1SourceList avro
+spark.sql.extensions com.intel.oap.ColumnarPlugin
+spark.sql.columnar.window  true
+spark.sql.columnar.sort  true
+spark.sql.execution.arrow.maxRecordsPerBatch 20480
+spark.sql.shuffle.partitions  72
+spark.sql.parquet.columnarReaderBatchSize 20480
+spark.sql.columnar.codegen.hashAggregate false
+spark.sql.join.preferSortMergeJoin  false
+spark.sql.broadcastTimeout 3600
+
+spark.authenticate false
+spark.history.ui.port 18080
+spark.history.fs.cleaner.enabled true
+spark.eventLog.enabled true
+spark.network.timeout 3600s
+spark.serializer org.apache.spark.serializer.KryoSerializer
+spark.kryoserializer.buffer           64m
+spark.kryoserializer.buffer.max       256m
+spark.dynamicAllocation.executorIdleTimeout 3600s
+
+```
+#### Verify Gazelle Plugin Integration
+
+Then you can read Parquet after executing command  `/lib/spark/bin/spark-shell`.
+
+```
+val usersDF = spark.read.format("arrow").load("file:///lib/spark/examples/src/main/resources/users.parquet")
+usersDF.select("name", "favorite_color").show
+```
+The picture below is an example of a successfully run.
+
+![Enable_Gazelle](../integrations/oap/dataproc/imgs/enable_gazelle.png)
+
+## 3. Run TPC-DS with notebooks
+
+### 3.1 Generate data
 
 You need to update the following configurations according to your request on **[tpcds_datagen.ipynb](../integrations/oap/dataproc/notebooks/tpcds_datagen_Dataproc.ipynb)**:
 ```
@@ -55,7 +119,7 @@ val useDoubleForDecimal = false   // use double format instead of decimal format
 ```
 Then you can use **[tpcds_datagen.ipynb](../integrations/oap/dataproc/notebooks/tpcds_datagen_Dataproc.ipynb)** to generate data.
 
-### 2.2 Run TPC-DS power test
+### 3.2 Run TPC-DS power test
 
 Here are 2 notebooks for you to easily run TPC-DS power test with Dataproc Spark or Gazelle Plugin.
 
@@ -72,3 +136,10 @@ val query_filter = Seq()          // Seq() == all queries
 //val query_filter = Seq("q1-v2.4", "q2-v2.4") // run subset of queries
 val randomizeQueries = false      // run queries in a random order. Recommended for parallel runs.
 ```
+
+## 4. Run TPC-DS with benchmark tool
+
+We also provide benchmark tool to help users quickly enable Gazelle Plugin and run benchmark with scripts.
+
+Please refer to [Gazelle Benchmark Guide on Dataproc](../integrations/oap/dataproc/benchmark/Gazelle_on_Dataproc.md) to quickly enable Gazelle Plugin and run benchmark with benchmark tool.
+

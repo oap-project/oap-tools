@@ -29,6 +29,7 @@ Generated on 2021-09-02
 #### Bugs Fixed
 |||
 |:---|:---|
+|[#358](https://github.com/oap-project/gazelle_plugin/issues/358)|Running TPC DS all queries with native-sql-engine for 10 rounds  will have performance degradation problems in the last few rounds|
 |[#481](https://github.com/oap-project/gazelle_plugin/issues/481)|JVM heap memory leak on memory leak tracker facilities|
 |[#436](https://github.com/oap-project/gazelle_plugin/issues/436)|Fix for Arrow Data Source test suite|
 |[#317](https://github.com/oap-project/gazelle_plugin/issues/317)|persistent memory cache issue|
@@ -165,6 +166,7 @@ Generated on 2021-09-02
 #### Bugs Fixed
 |||
 |:---|:---|
+|[#46](https://github.com/oap-project/pmem-shuffle/issues/46)|Cannot run Terasort with pmem-shuffle of branch-1.2|
 |[#43](https://github.com/oap-project/pmem-shuffle/issues/43)|Rpmp cannot be compiled due to the lack of boost header file.|
 
 #### PRs
