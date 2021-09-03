@@ -1,7 +1,7 @@
 # Run benchmark on Kubernetes
 
 ## Build the OAP CentOS Benchmark Docker Image
-Go to folder docker/oap-centos-benchmark and execute the following command to build OAP docker image which is based on Spark base docker image.
+Go to folder docker/oap-centos-benchmark and execute the following command to build benchmark docker image which is based on OAP base docker image.
 ``` 
 docker build --tag oap-centos-benchmark:1.2.0 .
 ``` 
