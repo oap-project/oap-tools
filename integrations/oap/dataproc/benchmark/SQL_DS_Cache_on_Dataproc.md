@@ -145,9 +145,9 @@ you can add these items to your `./repo/confs/sql-ds-cache-performance/spark/spa
 ```
 ### OAP
 
-spark.files   /opt/benchmark-tools/oap/oap_jars/plasma-sql-ds-cache-1.2.0-snapshot-with-spark-3.1.1.jar,/opt/benchmark-tools/oap/oap_jars/pmem-common-1.2.0-snapshot-with-spark-3.1.1.jar,/opt/benchmark-tools/oap/oap_jars/arrow-plasma-4.0.0.jar
-spark.driver.extraClassPath  /opt/benchmark-tools/oap/oap_jars/plasma-sql-ds-cache-1.2.0-snapshot-with-spark-3.1.1.jar:/opt/benchmark-tools/oap/oap_jars/pmem-common-1.2.0-snapshot-with-spark-3.1.1.jar:/opt/benchmark-tools/oap/oap_jars/arrow-plasma-4.0.0.jar
-spark.executor.extraClassPath  ./plasma-sql-ds-cache-1.2.0-snapshot-with-spark-3.1.1.jar:./pmem-common-1.2.0-snapshot-with-spark-3.1.1.jar:./arrow-plasma-4.0.0.jar
+spark.files   /opt/benchmark-tools/oap/oap_jars/plasma-sql-ds-cache-1.2.0-with-spark-3.1.1.jar,/opt/benchmark-tools/oap/oap_jars/pmem-common-1.2.0-with-spark-3.1.1.jar,/opt/benchmark-tools/oap/oap_jars/arrow-plasma-4.0.0.jar
+spark.driver.extraClassPath  /opt/benchmark-tools/oap/oap_jars/plasma-sql-ds-cache-1.2.0-with-spark-3.1.1.jar:/opt/benchmark-tools/oap/oap_jars/pmem-common-1.2.0-with-spark-3.1.1.jar:/opt/benchmark-tools/oap/oap_jars/arrow-plasma-4.0.0.jar
+spark.executor.extraClassPath  ./plasma-sql-ds-cache-1.2.0-with-spark-3.1.1.jar:./pmem-common-1.2.0-with-spark-3.1.1.jar:./arrow-plasma-4.0.0.jar
 
 
 spark.master yarn
