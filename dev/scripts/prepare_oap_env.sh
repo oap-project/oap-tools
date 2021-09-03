@@ -56,6 +56,7 @@ function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)"
 
 function install_ubuntu_lib() {
   apt-get -y update
+  apt-get -y install systemd
   apt-get -y install cmake
   apt-get -y install libcurl4-openssl-dev
   apt-get -y install libssl-dev
@@ -82,6 +83,7 @@ function install_ubuntu_lib() {
   apt-get -y install libjson-c-dev
   apt -y install llvm-7
   apt -y install clang-7
+  apt -y install bash-completion
 }
 
 

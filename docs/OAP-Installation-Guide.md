@@ -61,6 +61,12 @@ spark.executor.extraClassPath       $HOME/miniconda2/envs/oapenv/oap_jars/$OAP_F
 spark.driver.extraClassPath         $HOME/miniconda2/envs/oapenv/oap_jars/$OAP_FEATURE.jar
 ```
 
+//Set up Environment for LD_LIBRARY_PATH
+```
+export LD_LIBRARY_PATH=$HOME/miniconda2/envs/oapenv/lib:$LD_LIBRARY_PATH
+```
+Or you can add it to you ~/.bashrc and source it.
+
 Then you can follow the corresponding feature documents for more details to use them.
 
 
