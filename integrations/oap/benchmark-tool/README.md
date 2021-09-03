@@ -114,13 +114,19 @@ BUCKET={bucket_name}
 ### 4.1 Modify Spark and TPC-DS configuration ###
 
 #### Update Spark configuration ####
+
 ```
 mkdir ./repo/confs/testconf/spark
 touch ./repo/confs/testconf/spark/spark-defaults.conf
+```
+##### Google Could Dataproc
 
-###if using HDFS as storage on Dataproc
+If using HDFS as storage on Dataproc, run
+```
 echo "spark.sql.warehouse.dir=hdfs:///datagen" >> ./repo/confs/testconf/spark/spark-defaults.conf
-###if using Google Gloud Storage as storage on Dataproc
+```
+If using Google Gloud Storage as storage on Dataproc, change the following command with your bucket name, then run:
+```
 echo "spark.sql.warehouse.dir=gs://<your_bucket>" >> ./repo/confs/testconf/spark/spark-defaults.conf
 ```
 #### Update TPC-DS configuration ####
@@ -165,7 +171,7 @@ bash bin/tpc_ds.sh run ./repo/confs/testconf 1
 The 3rd parameter `1` means the how many times the workload will be run.
 
 
-## 5. Run TPC-H ##
+## 5. Run TPC-H on EMR ##
 
 ### 5.1 Modify Spark and TPC-H configuration ###
 
@@ -174,8 +180,6 @@ The 3rd parameter `1` means the how many times the workload will be run.
 mkdir ./repo/confs/testconf/spark
 touch ./repo/confs/testconf/spark/spark-defaults.conf
 
-###if on Dataproc
-echo "spark.sql.warehouse.dir=hdfs:///datagen" >> ./repo/confs/testconf/spark/spark-defaults.conf
 ```
 #### Update TPC-H configuration ####
 
