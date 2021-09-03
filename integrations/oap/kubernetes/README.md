@@ -120,7 +120,7 @@ For example:
 
 Go to folder oap
 ``` 
-cat Kmeans-example.scala | sh spark-shell-mllib.sh
+cat examples/Kmeans-example.scala | sh spark-shell-mllib.sh
 ``` 
 
 ##### Run example with Native SQL Engine
@@ -129,7 +129,7 @@ For example:
 
 Go to folder oap
 ``` 
-cat Native-SQL-Engine-example.scala | sh ./spark-shell-native-sql-engine.sh
+cat examples/Native-SQL-Engine-example.scala | sh ./spark-shell-native-sql-engine.sh
 ``` 
 
 ##### Stop the Client pod

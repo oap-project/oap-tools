@@ -16,7 +16,7 @@ FROM spark-ubuntu:1.2.0
 MAINTAINER The Optimized Analyitics Package for Spark Platform (OAP) Authors https://github.com/Intel-bigdata/OAP/
 
 #oap
-ARG OAP_VERSION=1.2.0.hadoop320
+ARG OAP_VERSION=1.2.0
 ENV OAP_VERSION                       ${OAP_VERSION}
 ENV OAP_HOME              /opt/home/conda/envs/oap-${OAP_VERSION}
 
