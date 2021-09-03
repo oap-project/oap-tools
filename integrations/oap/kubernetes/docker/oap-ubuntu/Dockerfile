@@ -19,6 +19,7 @@ MAINTAINER The Optimized Analyitics Package for Spark Platform (OAP) Authors htt
 ARG OAP_VERSION=1.2.0
 ENV OAP_VERSION                       ${OAP_VERSION}
 ENV OAP_HOME              /opt/home/conda/envs/oap-${OAP_VERSION}
+ENV LD_LIBRARY_PATH                      ${OAP_HOME}/lib:${LD_LIBRARY_PATH}
 
 USER root
 
