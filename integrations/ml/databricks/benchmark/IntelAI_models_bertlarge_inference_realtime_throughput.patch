@@ -1,0 +1,24 @@
+diff --git a/models/language_modeling/tensorflow/bert_large/inference/run_squad.py b/models/language_modeling/tensorflow/bert_large/inference/run_squad.py
+index f08509d..c2dc34f 100644
+--- a/models/language_modeling/tensorflow/bert_large/inference/run_squad.py
++++ b/models/language_modeling/tensorflow/bert_large/inference/run_squad.py
+@@ -1370,10 +1370,16 @@ def main(_):
+         hooks=hooks):
+       num_processed_examples += 1
+       if FLAGS.mode in ('benchmark', 'profile'):
+-        if num_processed_examples % 10 == 0:
+-          tf.compat.v1.logging.info("Processed #examples: %d" % (num_processed_examples))
+-        if num_processed_examples == (threshod_examples + 1):
++        if num_processed_examples == threshod_examples:
+           start = time.time()
++        if num_processed_examples % FLAGS.predict_batch_size == 0:
++          tf.compat.v1.logging.info("Processed #examples: %d" % (num_processed_examples))
++          if num_processed_examples > (threshod_examples + 1):
++            end = time.time()
++            tf.compat.v1.logging.info("Processing elapsed time: %f num processed examples: %d threshod_examples: %d"
++                                            % (end-start, num_processed_examples, threshod_examples))
++            tf.compat.v1.logging.info("examples/sec: %3.2f"
++                                           % (float(num_processed_examples-threshod_examples)/float(end-start)))
+       elif FLAGS.mode == 'accuracy':
+         if len(all_results) % 10 == 0:
+           tf.compat.v1.logging.info("Processing example: %d" % (len(all_results)))
