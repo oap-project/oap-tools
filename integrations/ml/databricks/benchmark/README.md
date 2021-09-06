@@ -3,7 +3,7 @@
 ###  Import the notebooks
 You should import the **notebook**  we provided to Workspace to run benchmark notebooks.
 
-1. Download the notebooks **[benchmark_tensorflow_preparation.ipynb](./benchmark_tensorflow_preparation.ipynb)**, **[benchmark_tensorflow_bertlarge.ipynb](./benchmark_tensorflow_bertlarge.ipynb)** and **[benchmark_sklearn.ipynb](./benchmark_sklearn.ipynb)** to your local folder.
+1. Download the notebooks: BERT-Large benchmark for TensorFlow and **[benchmark_sklearn.ipynb](./benchmark_sklearn.ipynb)** to your local folder.
 2. Click the  **Workspace** icon or the  **Home** icon in the left sidebar.
 3. Click **Down** caret in the Workspace or a user folder and select Import. 
 
@@ -19,8 +19,10 @@ You should import the **notebook**  we provided to Workspace to run benchmark no
  2. Open the notebook *benchmark_sklearn* and attach it to the corresponding cluster you created.
  3. Click **Run All**.
    
-#### Run benchmark_tensorflow_preparation and benchmark_tensorflow_bertlarge notebook
+#### Run BERT-Large benchmark notebooks for TensorFlow
  1. Create cluster with Databricks ML Runtime or Databricks ML Runtime with Intel Optimized ML libraries as described above. For the Node type, we recommend to use **Standard_F32s_v2**.
- 2. Open the notebook *benchmark_tensorflow_preparation* and *benchmark_tensorflow_bertlarge*, then attach them to the corresponding cluster you created.
+ 2. Open the notebook *benchmark_tensorflow_bertlarge_preparation*, *benchmark_tensorflow_bertlarge_training* and *benchmark_tensorflow_bertlarge_inference*, then attach them to the corresponding cluster you created.
  3. Run *benchmark_tensorflow_preparation* for downloading datasets, checkpoints and models.
- 4. Run *benchmark_tensorflow_bertlarge* for running training and inference workload.
+ 4. Run BERT-Large benchmark workload.
+ - Run *benchmark_tensorflow_bertlarge_training* for running training workload.
+ - Run *benchmark_tensorflow_bertlarge_inference* for running inference workload.
