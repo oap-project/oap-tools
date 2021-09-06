@@ -1,5 +1,5 @@
 # Use Intel Optimized ML libraries on Azure Databricks cloud with Databricks Runtime 
-This document is used to guide the steps of creating clusters with Intel Optimized ML libraries on Databricks.  The current init scripts works for Databricks Runtime version 7.x and 8.x. 
+This document is used to guide the steps of creating clusters with Intel Optimized ML libraries on Databricks.  The current init scripts works for Databricks Runtime version 7.x, 8.x and 9.0. 
 
 We provided two init script options which are different on scikit-learn usage. Both options are the same as to TensorFlow. Before you go, please read below information and decide which opiton is most suitable for you and undersand the impacts each option may have.
 
@@ -10,7 +10,7 @@ We provided two init script options which are different on scikit-learn usage. B
 from sklearnex import patch_sklearn <br/>
 patch_sklearn()
 
-Because of this, you can choose which program to use the optimized implemention by calling the patch_sklearn() method. This option works for *Runtime:7.3 LTS*, and *Runtime 8.x". 
+Because of this, you can choose which program to use the optimized implemention by calling the patch_sklearn() method. This option works for *Runtime:7.3 LTS*,*Runtime 8.x" and *Runtime 9.0". 
 
 ## 1. Upload init script
 
@@ -18,7 +18,7 @@ Upload the init script **[init_intel_optimized_ml.sh](./init_intel_optimized_ml.
 
 1. Download **[init_intel_optimized_ml.sh](./init_intel_optimized_ml.sh)** to a local folder.
 2. Click **Data** icon in the left sidebar.
-3. Click the **DBFS** button and then **Upload** button at the top.
+3. Click the **DBFS** button and then **Upload** button at the top.If DBFS button is not shown, follow the guide of **[Manage the DBFS file browser](https://docs.microsoft.com/en-us/azure/databricks/administration-guide/workspace/dbfs-browser)** to enable it. 
 4. Select a target directory, for example, FileStore, in the **Upload Data to DBFS** dialog.
 5. Browse to the file **[init_intel_optimized_ml.sh](./init_intel_optimized_ml.sh)** in the local folder to upload in the Files box.
 
