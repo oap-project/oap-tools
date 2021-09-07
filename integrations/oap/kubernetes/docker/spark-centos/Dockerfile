@@ -55,11 +55,11 @@ RUN /opt/home/conda/bin/conda config --system --set channel_priority strict \
 ENV JAVA_HOME            /opt/home/jdk
 ENV PATH                          ${JAVA_HOME}/bin:${PATH}
 
-RUN wget https://enos.itcollege.ee/~jpoial/allalaadimised/jdk8/jdk-8u291-linux-x64.tar.gz  && \
-    gunzip jdk-8u291-linux-x64.tar.gz && \
-    tar -xf jdk-8u291-linux-x64.tar -C /opt/home && \
-    rm jdk-8u291-linux-x64.tar && \
-    ln -s /opt/home/jdk1.8.0_291 /opt/home/jdk
+RUN wget https://enos.itcollege.ee/~jpoial/allalaadimised/jdk8/jdk-8u301-linux-x64.tar.gz  && \
+    gunzip jdk-8u301-linux-x64.tar.gz && \
+    tar -xf jdk-8u301-linux-x64.tar -C /opt/home && \
+    rm jdk-8u301-linux-x64.tar && \
+    ln -s /opt/home/jdk1.8.0_301 /opt/home/jdk
     
 ARG SPARK_VERSION=3.1.1
 
@@ -71,11 +71,6 @@ RUN wget https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SP
     tar -zxvf spark-${SPARK_VERSION}-bin-hadoop3.2.tgz && \
     mv spark-${SPARK_VERSION}-bin-hadoop3.2 spark-${SPARK_VERSION} && \
     rm spark-${SPARK_VERSION}-bin-hadoop3.2.tgz
-
-RUN wget https://github.com/zhixingheyi-tian/Resource/releases/download/Cloud-Tools/tpcds-kit.tar.gz  && \
-    mkdir -p /opt/home/tools && \
-    tar -zxvf tpcds-kit.tar.gz -C /opt/home/tools && \
-    rm tpcds-kit.tar.gz
 
 
 #run
@@ -107,11 +102,9 @@ COPY  spark-submit.sh /opt/home/spark-submit.sh
 
 ADD https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.2.0/hadoop-aws-3.2.0.jar  $SPARK_HOME/jars/hadoop-aws-3.2.0.jar
 ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.11.375/aws-java-sdk-bundle-1.11.375.jar $SPARK_HOME/jars/aws-java-sdk-bundle-1.11.375.jar
-ADD https://github.com/zhixingheyi-tian/Resource/releases/download/Cloud-Tools/spark-sql-perf_2.12-0.5.1-SNAPSHOT.jar  /opt/home/tools/spark-sql-perf_2.12-0.5.1-SNAPSHOT.jar
 
 RUN chmod +r $SPARK_HOME/jars/hadoop-aws-3.2.0.jar
 RUN chmod +r $SPARK_HOME/jars/aws-java-sdk-bundle-1.11.375.jar
-RUN chmod +r /opt/home/tools/spark-sql-perf_2.12-0.5.1-SNAPSHOT.jar
 
 ENTRYPOINT [ "/opt/home/entrypoint.sh" ]
 

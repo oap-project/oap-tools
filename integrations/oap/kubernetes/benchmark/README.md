@@ -1,5 +1,11 @@
 # Run benchmark on Kubernetes
 
+## Build the OAP CentOS Benchmark Docker Image
+Go to folder docker/oap-centos-benchmark and execute the following command to build benchmark docker image which is based on OAP base docker image.
+``` 
+docker build --tag oap-centos-benchmark:1.2.0 .
+``` 
+
 ## Configurations
 #### Set Spark properties
 Go to folder spark/conf/, can set Spark properties in spark-defaults.conf directly.
@@ -46,7 +52,7 @@ For example:
 ```
 ## Launch one Spark client pod
 
-Firstly, need launch one Spark client pod. Refer to [Start the Client](../README.md#start-the-client).
+Firstly, need launch one Spark client pod with oap-centos-benchmark image. Refer to [Start the Client](../README.md#start-the-client).
 
 ## Run TPCDS
 
@@ -88,10 +94,10 @@ cat tpcds_run.scala | sh ../spark/spark-shell-client.sh --jars /opt/home/tools/s
 ## Run HiBench 
 
 ### Generate HiBench KMeans data
-Refer to [Intel MLlib on EMR](../../emr/benchamrk/Intel_MLlib_on_EMR.md) to generate KMeans workload datasets.
+Refer to [Intel MLlib on EMR](../../emr/benchmark/Intel_MLlib_on_EMR.md) to generate KMeans workload datasets.
 
 ### Run HiBench KMeans
-Firstly, Determine the following parameters, according to [configured kmeans.conf](../../emr/benchamrk/Intel_MLlib_on_EMR.md#define-the-configurations-of-kmeans.conf) and generated KMeans dataset path.
+Firstly, Determine the following parameters, according to [configured kmeans.conf](../../emr/benchmark/Intel_MLlib_on_EMR.md#define-the-configurations-of-kmeans.conf) and generated KMeans dataset path.
 
 ```
 # hibench.kmeans.k
@@ -111,7 +117,7 @@ Go to folder ../spark. Launch HiBench KMeans Spark job with above parameters.
 
 ```
 sh ./spark-submit-client.sh \
-  --class com.intel.hibench.sparkbench.ml.DenseKMeans /opt/home/sparkbench-assembly-8.0-SNAPSHOT-dist.jar -k 10 --numIterations 5 --storageLevel MEMORY_ONLY --initMode Random s3a://aws-emr-resources-348941870272-us-east-2/datagen/HiBench/Kmeans/Input/3000000/samples
+  --class com.intel.hibench.sparkbench.ml.DenseKMeans /opt/home/tools/sparkbench-assembly-8.0-SNAPSHOT-dist.jar -k 10 --numIterations 5 --storageLevel MEMORY_ONLY --initMode Random s3a://aws-emr-resources-348941870272-us-east-2/datagen/HiBench/Kmeans/Input/3000000/samples
   
 ```
 

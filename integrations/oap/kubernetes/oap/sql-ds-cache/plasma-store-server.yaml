@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: plasma-store-server
+  namespace: default
+  labels:
+    k8s-app: oap-cache-backend
+spec:
+  selector:
+    matchLabels:
+      name: pmem
+  template:
+    metadata:
+      labels:
+        name: pmem
+    spec:
+      containers:
+      - name: plasma-store-server
+        image: $CONTAINER_IMAGE
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh"]
+        args: ["-c", "export LD_LIBRARY_PATH=$OAP_DIR/lib:$LD_LIBRARY_PATH; echo $LD_LIBRARY_PATH; $OAP_DIR/bin/plasma-store-server -m $PMEM_SIZE -d $PMEM_PATH -s /var/log/plasmaStore;"]
+        resources:
+          limits:
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 200Mi
+        volumeMounts:
+        - name: varservice
+          mountPath: /var/log
+        - name: pmem
+          mountPath: /mnt/pmem
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: varservice
+        hostPath:
+          path: /var/log
+      - name: pmem
+        hostPath:
+          path: /mnt/pmem
+
