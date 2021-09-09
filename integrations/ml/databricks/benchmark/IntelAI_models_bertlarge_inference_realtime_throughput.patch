@@ -1,7 +1,16 @@
 diff --git a/models/language_modeling/tensorflow/bert_large/inference/run_squad.py b/models/language_modeling/tensorflow/bert_large/inference/run_squad.py
-index f08509d..c2dc34f 100644
+index f08509d..f48d784 100644
 --- a/models/language_modeling/tensorflow/bert_large/inference/run_squad.py
 +++ b/models/language_modeling/tensorflow/bert_large/inference/run_squad.py
+@@ -1354,7 +1354,7 @@ def main(_):
+     tf.compat.v1.disable_eager_execution()
+     if FLAGS.mode == 'benchmark':
+       hooks = [UpdateGlobalStepHook(),
+-               StopAtStepHook(30)]
++               StopAtStepHook(100)]
+     elif FLAGS.mode == 'profile':
+       hooks = [UpdateGlobalStepHook(),
+                StopAtStepHook(30),
 @@ -1370,10 +1370,16 @@ def main(_):
          hooks=hooks):
        num_processed_examples += 1
