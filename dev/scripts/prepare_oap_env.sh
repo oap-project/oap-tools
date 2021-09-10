@@ -43,7 +43,7 @@ function check_os {
 }
 
 function check_os_docker {
-  if [  -n "$(cat /etc/redhat-release | grep CentOS)" ]; then
+  if [   -e  "/etc/redhat-release" ]; then
     install_redhat_lib
   else
     install_ubuntu_lib
@@ -479,11 +479,11 @@ function prepare_PMDK() {
   fi
   cd pmdk
   git checkout tags/1.8
-  if [  -n "$(uname -a | grep Ubuntu)" ]; then
+  if [   -e  "/etc/redhat-release" ]; then
+    make -j && make install  
+  else
     make NDCTL_ENABLE=n
     make NDCTL_ENABLE=n install
-  else
-    make -j && make install
   fi 
   
   export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig/:$PKG_CONFIG_PATH
