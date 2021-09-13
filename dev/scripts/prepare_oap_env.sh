@@ -11,11 +11,11 @@ GCC_MIN_VERSION=7.0
 LLVM_MIN_VERSION=7.0
 rx='^([0-9]+\.){0,2}(\*|[0-9]+)$'
 INTEL_ARROW_REPO="https://github.com/oap-project/arrow.git"
-ARROW_BRANCH="arrow-4.0.0-oap-1.2"
+ARROW_BRANCH="arrow-4.0.0-oap"
 
 
-OAP_VERSION=1.2.0
-OAP_BRANCH="branch-1.2"
+OAP_VERSION=1.3.0
+OAP_BRANCH="master"
 
 
 declare -A repo_dic
@@ -42,12 +42,21 @@ function check_os {
   fi  
 }
 
+function check_os_docker {
+  if [   -e  "/etc/redhat-release" ]; then
+    install_redhat_lib
+  else
+    install_ubuntu_lib
+  fi  
+}
+
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
 
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
 
 function install_ubuntu_lib() {
   apt-get -y update
+  apt-get -y install systemd
   apt-get -y install cmake
   apt-get -y install libcurl4-openssl-dev
   apt-get -y install libssl-dev
@@ -74,6 +83,7 @@ function install_ubuntu_lib() {
   apt-get -y install libjson-c-dev
   apt -y install llvm-7
   apt -y install clang-7
+  apt -y install bash-completion
 }
 
 
@@ -469,11 +479,11 @@ function prepare_PMDK() {
   fi
   cd pmdk
   git checkout tags/1.8
-  if [  -n "$(uname -a | grep Ubuntu)" ]; then
+  if [   -e  "/etc/redhat-release" ]; then
+    make -j && make install  
+  else
     make NDCTL_ENABLE=n
     make NDCTL_ENABLE=n install
-  else
-    make -j && make install
   fi 
   
   export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig/:$PKG_CONFIG_PATH
@@ -624,8 +634,9 @@ function clone_all(){
             git clone ${repo_dic[$key]} -b $OAP_BRANCH 
         else
             cd $key
-            git pull
+            git reset --hard HEAD^
             git checkout -f $OAP_BRANCH 
+            git pull
         fi
     
     done
@@ -722,6 +733,7 @@ case $key in
     ;;
     --prepare_PMDK)
     shift 1 
+    check_os_docker
     prepare_PMDK
     exit 0
     ;;
