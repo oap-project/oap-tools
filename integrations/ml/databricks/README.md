@@ -1,4 +1,4 @@
-# Use Intel Optimized ML libraries on Azure Databricks cloud with Databricks Runtime 
+# Use Intel Optimized ML libraries on Databricks cloud with Databricks Runtime 
 This document is used to guide the steps of creating clusters with Intel Optimized ML libraries on Databricks.  The current init scripts works for Databricks Runtime version 7.x, 8.x and 9.0. 
 
 We provided two init script options which are different on scikit-learn usage. Both options are the same as to TensorFlow. Before you go, please read below information and decide which opiton is most suitable for you and undersand the impacts each option may have.
@@ -7,10 +7,14 @@ We provided two init script options which are different on scikit-learn usage. B
 
 **Optionn B: init_intel_optimized_ml_ex.sh**  For this init scirpt opiton, [scikit-learn-intelex](https://github.com/intel/scikit-learn-intelex#%EF%B8%8F-get-started) is installed and the existing scikit-learn library will kept unchanged at the installation time. The user program need to explicitly patch the existing scikit-learn library with scikit-learn-intelex by calling patch_sklearn like below at the beginning:
 
-from sklearnex import patch_sklearn <br/>
+```
+from sklearnex import patch_sklearn 
 patch_sklearn()
+```
 
 Because of this, you can choose which program to use the optimized implemention by calling the patch_sklearn() method. This option works for *Runtime:7.3 LTS*,*Runtime 8.x" and *Runtime 9.0". 
+
+Note that our experimental platform is Azure Databricks, AWS Databricks may be slightly different, please refer to its documents.
 
 ## 1. Upload init script
 
