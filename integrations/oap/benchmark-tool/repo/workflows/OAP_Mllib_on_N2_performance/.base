@@ -1,0 +1,3 @@
+../oap_release_performance_test_on_Dataproc
+REMOVE:all
+ADD:oap-dataGen/oap_mllib_als_5GB, oap-dataGen/oap_mllib_kmeans_250GB, oap-dataGen/oap_mllib_pca_30GB, oap-mllib/all
