@@ -77,7 +77,7 @@ echo "../spark-oap-dataproc" > ./repo/confs/OAP_MLlib_performance/.base
 STORAGE=gs
 BUCKET={bucket_name}
 ```
-Note: If you want to use GCS for storage, you must define BUCKET; if you use ONLY for storage, you should only set STORAGE like ```STORAGE=hdfs```
+Note: If you want to use GCS for storage, you must define BUCKET; if you use HDFS for storage, you should only set STORAGE like ```STORAGE=hdfs```
 
 #### Update the configurations of Spark
 
@@ -199,4 +199,70 @@ bash bin/hibench.sh gen_data ./repo/confs/OAP_MLlib_performance ml/als
 
 bash bin/hibench.sh run ./repo/confs/OAP_MLlib_performance ml/als
 ```
+
+### 2.5 OAP MLlib integration verification
+
+When you run test above, you can check OAP MLlib integration verification from Spark WebUI jobs name containing "DAL" as below.
+
+![OAP MLlib integration](../imgs/mllib_integration.png)
+
+
+## 3. Using benchmark-tools to run workflow with OAP MLlib
+
+### 3.1 Prepare workflow
+
+There is one repo `./repo/workflows/oap_release_performance_test_on_Dataproc` which provides default configuration for OAP MLLib different cases. 
+Please follow steps below to create a repo with the same structure and update the values you need.
+
+Here we choose the **n2-standard-80** instances to create a cluster (1 master + 3 workers) and each instance has 80 vCPUs and 320GB memory. 
+
+Let's take this cluster for example, we have already created corresponding directory under `./repo/workflows/` which is `./repo/workflows/OAP_Mllib_on_N2_performance`.
+
+#### Configuration of `spark.conf`
+
+We have already added configuration for repo `./repo/workflows/OAP_Mllib_on_N2_performance`.
+
+```
+hibench.yarn.executor.num     18
+hibench.yarn.executor.cores   6
+
+spark.executor.memory 36g
+spark.executor.memoryOverhead 6g
+spark.driver.memory 100g
+
+spark.default.parallelism 120
+spark.sql.shuffle.partitions  120
+
+```
+
+Other configurations like `hibench.conf`,`kmeans.conf`,`als.conf`,`pca.conf`, here we need more actions cause they are inherited from `./repo/workflows/oap_release_performance_test_on_Dataproc`
+
+We set `spark.history.fs.logDirectory`  to  `hdfs:///var/log/spark/apps`, so please create a directory on HDFS as below.
+
+```
+hadoop fs -mkdir -p /var/log/spark/apps
+```
+
+and modify items of `./repo/workflows/OAP_Mllib_on_N2_performance/common/env.conf` for the cluster.
+```
+STORAGE=gs
+BUCKET={your_bucket_name}
+BASELINE_COMP=TRUE
+```
+
+### 3.2 Run OAP MLlib performance test
+
+Run the following command to trigger OAP MLlib workflow including ALS on 5GB data scale, Kmeans on 250GB data scale and PCA on 30GB data scale
+
+```
+python2 ./bin/run_workflows.py --workflows ./repo/workflows/OAP_Mllib_on_N2_performance
+```
+
+After test, there will be a `output_workflow` directory under `./repo/workflows/OAP_Mllib_on_N2_performance/output/`. Please open the `summary.html` on browser, 
+you will get OAP MLlib performance summary table as below, you can compare OAP MLlib with Baseline item which is vanilla Spark MLlib on Dataproc.
+
+NOTE: Please ignore the current email sending issues.
+
+![performance summary](../imgs/mllib_performance_summary.png)
+
 
