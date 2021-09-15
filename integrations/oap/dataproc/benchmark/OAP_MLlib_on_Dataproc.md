@@ -211,40 +211,89 @@ When you run test above, you can check OAP MLlib integration verification from S
 
 ### 3.1 Prepare workflow
 
-There is one repo `./repo/workflows/oap_release_performance_test_on_Dataproc` which provides default configuration for OAP MLLib different cases. 
-
-Please follow steps below to create a repo with the same structure and update the values you need.
+There is one repo `./repo/workflows/oap_release_performance_test_on_Dataproc` which provides default configuration for OAP MLLib **bigdata** hibench profile workflow. 
 
 Here we choose the **n2-standard-80** instances to create a cluster (1 master + 3 workers) and each instance has 80 vCPUs and 320GB memory. 
 
-Let's take this cluster for example, we have already help you created corresponding repo under `./repo/workflows/` which is `./repo/workflows/OAP_Mllib_on_N2_performance` if you also want to quickly trigger workflow to check OAP MLlib performance gain with the same cluster. 
+Let's take this cluster for example, we have already helped you create corresponding repo under `./repo/workflows/` which is `./repo/workflows/OAP_Mllib_on_N2_performance` if you also want to quickly trigger workflow to check OAP MLlib performance gain with the same cluster. 
 
-#### Configuration of `spark.conf`
+#### Configuration for OAP MLlib on n2-standard-80 cluster
 
-We have already added configuration for repo `./repo/workflows/OAP_Mllib_on_N2_performance`.
+We inherit configuration from `./repo/workflows/oap_release_performance_test_on_Dataproc`.
+Then the following configuration is already set for `./repo/workflows/OAP_Mllib_on_N2_performance`.
+
+##### hibench.conf
+
+```
+hibench.scale.profile                bigdata
+```
+
+##### kmeans.conf
+
+```
+hibench.kmeans.bigdata.num_of_clusters          5
+hibench.kmeans.bigdata.dimensions               1000
+hibench.kmeans.bigdata.num_of_samples           25000000
+hibench.kmeans.bigdata.samples_per_inputfile    10000
+hibench.kmeans.bigdata.k                        300
+hibench.kmeans.bigdata.max_iteration            40
+hibench.kmeans.storage.level                    MEMORY_ONLY
+```
+
+##### pca.conf
+
+```
+hibench.pca.bigdata.examples            800000
+hibench.pca.bigdata.features            5000
+hibench.pca.bigdata.k                   50
+hibench.pca.bigdata.maxresultsize       "8g"
+```
+
+##### als.conf
+
+```
+hibench.als.bigdata.users               4000000
+hibench.als.bigdata.products            1000000
+hibench.als.bigdata.ratings             100000000
+hibench.als.bigdata.implicitprefs       true
+hibench.als.rank                        50
+hibench.als.numIterations               10
+hibench.als.Lambda                      0.1
+```
+
+As for `spark.conf`, according to the current 1master+3workers **n2-standard-80** cluster, we also have already set it in `./repo/workflows/oap_release_performance_test_on_Dataproc`
+
+##### spark.conf
 
 ```
 hibench.yarn.executor.num     18
 hibench.yarn.executor.cores   6
 
-spark.executor.memory 36g
+spark.executor.memory         36g
 spark.executor.memoryOverhead 6g
-spark.driver.memory 100g
+spark.driver.memory           100g
 
-spark.default.parallelism 120
+spark.default.parallelism     120
 spark.sql.shuffle.partitions  120
 
 ```
 
-Other configurations like `hibench.conf`,`kmeans.conf`,`als.conf`,`pca.conf`, here we need **no** more actions cause they are inherited from `./repo/workflows/oap_release_performance_test_on_Dataproc`
+**Note:** OAP MLlib adopted oneDAL as implementation backend. oneDAL requires enough native memory allocated for each executor. For large dataset, depending on algorithms, you may need to tune `spark.executor.memoryOverhead` to allocate enough native memory. 
+          Setting this value to larger than __dataset size / executor number__ is a good starting point. So here for **bigdata** Hibench data profile, we set 
+          `spark.executor.memoryOverhead` to `6g`. Other Spark configuration is set according to cluster resources.
 
-We set `spark.history.fs.logDirectory`  to  `hdfs:///var/log/spark/apps`, so please create a directory on HDFS as below.
+Configuration above already set for `./repo/workflows/OAP_Mllib_on_N2_performance`, so you needn't modify anything.
+
+Now, you only need follow the 2 steps below to enable workflow.
+
+Step 1. We already set `spark.history.fs.logDirectory`  to  `hdfs:///var/log/spark/apps`, so then please create a directory on HDFS as below.
 
 ```
 hadoop fs -mkdir -p /var/log/spark/apps
 ```
 
-and modify items of `./repo/workflows/OAP_Mllib_on_N2_performance/common/env.conf` for the cluster.
+Step 2. Modify items of `./repo/workflows/OAP_Mllib_on_N2_performance/common/env.conf` for the cluster.
+
 ```
 STORAGE=gs
 BUCKET={your_bucket_name}
@@ -253,7 +302,7 @@ BASELINE_COMP=TRUE
 
 ### 3.2 Run OAP MLlib performance test
 
-Run the following command to trigger OAP MLlib workflow including ALS on 5GB data scale, Kmeans on 250GB data scale and PCA on 30GB data scale
+Run the following command to trigger OAP MLlib workflow including ALS on 5GB data scale, Kmeans on 250GB data scale and PCA on 30GB data scale.
 
 ```
 python2 ./bin/run_workflows.py --workflows ./repo/workflows/OAP_Mllib_on_N2_performance
@@ -266,4 +315,20 @@ NOTE: Please ignore the current email sending issues.
 
 ![performance summary](../imgs/mllib_performance_summary.png)
 
+### 3.3 Run OAP MLlib performance test on other Dataproc clusters
 
+We choose the **n2-standard-80** instances to create a cluster (1 master + 3 workers) as an example, which is shown above.
+
+You certainly could create other type clusters, the easy way to quickly set up a workflow repo is to just 
+
+1). Modify all the `spark.conf` under `./repo/workflows/OAP_Mllib_on_N2_performance/components`, set corresponding items according your cluster resources.
+
+2). Modify the `./repo/workflows/OAP_Mllib_on_N2_performance/common/env.conf`, such as replacing with your gs bucket name.
+
+3). Run `hadoop fs -mkdir -p /var/log/spark/apps`
+     
+Then, run command below to trigger workflow test just as above.
+
+ ```
+ python2 ./bin/run_workflows.py --workflows ./repo/workflows/OAP_Mllib_on_N2_performance
+ ```
