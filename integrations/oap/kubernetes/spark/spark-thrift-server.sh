@@ -21,7 +21,7 @@ K8S_SVC_ADDRESS=https://kubernetes.default.svc.cluster.local:443
 CONTAINER_IMAGE=spark-centos:1.2.0
 SPARK_CONF=${WORK_DIR}/conf/
 ACTION=start
-CONTAINER_ENGINE=K8S
+CONTAINER_ENGINE=nodeport
 
 while [[ $# -gt 0 ]]
 do
@@ -78,8 +78,8 @@ case "$ACTION" in
     kubectl apply -f ${WORK_DIR}/spark-thrift-server-headless-service.yaml
     
     # create the node port service for beeline connection
-    case "CONTAINER_ENGINE" in
-        EKS)
+    case "$CONTAINER_ENGINE" in
+        loadbalancer)
             kubectl apply -f ${WORK_DIR}/spark-thrift-server-loadbalancer-service.yaml
             ;;
         *)
