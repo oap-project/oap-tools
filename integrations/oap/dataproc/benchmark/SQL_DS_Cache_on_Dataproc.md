@@ -114,11 +114,13 @@ echo "../spark-oap-dataproc" > ./repo/confs/sql-ds-cache-performance/.base
 If you use HDFS as storage, add items below:
 ```
 OAP_with_external=TRUE
+PLASMA_CACHE_SIZE=15000000000
 STORAGE=hdfs
 ```
 If you use Google Cloud Storage as storage, add items below:
 ```
 OAP_with_external=TRUE
+PLASMA_CACHE_SIZE=15000000000
 STORAGE=gs
 BUCKET={your_bucket}
 ```
@@ -168,13 +170,11 @@ spark.serializer org.apache.spark.serializer.KryoSerializer
 spark.authenticate false
 
 spark.sql.extensions              org.apache.spark.sql.OapExtensions
-# for parquet file format, enable binary cache
-spark.sql.oap.parquet.binary.cache.enabled                   true
+# for parquet file format, enable columnVector cache
+spark.sql.oap.parquet.data.cache.enabled                     true
 spark.oap.cache.strategy                                     external
 spark.sql.oap.dcpmm.free.wait.threshold                      50000000000
 spark.executor.sql.oap.cache.external.client.pool.size       2
-# cache size 
-spark.executor.sql.oap.cache.persistent.memory.initial.size  50g
 
 spark.executorEnv.LD_LIBRARY_PATH   /opt/benchmark-tools/oap/lib
 spark.driver.extraLibraryPath       /opt/benchmark-tools/oap/lib
@@ -188,6 +188,8 @@ spark.driver.extraLibraryPath       /opt/benchmark-tools/oap/lib
 Replace the <replace-with-cache-storage-path> to PMem or disk path on workers which is set 777 permission.
 
 For example, the first SSD will be mounted on `/mnt/1`, and you choose the first SSD as caching path, then you can use `/mnt/1/hadoop/spark` path which is set 777 permission on workers by default. 
+
+`{%plasma.cache.size%}` is set from `PLASMA_CACHE_SIZE` of `./repo/confs/sql-ds-cache-performance/env.conf`, if you want to change this size, you can modify `PLASMA_CACHE_SIZE` like to `330000000000` which is 330GB.
 
 #### Define the configurations of TPC-DS
 
