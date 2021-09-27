@@ -308,8 +308,8 @@ Run the following command to trigger OAP MLlib workflow including ALS on 5GB dat
 python2 ./bin/run_workflows.py --workflows ./repo/workflows/OAP_Mllib_on_N2_performance
 ```
 
-After test, there will be a `output_workflow` directory under `./repo/workflows/OAP_Mllib_on_N2_performance/output/`. Please open the `summary.html` on browser, 
-you will get OAP MLlib performance summary table as below, you can compare OAP MLlib with Baseline item which is vanilla Spark MLlib on Dataproc.
+After test, there will be a `output_workflow` directory under `./repo/workflows/OAP_Mllib_on_N2_performance/output/`. Please open the `baseline-summary.html` on browser, 
+you will get OAP MLlib performance comparison with baseline which is vanilla Spark MLlib on Dataproc.
 
 NOTE: Please ignore the current email sending issues.
 
@@ -321,7 +321,7 @@ We choose the **n2-standard-80** instances to create a cluster (1 master + 3 wor
 
 You certainly could create other type clusters, the easy way to quickly set up a workflow repo is to just 
 
-1). Modify all the `spark.conf` under `./repo/workflows/OAP_Mllib_on_N2_performance/components`, set corresponding items according your cluster resources.
+1). Modify **all** the `spark.conf` under `./repo/workflows/OAP_Mllib_on_N2_performance/components`, set corresponding items according your cluster resources.
 
 2). Modify the `./repo/workflows/OAP_Mllib_on_N2_performance/common/env.conf`, such as replacing with your gs bucket name.
 
