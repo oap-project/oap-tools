@@ -16,7 +16,7 @@
 # limitations under the License.
 #
 
-./$SPARK_HOME/sbin/start-thriftserver.sh \
+$SPARK_HOME/sbin/start-thriftserver.sh \
     --master k8s://$kubernetes_svc_address \
     --name spark-thrift-server \
     --conf spark.kubernetes.driver.pod.name=$HOSTNAME \
