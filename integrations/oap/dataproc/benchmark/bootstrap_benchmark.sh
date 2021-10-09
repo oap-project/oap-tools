@@ -1,52 +1,63 @@
 #!/bin/bash
 
 SOFTWARE_HOME=/opt/benchmark-tools
-sudo mkdir -p $SOFTWARE_HOME
-sudo chown $(whoami):$(whoami) $SOFTWARE_HOME
+mkdir -p $SOFTWARE_HOME 
 
-function install_sbt() {
-  cd ${SOFTWARE_HOME}
-  sudo rm -f /etc/yum.repos.d/bintray-rpm.repo
+function install_ubuntu_debian_lib() {
+  apt-get -y update
+  apt-get install apt-transport-https curl gnupg -yqq
+  echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | tee /etc/apt/sources.list.d/sbt.list
+  echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | tee /etc/apt/sources.list.d/sbt_old.list
+  curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/scalasbt-release.gpg --import
+  chmod 644 /etc/apt/trusted.gpg.d/scalasbt-release.gpg
+  apt-get -y update
+  apt-get -y install sbt
+  apt -y install maven
+  apt-get -y install flex bison byacc
+}
+
+
+function install_centos_lib() {
+  cd $SOFTWARE_HOME
+  rm -f /etc/yum.repos.d/bintray-rpm.repo
   curl -L https://www.scala-sbt.org/sbt-rpm.repo > sbt-rpm.repo
-  sudo mv sbt-rpm.repo /etc/yum.repos.d/
-  sudo yum -y install sbt
+  mv sbt-rpm.repo /etc/yum.repos.d/
+  yum -y install sbt
+  yum -y install wget
+  wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
+  yum -y install maven
+  yum -y flex bison byacc
 }
 
-function install_maven() {
-  cd ${SOFTWARE_HOME}
-  sudo wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
-  sudo yum -y install maven
-}
-
-function install_spark_sql_perf() {
-  install_sbt
-  cd ${SOFTWARE_HOME}
-  if [ ! -d "spark-sql-perf" ]; then
-    git clone https://github.com/haojinIntel/spark-sql-perf.git && cd spark-sql-perf
+function check_os() {
+  if [  -f  "/etc/debian_version" ]; then
+    install_ubuntu_debian_lib
   else
-    cd spark-sql-perf && git pull
-  fi
+    install_centos_lib
+  fi  
+}
+
+ 
+function install_spark_sql_perf() {
+  cd $SOFTWARE_HOME
+  git clone https://github.com/haojinIntel/spark-sql-perf.git && cd spark-sql-perf
   sbt package
 }
 
+
 function install_tpcds_kit() {
-  sudo yum -y install flex bison byacc
-  cd ${SOFTWARE_HOME} && git clone https://github.com/databricks/tpcds-kit.git
+  cd $SOFTWARE_HOME && git clone https://github.com/databricks/tpcds-kit.git
   cd tpcds-kit/tools
   make OS=LINUX
 }
 
 
 function install_hibench() {
-  install_maven
-  cd ${SOFTWARE_HOME}
-  if [ ! -d "HiBench" ]; then
-    git clone https://github.com/Intel-bigdata/HiBench.git && cd HiBench
-  else
-    cd HiBench && git pull
-  fi
-  mvn -Psparkbench -Dmodules -Pml -Pmicro -Dspark=3.1 -Dscala=2.12 -DskipTests clean package
+   cd $SOFTWARE_HOME
+   git clone https://github.com/Intel-bigdata/HiBench.git && cd HiBench
+   mvn -Psparkbench -Dmodules -Pml -Pmicro -Dspark=3.1 -Dscala=2.12 -DskipTests clean package
 }
+
 
 function install_tpcds() {
   install_spark_sql_perf
@@ -66,17 +77,20 @@ case $key in
     "")
     shift 1
     echo "Start to deploy all benchmark for OAP ..."
+    check_os
     install_hibench
     install_tpcds
     exit 0
     ;;
     --tpcds)
     shift 1
+    check_os
     install_tpcds
     exit 0
     ;;
     --hibench)
     shift 1
+    check_os
     install_hibench
     exit 0
     ;;
@@ -92,3 +106,4 @@ case $key in
     ;;
 esac
 done
+
