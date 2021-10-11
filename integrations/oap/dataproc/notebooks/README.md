@@ -12,7 +12,10 @@ add extra bootstrap action to execute **[bootstrap_benchmark.sh](../benchmark/bo
 
 ## 2. Generate data
 
-You need to update the following configurations according to your request on **[tpcds_datagen.ipynb](./tpcds_datagen_Dataproc.ipynb)**:
+Open JupyterLab on the cluster **WEB INTERFACES** tab, and download oap-tools Dataproc notebooks to your master node or GCS, then run them on JupyterLab after choosing **spylon-kernel**.
+
+Please update the following configurations according to your request on **[tpcds_datagen.ipynb](./tpcds_datagen_Dataproc.ipynb)**:
+
 ```
 val scale = "1"                   // data scale 1GB
 val format = "parquet"            // support parquet or orc
@@ -26,7 +29,8 @@ Then you can use **[tpcds_datagen.ipynb](./tpcds_datagen_Dataproc.ipynb)** to ge
 ## 3. Run TPC-DS power test
 
 Here are 2 notebooks for users to easily run TPC-DS power test with Dataproc spark or Gazella_plugin.
-You need to update the following configurations according to your request on **[tpcds_power_test.ipynb](./tpcds_power_test_Dataproc.ipynb)(Dataproc spark)** or **[tpcds_power_test_with_gazelle_plugin.ipynb](./tpcds_power_test_with_gazelle_plugin_Dataproc.ipynb)**(Gazelle_plugin):
+
+Please update the following configurations according to your request on **[tpcds_power_test.ipynb](./tpcds_power_test_Dataproc.ipynb)(Dataproc spark)** or **[tpcds_power_test_with_gazelle_plugin.ipynb](./tpcds_power_test_with_gazelle_plugin_Dataproc.ipynb)**(Gazelle_plugin):
 ```
 val scaleFactor = "1"             // data scale 1GB
 val iterations = 1                // how many times to run the whole set of queries.
@@ -42,7 +46,8 @@ val randomizeQueries = false      // run queries in a random order. Recommended 
 ## 4. Run TPC-DS throughput test
 
 Here are 2 notebooks for users to easily run TPC-DS throughput test with Dataproc Spark or Gazella Plugin.
-You need to update the following configurations according to your request on **[tpcds_throughput_test.ipynb](./tpcds_throughput_test_Dataproc.ipynb)(Dataproc spark)** or **[tpcds_throughput_test_with_gazelle_plugin.ipynb](./tpcds_throughput_test_with_gazelle_plugin_Dataproc.ipynb)**(Gazelle_plugin):
+
+Please update the following configurations according to your request on **[tpcds_throughput_test.ipynb](./tpcds_throughput_test_Dataproc.ipynb)(Dataproc spark)** or **[tpcds_throughput_test_with_gazelle_plugin.ipynb](./tpcds_throughput_test_with_gazelle_plugin_Dataproc.ipynb)**(Gazelle_plugin):
 ```
 val stream_num = 2                // how many streams you want to start 
 val scaleFactor = "1"             // data scale 1GB
