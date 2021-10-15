@@ -151,30 +151,17 @@ spark.files   /opt/benchmark-tools/oap/oap_jars/plasma-sql-ds-cache-1.2.0-with-s
 spark.driver.extraClassPath  /opt/benchmark-tools/oap/oap_jars/plasma-sql-ds-cache-1.2.0-with-spark-3.1.1.jar:/opt/benchmark-tools/oap/oap_jars/pmem-common-1.2.0-with-spark-3.1.1.jar:/opt/benchmark-tools/oap/oap_jars/arrow-plasma-4.0.0.jar
 spark.executor.extraClassPath  ./plasma-sql-ds-cache-1.2.0-with-spark-3.1.1.jar:./pmem-common-1.2.0-with-spark-3.1.1.jar:./arrow-plasma-4.0.0.jar
 
-
-spark.master yarn
-spark.kryoserializer.buffer.max       256m
-spark.executor.memory 4g
-spark.deploy-mode client
-spark.executor.cores 2
-
-spark.driver.memory 2g
 spark.network.timeout 3600s
-spark.memory.offHeap.enabled false
-spark.eventLog.enabled true
-spark.executor.instances 4
-spark.driver.maxResultSize  3g
 spark.history.fs.cleaner.enabled true
-spark.history.ui.port 18080
 spark.serializer org.apache.spark.serializer.KryoSerializer
-spark.authenticate false
+spark.kryoserializer.buffer.max       256m
 
 spark.sql.extensions              org.apache.spark.sql.OapExtensions
 # for parquet file format, enable columnVector cache
 spark.sql.oap.parquet.data.cache.enabled                     true
 spark.oap.cache.strategy                                     external
 spark.sql.oap.dcpmm.free.wait.threshold                      50000000000
-spark.executor.sql.oap.cache.external.client.pool.size       2
+spark.executor.sql.oap.cache.external.client.pool.size       20
 
 spark.executorEnv.LD_LIBRARY_PATH   /opt/benchmark-tools/oap/lib
 spark.driver.extraLibraryPath       /opt/benchmark-tools/oap/lib
