@@ -114,16 +114,8 @@ spark.files   /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.2.0-jar-wi
 spark.driver.extraClassPath  /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.2.0-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.2.0-jar-with-dependencies.jar
 spark.executor.extraClassPath  /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.2.0-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.2.0-jar-with-dependencies.jar
 
-spark.master yarn
-spark.deploy-mode client
-spark.executor.instances 4
-spark.executor.cores 2
-spark.executor.memory 4g
-spark.executor.memoryOverhead 2989
 spark.memory.offHeap.enabled false
 spark.memory.offHeap.size 3g
-spark.driver.memory 2g
-spark.driver.maxResultSize  3g
 
 spark.shuffle.manager     org.apache.spark.shuffle.sort.ColumnarShuffleManager
 spark.oap.sql.columnar.sortmergejoin  true
@@ -144,10 +136,6 @@ spark.sql.columnar.codegen.hashAggregate false
 spark.sql.join.preferSortMergeJoin  false
 spark.sql.broadcastTimeout 3600
 
-spark.authenticate false
-spark.history.ui.port 18080
-spark.history.fs.cleaner.enabled true
-spark.eventLog.enabled true
 spark.network.timeout 3600s
 spark.serializer org.apache.spark.serializer.KryoSerializer
 spark.kryoserializer.buffer           64m
@@ -155,7 +143,6 @@ spark.kryoserializer.buffer.max       256m
 spark.dynamicAllocation.executorIdleTimeout 3600s
 
 spark.sql.warehouse.dir hdfs:///datagen
-
 
 ```
 

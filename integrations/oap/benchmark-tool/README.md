@@ -123,11 +123,11 @@ touch ./repo/confs/testconf/spark/spark-defaults.conf
 
 If using HDFS as storage on Dataproc, run
 ```
-echo "spark.sql.warehouse.dir=hdfs:///datagen" >> ./repo/confs/testconf/spark/spark-defaults.conf
+echo "spark.sql.warehouse.dir=hdfs:///datagen/" >> ./repo/confs/testconf/spark/spark-defaults.conf
 ```
 If using Google Gloud Storage as storage on Dataproc, change the following command with your bucket name, then run:
 ```
-echo "spark.sql.warehouse.dir=gs://<your_bucket>" >> ./repo/confs/testconf/spark/spark-defaults.conf
+echo "spark.sql.warehouse.dir=gs://<your_bucket>/" >> ./repo/confs/testconf/spark/spark-defaults.conf
 ```
 #### Update TPC-DS configuration ####
 

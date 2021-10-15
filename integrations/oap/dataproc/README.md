@@ -199,27 +199,21 @@ spark.executor.extraClassPath  ./plasma-sql-ds-cache-1.2.0-with-spark-3.1.1.jar:
 spark.kryoserializer.buffer.max       256m
 
 spark.network.timeout 3600s
-spark.memory.offHeap.enabled false
-spark.eventLog.enabled true
-spark.driver.maxResultSize  3g
 spark.history.fs.cleaner.enabled true
 spark.history.ui.port 18080
 spark.serializer org.apache.spark.serializer.KryoSerializer
 spark.authenticate false
 
 spark.sql.extensions              org.apache.spark.sql.OapExtensions
-# for parquet file format, enable binary cache
-spark.sql.oap.parquet.binary.cache.enabled                   true
+# for parquet file format, enable columnVector cache
+spark.sql.oap.parquet.data.cache.enabled                     true
 spark.oap.cache.strategy                                     external
 spark.sql.oap.dcpmm.free.wait.threshold                      50000000000
-spark.executor.sql.oap.cache.external.client.pool.size       2
-# cache size 
-spark.executor.sql.oap.cache.persistent.memory.initial.size  50g
+spark.executor.sql.oap.cache.external.client.pool.size       20
 
 spark.executorEnv.LD_LIBRARY_PATH   /opt/benchmark-tools/oap/lib
 spark.driver.extraLibraryPath       /opt/benchmark-tools/oap/lib
 
-spark.sql.warehouse.dir hdfs:///datagen
 ```
 
 #### Enable OAP features with benchmark tool
