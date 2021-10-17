@@ -111,9 +111,11 @@ COPY  spark-submit.sh /opt/home/spark-submit.sh
 
 ADD https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.2.0/hadoop-aws-3.2.0.jar  $SPARK_HOME/jars/hadoop-aws-3.2.0.jar
 ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.11.375/aws-java-sdk-bundle-1.11.375.jar $SPARK_HOME/jars/aws-java-sdk-bundle-1.11.375.jar
+ADD https://repo1.maven.org/maven2/com/google/cloud/bigdataoss/gcs-connector/hadoop3-2.2.0/gcs-connector-hadoop3-2.2.0-shaded.jar $SPARK_HOME/jars/gcs-connector-hadoop3-2.2.0-shaded.jar
 
 RUN chmod +r $SPARK_HOME/jars/hadoop-aws-3.2.0.jar
 RUN chmod +r $SPARK_HOME/jars/aws-java-sdk-bundle-1.11.375.jar
+RUN chmod +r $SPARK_HOME/jars/gcs-connector-hadoop3-2.2.0-shaded.jar
 
 
 ENTRYPOINT [ "/opt/home/entrypoint.sh" ]

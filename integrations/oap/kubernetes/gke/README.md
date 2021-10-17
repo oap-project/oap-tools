@@ -10,6 +10,26 @@ When use scripts needing to pass server endpoint to the --master parameter, just
 sh ./spark-pi.sh --master 34.66.125.2  --image oap-ubuntu:1.2.0  --spark_conf ./conf
 ```
 
+## Set GCS access properties
+If use GCS as storage, need to add another Hadoop core-site.xml configuration file in spark/conf/, and set GCS access properties.
+For example:
+
+```
+<configuration>
+     <property>
+            <name>fs.gs.impl</name>
+            <value>com.google.cloud.hadoop.fs.gcs.GoogleHadoopFileSystem</value>
+            <description>The FileSystem for gs: (GCS) uris.</description>
+    </property>
+    <property>
+            <name>fs.AbstractFileSystem.gs.impl</name>
+            <value>com.google.cloud.hadoop.fs.gcs.GoogleHadoopFS</value>
+            <description>The AbstractFileSystem for gs: (GCS) uris.</description>
+    </property>
+</configuration>
+```
+
+
 ## Use GKE LoadBalancer
 In GKE environment, we use the GKE LoadBalancer to expose one service.
 
