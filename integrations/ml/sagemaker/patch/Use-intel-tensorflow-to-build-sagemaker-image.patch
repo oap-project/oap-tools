@@ -1,0 +1,24 @@
+From ad28980c0262f791849633628d4320847c93ad4b Mon Sep 17 00:00:00 2001
+From: Qing Yao <qing.yao@intel.com>
+Date: Tue, 19 Oct 2021 09:58:33 +0800
+Subject: [PATCH] Use intel-tensorflow to build sagemaker image
+
+---
+ tensorflow/training/docker/2.5/py3/Dockerfile.cpu | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/tensorflow/training/docker/2.5/py3/Dockerfile.cpu b/tensorflow/training/docker/2.5/py3/Dockerfile.cpu
+index 69ab623..1bb2d35 100644
+--- a/tensorflow/training/docker/2.5/py3/Dockerfile.cpu
++++ b/tensorflow/training/docker/2.5/py3/Dockerfile.cpu
+@@ -160,6 +160,7 @@ RUN ${PIP} install --no-cache-dir -U \
+     mpi4py==3.0.3 \
+     "sagemaker>=2,<3" \
+     sagemaker-experiments==0.* \
++    intel-tensorflow==2.5.0 \
+     "sagemaker-tensorflow>=2.5,<2.6" \
+     "sagemaker-tensorflow-training>=20" \
+ 
+-- 
+2.17.1
+
