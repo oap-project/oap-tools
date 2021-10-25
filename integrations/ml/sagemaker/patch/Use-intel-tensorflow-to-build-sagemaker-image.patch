@@ -1,20 +1,49 @@
-From ad28980c0262f791849633628d4320847c93ad4b Mon Sep 17 00:00:00 2001
+From 524abf146dc6cfedb544ac1f093605bc71881001 Mon Sep 17 00:00:00 2001
 From: Qing Yao <qing.yao@intel.com>
-Date: Tue, 19 Oct 2021 09:58:33 +0800
-Subject: [PATCH] Use intel-tensorflow to build sagemaker image
+Date: Mon, 25 Oct 2021 09:19:20 +0800
+Subject: [PATCH]  Use intel-tensorflow to build sagemaker image
 
 ---
- tensorflow/training/docker/2.5/py3/Dockerfile.cpu | 1 +
- 1 file changed, 1 insertion(+)
+ tensorflow/training/docker/2.3/py3/Dockerfile.cpu | 2 ++
+ tensorflow/training/docker/2.4/py3/Dockerfile.cpu | 2 ++
+ tensorflow/training/docker/2.5/py3/Dockerfile.cpu | 2 ++
+ 3 files changed, 6 insertions(+)
 
+diff --git a/tensorflow/training/docker/2.3/py3/Dockerfile.cpu b/tensorflow/training/docker/2.3/py3/Dockerfile.cpu
+index ad39c31..0575669 100644
+--- a/tensorflow/training/docker/2.3/py3/Dockerfile.cpu
++++ b/tensorflow/training/docker/2.3/py3/Dockerfile.cpu
+@@ -137,6 +137,8 @@ RUN ${PIP} install --no-cache-dir -U \
+     opencv-python==4.3.0.36 \
+     "sagemaker>=2,<3" \
+     sagemaker-experiments==0.* \
++    # install intel optimized tensorflow
++    intel-tensorflow==2.3.0 \
+     "sagemaker-tensorflow>=2.3,<2.4" \
+     "sagemaker-tensorflow-training>=20" \
+ 
+diff --git a/tensorflow/training/docker/2.4/py3/Dockerfile.cpu b/tensorflow/training/docker/2.4/py3/Dockerfile.cpu
+index e7dc3f2..4e4f3bc 100644
+--- a/tensorflow/training/docker/2.4/py3/Dockerfile.cpu
++++ b/tensorflow/training/docker/2.4/py3/Dockerfile.cpu
+@@ -139,6 +139,8 @@ RUN ${PIP} install --no-cache-dir -U \
+     "awscli<2" \
+     mpi4py==3.0.3 \
+     "sagemaker>=2,<3" \
++    # install intel optimized tensorflow
++    intel-tensorflow==2.4.0 \
+     sagemaker-experiments==0.* \
+     "sagemaker-tensorflow>=2.4,<2.5" \
+     "sagemaker-tensorflow-training>=20" \
 diff --git a/tensorflow/training/docker/2.5/py3/Dockerfile.cpu b/tensorflow/training/docker/2.5/py3/Dockerfile.cpu
-index 69ab623..1bb2d35 100644
+index 69ab623..c6d97fd 100644
 --- a/tensorflow/training/docker/2.5/py3/Dockerfile.cpu
 +++ b/tensorflow/training/docker/2.5/py3/Dockerfile.cpu
-@@ -160,6 +160,7 @@ RUN ${PIP} install --no-cache-dir -U \
+@@ -160,6 +160,8 @@ RUN ${PIP} install --no-cache-dir -U \
      mpi4py==3.0.3 \
      "sagemaker>=2,<3" \
      sagemaker-experiments==0.* \
++    # install intel optimized tensorflow
 +    intel-tensorflow==2.5.0 \
      "sagemaker-tensorflow>=2.5,<2.6" \
      "sagemaker-tensorflow-training>=20" \
