@@ -81,7 +81,7 @@ function install_gcc7() {
 
   cd gcc-7.3.0/
   mkdir -p $DEV_PATH/thirdparty/gcc7
-  ./configure --prefix=/usr --disable-multilib 
+  ./configure --prefix=$DEV_PATH/thirdparty/gcc7 --disable-multilib
   make -j
   make install
 }
@@ -98,6 +98,8 @@ function check_gcc() {
       if [ ! -f "$DEV_PATH/thirdparty/gcc7/bin/gcc" ]; then
         install_gcc7
       fi 
+      export CXX=$DEV_PATH/thirdparty/gcc7/bin/g++
+      export CC=$DEV_PATH/thirdparty/gcc7/bin/gcc
     fi
 
   fi
@@ -111,15 +113,9 @@ function gather() {
   rm -rf $DEV_PATH/release-package/*
   target_path=$DEV_PATH/release-package/$package_name/jars/
   mkdir -p $target_path
-  cp ../sql-ds-cache/Plasma-based-cache/target/*spark-*.jar $target_path
-  cp ../sql-ds-cache/HCFS-based-cache/target/*.jar $target_path
-  cp ../pmem-common/target/*.jar $target_path
+  
   cp ../gazelle_plugin/arrow-data-source/standard/target/*with-dependencies.jar $target_path
   cp ../gazelle_plugin/native-sql-engine/core/target/*with-dependencies.jar $target_path
-  cp ../remote-shuffle/shuffle-daos/target/*.jar $target_path
-  cp ../remote-shuffle/shuffle-hadoop/target/*.jar $target_path
-  cp ../pmem-shuffle/core/target/*with-spark*.jar $target_path
-  cp ../pmem-spill/RDD-Cache/target/*.jar $target_path
   cp ../oap-mllib/mllib-dal/target/*.jar $target_path
 
   find $target_path -name "*test*"|xargs rm -rf
@@ -204,10 +200,7 @@ case $BUILD_COMPONENT in
     echo "Start to compile all modules of OAP ..."
     build_oap gazelle_plugin
     build_oap oap-mllib
-    build_oap pmem-shuffle
-    build_oap pmem-spill
-    build_oap remote-shuffle
-    build_oap sql-ds-cache
+
     gather
     exit 0
     ;;
@@ -249,10 +242,6 @@ case $BUILD_COMPONENT in
     oap-conda)
     shift 1
     build_oap oap-mllib
-    build_oap pmem-shuffle
-    build_oap pmem-spill
-    build_oap remote-shuffle
-    build_oap sql-ds-cache
     gather
     exit 0
     ;;

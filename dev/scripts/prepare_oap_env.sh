@@ -19,7 +19,7 @@ OAP_BRANCH="master"
 
 
 declare -A repo_dic
-repo_dic=([remote-shuffle]="https://github.com/oap-project/remote-shuffle.git" [gazelle_plugin]="https://github.com/oap-project/gazelle_plugin.git" [pmem-shuffle]="https://github.com/oap-project/pmem-shuffle.git" [oap-mllib]="https://github.com/oap-project/oap-mllib.git" [pmem-spill]="https://github.com/oap-project/pmem-spill.git" [pmem-common]="https://github.com/oap-project/pmem-common.git" [sql-ds-cache]="https://github.com/oap-project/sql-ds-cache.git")
+repo_dic=([gazelle_plugin]="https://github.com/oap-project/gazelle_plugin.git" [oap-mllib]="https://github.com/oap-project/oap-mllib.git")
 
 
 if [ -z "$DEV_PATH" ]; then
@@ -119,6 +119,9 @@ function check_gcc() {
     if [ ! -f "$DEV_PATH/thirdparty/gcc7/bin/gcc" ]; then
       install_gcc7
     fi
+    export CXX=$DEV_PATH/thirdparty/gcc7/bin/g++
+    export CC=$DEV_PATH/thirdparty/gcc7/bin/gcc
+    export LD_LIBRARY_PATH=$DEV_PATH/thirdparty/gcc7/lib64:$LD_LIBRARY_PATH
   fi
 }
 
@@ -304,7 +307,7 @@ function install_gcc7() {
 
   cd gcc-7.3.0/
   mkdir -p $DEV_PATH/thirdparty/gcc7
-  ./configure --prefix=/usr --disable-multilib 
+  ./configure --prefix=$DEV_PATH/thirdparty/gcc7 --disable-multilib 
   make -j
   make install
 }
@@ -644,21 +647,15 @@ function clone_all(){
 
 function  prepare_conda_build() {
   prepare_maven
-  prepare_memkind
   prepare_cmake
-  prepare_vmemcache
   prepare_intel_conda_arrow
-  prepare_PMoF
   prepare_oneAPI
 }
 
 function  prepare_all() {
   prepare_maven
-  prepare_memkind
   prepare_cmake
-  prepare_vmemcache
   prepare_intel_arrow
-  prepare_PMoF
   prepare_oneAPI
 }
 
