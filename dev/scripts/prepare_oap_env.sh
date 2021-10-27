@@ -648,7 +648,6 @@ function clone_all(){
 function  prepare_conda_build() {
   prepare_maven
   prepare_cmake
-  prepare_intel_conda_arrow
   prepare_oneAPI
 }
 

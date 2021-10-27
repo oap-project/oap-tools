@@ -143,10 +143,19 @@ function build_oap(){
 
     gazelle_plugin)
     cd $OAP_HOME/gazelle_plugin/
-    mvn clean package -am -DskipTests -Dcpp_tests=OFF -Dbuild_arrow=OFF -Dstatic_arrow=OFF  -Dbuild_protobuf=ON $PROFILE
+    mvn clean package -DskipTests -Dcpp_tests=OFF -Dbuild_arrow=ON -Dcheckstyle.skip  $PROFILE
     ;;
 
     oap-mllib )
+    cd $OAP_HOME/oap-mllib/mllib-dal
+    source /opt/intel/oneapi/setvars.sh
+    source /tmp/oneCCL/build/_install/env/setvars.sh
+    ./build.sh
+    ;;
+
+    oap-conda )
+    cd $OAP_HOME/gazelle_plugin/
+    mvn clean package -am -DskipTests -Dcpp_tests=OFF -Dbuild_arrow=OFF -Dstatic_arrow=OFF  -Dbuild_protobuf=ON $PROFILE
     cd $OAP_HOME/oap-mllib/mllib-dal
     source /opt/intel/oneapi/setvars.sh
     source /tmp/oneCCL/build/_install/env/setvars.sh
@@ -241,7 +250,7 @@ case $BUILD_COMPONENT in
     ;;
     oap-conda)
     shift 1
-    build_oap oap-mllib
+    build_oap oap-conda
     gather
     exit 0
     ;;
