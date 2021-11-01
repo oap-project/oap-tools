@@ -154,8 +154,6 @@ function build_oap(){
     ;;
 
     oap-conda )
-    cd $OAP_HOME/gazelle_plugin/
-    mvn clean package -am -DskipTests -Dcpp_tests=OFF -Dbuild_arrow=OFF -Dstatic_arrow=OFF  -Dbuild_protobuf=ON $PROFILE
     cd $OAP_HOME/oap-mllib/mllib-dal
     source /opt/intel/oneapi/setvars.sh
     source /tmp/oneCCL/build/_install/env/setvars.sh
