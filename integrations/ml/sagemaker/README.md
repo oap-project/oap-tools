@@ -86,3 +86,21 @@ folder structure as per above and modify the buildspec.yml file to specify the v
                        --device_types gpu \
                        --py_versions py3
     ```
+
+
+### Test your image
+#### Test the images on your local machine.
+
+```
+cd $oap-tools/integrations/ml/sagemaker/benchmark/local/mnist
+pip3 install sagemaker boto3
+python3 benchmark_mnist_local.py
+```
+
+
+#### Test the images with Sagemaker notebook instance.
+
+1. Create a notebook instance.
+2. Upload the [notebook and data](benchmark/notebook-instance/mnist/tensorflow_mnist_train.ipynb) to the Jupyter notebook.
+3. Run all.
+
