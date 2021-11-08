@@ -6,7 +6,7 @@
 
 We describe here the setup to build and test the images on the platforms Amazon SageMaker, EC2, ECS and EKS.
 
-We take an example of building a ***MXNet GPU python3 training*** container.
+We take an example of building a ***Tensorflow GPU python3 training*** container.
 
 * Ensure you have access to an AWS account i.e. [setup](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html) 
 your environment such that awscli can access your account via either an IAM user or an IAM role. We recommend an IAM role for use with AWS. 
@@ -33,6 +33,7 @@ For the purposes of testing in your personal account, the following managed perm
     ```shell script
     export ACCOUNT_ID=<YOUR_ACCOUNT_ID>
     export REGION=us-west-2
+    # Please make sure you have created the repository
     export REPOSITORY_NAME=beta-tensorflow-training
     ``` 
 3. Login to ECR
@@ -93,9 +94,11 @@ folder structure as per above and modify the buildspec.yml file to specify the v
 
 ```
 cd $oap-tools/integrations/ml/sagemaker/benchmark/local/mnist
+# We recommend that you create a new environment with CONDA to run benchmark .
 pip3 install sagemaker boto3
 python3 benchmark_mnist_local.py
 ```
+When you see  "reporting training success" in the output screem, it means that the training is successfully completed and the image is built correctly.
 
 
 #### Test the images with Sagemaker notebook instance.
