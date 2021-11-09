@@ -20,7 +20,7 @@ For the purposes of testing in your personal account, the following managed perm
 -- [AmazonSageMakerFullAccess](https://console.aws.amazon.com/iam/home#policies/arn:aws:iam::aws:policy/AmazonSageMakerFullAccess) <br>
 -- [AmazonS3FullAccess](https://console.aws.amazon.com/iam/home#policies/arn:aws:iam::aws:policy/AmazonS3FullAccess) <br>
 * [Create](https://docs.aws.amazon.com/cli/latest/reference/ecr/create-repository.html) an ECR repository with the name “intel-tensorflow” in the us-west-2 region
-* Ensure you have [docker](https://docs.docker.com/get-docker/) client set-up on your system - osx/ec2
+* Ensure you have [docker](https://docs.docker.com/get-docker/) client set-up on your system
 
 1. Clone  [AWS Deep Learning Containers](https://github.com/aws/deep-learning-containers.git) repo and apply the [patch](./patch/Use-intel-tensorflow-to-build-sagemaker-image.patch)
     ```
