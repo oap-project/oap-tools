@@ -148,17 +148,12 @@ function build_oap(){
 
     oap-mllib )
     cd $OAP_HOME/oap-mllib/mllib-dal
-    source /opt/intel/oneapi/setvars.sh
-    source /tmp/oneCCL/build/_install/env/setvars.sh
-    ./build.sh
+    source /opt/intel/oneapi/setvars.sh --force
+    sh  ../dev/prepare-build-deps.sh
+    ./build.sh 
     ;;
 
-    oap-conda )
-    cd $OAP_HOME/oap-mllib/mllib-dal
-    source /opt/intel/oneapi/setvars.sh
-    source /tmp/oneCCL/build/_install/env/setvars.sh
-    ./build.sh
-    ;;
+
 
     pmem-common)    
     cd $OAP_HOME/pmem-common
@@ -248,7 +243,7 @@ case $BUILD_COMPONENT in
     ;;
     oap-conda)
     shift 1
-    build_oap oap-conda
+    build_oap oap-mllib
     gather
     exit 0
     ;;
