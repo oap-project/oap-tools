@@ -1,0 +1,7 @@
+gcc_impl_linux-64=7.5.0
+gcc_linux-64=7.5.0
+gxx_impl_linux-64=7.5.0
+gxx_linux-64=7.5.0
+curl=7.79.1
+openssl=1.1.1
+clangdev=7
