@@ -4,13 +4,13 @@
 
 This document will introduce how to use Intel-optimized TensorFlow on Azure Machine Learning to speed up training and inference performance compared with Stock TensorFlow.
 
-Please follow the steps below to install Intel-Optimized TensorFlow on Azure Machine Learning Studio, Here we take a single compute instance as an example, you can also to create a multi-nodes cluster.
+Please follow the steps below to install Intel-Optimized TensorFlow on Azure Machine Learning Studio, here we take a single compute instance as an example, you can also to create a multi-nodes cluster.
 
 ### Create Compute Instance with Init Script
 
 Choose the **Create new** button on Home page of Azure Machine Learning Studio to create a compute instance.
 
-In the **Required Settings** page, configure required settings, like `Virtual machine size`, we recommend use `Standard_F4s_v2` or above.
+In the **Required Settings** page, configure required settings, like `Virtual machine size`, we recommend use `Standard_F32s_v2` or above.
 
 In the **Advanced Settings** page, enable **Provision with setup scripts** button and choose **Local file** [init script](https://raw.githubusercontent.com/oap-project/oap-tools/master/integrations/ml/azure/init_intel_optimized_ml.sh) which you have already downloaded to the local like below picture.  
 
