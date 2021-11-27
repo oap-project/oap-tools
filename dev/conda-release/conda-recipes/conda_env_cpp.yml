@@ -4,4 +4,4 @@ gxx_impl_linux-64=7.5.0
 gxx_linux-64=7.5.0
 curl=7.78
 clangdev=7
-python>=3
+python=3.10
