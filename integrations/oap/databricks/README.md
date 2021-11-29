@@ -25,5 +25,13 @@ To create a new cluster using the uploaded init script, follow the following ste
 5. Select the "DBFS" destination type in the **Destination** drop-down.
 6. Specify a path to the init script. In the example in the preceding section, the path is **dbfs:/FileStore/init_oap.sh**. The path must begin with dbfs:/.
 7. Click **Add**. 
+8. Add Spark config in **Advanced Options**, for example:
+```
+spark.files                       /databricks/conda/oap_jars/oap-mllib-1.2.0.jar
+spark.executor.extraClassPath     /databricks/conda/oap_jars/oap-mllib-1.2.0.jar
+spark.driver.extraClassPath       /databricks/conda/oap_jars/oap-mllib-1.2.0.jar
+```
 
 ![create_cluster](./imgs/create-oap-cluster.png)
+
+
