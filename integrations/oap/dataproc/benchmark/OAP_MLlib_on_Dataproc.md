@@ -59,7 +59,7 @@ hibench.hdfs.master           gs://<your_bucket>/
 ```
 git clone https://github.com/oap-project/oap-tools.git
 cd oap-tools/integrations/oap/benchmark-tool
-sudo cp /lib/spark/conf/spark-defaults.conf ./repo/confs/spark-oap-dataproc/hibench/spark.conf
+sudo cp /etc/spark/conf/spark-defaults.conf ./repo/confs/spark-oap-dataproc/hibench/spark.conf
 ```
 
 ### 2.2. Create the testing repo && Config OAP-MLlib
@@ -96,7 +96,7 @@ spark.driver.extraClassPath       /opt/benchmark-tools/oap/oap_jars/oap-mllib-1.
 
 # Make it enough to cache training data
 spark.executor.memoryOverhead               512m   
-# Refer to the default value of spark.executor.cores of /lib/spark/conf/spark-defaults.conf  
+# Refer to the default value of spark.executor.cores of /etc/spark/conf/spark-defaults.conf  
 hibench.yarn.executor.num                   2 
 # Divide the sum of vcores by hibench.yarn.executor.num       
 hibench.yarn.executor.cores                 2        

@@ -16,7 +16,7 @@ You can refer to [benchmark-tool Guide](../../benchmark-tool/README.md) to learn
 
 #### Update the basic configuration of spark
 ```
-$ sudo cp /lib/spark/conf/spark-defaults.conf ./repo/confs/spark-oap-emr/hibench/spark.conf;
+$ sudo cp /etc/spark/conf/spark-defaults.conf ./repo/confs/spark-oap-emr/hibench/spark.conf;
 ```
 
 ### 2.2. Create the testing repo && Config Intel-MLlib
@@ -50,7 +50,7 @@ make sure to add below configuration to `./repo/confs/Intel_MLlib_performance/hi
 spark.executor.extraJavaOptions             -XX:+UseG1GC -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps
 
 spark.executor.memoryOverhead               512m     # Make it enough to cache training data
-hibench.yarn.executor.num                   2        # Refer to the default value of spark.executor.cores of /lib/spark/conf/spark-defaults.conf
+hibench.yarn.executor.num                   2        # Refer to the default value of spark.executor.cores of /etc/spark/conf/spark-defaults.conf
 hibench.yarn.executor.cores                 2        # Divide the sum of vcores by hibench.yarn.executor.num
 
 spark.default.parallelism                   4        # Equal to the sum of vcores

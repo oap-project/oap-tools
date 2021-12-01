@@ -16,7 +16,7 @@ You can refer to [benchmark-tool Guide](../../benchmark-tool/README.md) to learn
 
 #### Update the basic configuration of spark
 ```
-$ sudo cp /lib/spark/conf/spark-defaults.conf ./repo/confs/spark-oap-emr/spark/spark-defaults.conf;
+$ sudo cp /etc/spark/conf/spark-defaults.conf ./repo/confs/spark-oap-emr/spark/spark-defaults.conf;
 ```
 
 ### 2.2. Create the testing repo && Config gazelle_plugin

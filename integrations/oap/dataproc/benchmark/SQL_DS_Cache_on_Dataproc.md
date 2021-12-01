@@ -24,7 +24,7 @@ To create a new cluster with initialization actions, follow the steps below:
 2). **Set up cluster:** choose cluster type and Dataproc image version `2.0-centos8`, enable component gateway, and add Jupyter Notebook, ZooKeeper.
 ![Enable_component_gateway](../imgs/component_gateway.png)
 
-3). **Configure nodes:** choose the instance type and other configurations of nodes.
+3). **Configure nodes:** choose the instance type and other configurations of nodes. To use SSD as SQL Data Source media, please choose a **local SSD** to attach to worker nodes.
 
 4). **Customize cluster:** add initialization actions as below;
 
@@ -93,7 +93,7 @@ Run the following commands to update the basic configurations for Spark:
 ```
 git clone https://github.com/oap-project/oap-tools.git
 cd oap-tools/integrations/oap/benchmark-tool/
-sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-dataproc/spark/spark-defaults.conf
+sudo cp /etc/spark/conf/spark-defaults.conf repo/confs/spark-oap-dataproc/spark/spark-defaults.conf
 ```
 
 ### 3.2. Create the testing repo && Config SQL DS Cache
@@ -176,7 +176,7 @@ Replace the <replace-with-cache-storage-path> to PMem or disk path on workers wh
 
 For example, the first SSD will be mounted on `/mnt/1`, and you choose the first SSD as caching path, then you can use `/mnt/1/hadoop/spark` path which is set 777 permission on workers by default. 
 
-`{%plasma.cache.size%}` is set from `PLASMA_CACHE_SIZE` of `./repo/confs/sql-ds-cache-performance/env.conf`, if you want to change this size, you can modify `PLASMA_CACHE_SIZE` like to `330000000000` which is 330GB.
+`{%plasma.cache.size%}` is set from `PLASMA_CACHE_SIZE` of `./repo/confs/sql-ds-cache-performance/env.conf`, if you want to change this size to match a single SSD capacity, you can modify `PLASMA_CACHE_SIZE` in `./repo/confs/sql-ds-cache-performance/env.conf` to `330000000000` which is 330GB.
 
 #### Define the configurations of TPC-DS
 

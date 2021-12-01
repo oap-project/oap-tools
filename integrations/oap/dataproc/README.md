@@ -41,7 +41,7 @@ To use OAP feature, you still need to change some configuration of Spark.
 
 ### Enable Gazelle Plugin
 
-Make sure to add below configuration to `/lib/spark/conf/spark-defaults.conf`.
+Make sure to add below configuration to `/etc/spark/conf/spark-defaults.conf`.
 
 ```
 spark.driver.extraLibraryPath                /opt/benchmark-tools/oap/lib
@@ -127,7 +127,7 @@ spark.driver.extraClassPath       /opt/benchmark-tools/oap/oap_jars/oap-mllib-1.
 
 # Make it enough to cache training data,
 spark.executor.memoryOverhead               512m   
-# Refer to the default value of spark.executor.cores of /lib/spark/conf/spark-defaults.conf  
+# Refer to the default value of spark.executor.cores of /etc/spark/conf/spark-defaults.conf  
 hibench.yarn.executor.num                   2 
 # Divide the sum of vcores by hibench.yarn.executor.num       
 hibench.yarn.executor.cores                 2        
