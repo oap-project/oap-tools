@@ -33,8 +33,8 @@ If you use AWS EMR, please execute the following commands to update the basic co
 ```
 git clone https://github.com/oap-project/oap-tools.git
 cd oap-tools/integrations/oap/benchmark-tool/
-sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-emr/spark/spark-defaults.conf
-sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-emr/hibench/spark.conf
+sudo cp /etc/spark/conf/spark-defaults.conf repo/confs/spark-oap-emr/spark/spark-defaults.conf
+sudo cp /etc/spark/conf/spark-defaults.conf repo/confs/spark-oap-emr/hibench/spark.conf
 ```
 
 ### Google Cloud Dataproc
@@ -50,8 +50,8 @@ Run the following commands to update the basic configurations for Spark:
 ```
 git clone https://github.com/oap-project/oap-tools.git
 cd oap-tools/integrations/oap/benchmark-tool/
-sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-dataproc/spark/spark-defaults.conf
-sudo cp /lib/spark/conf/spark-defaults.conf repo/confs/spark-oap-dataproc/hibench/spark.conf
+sudo cp /etc/spark/conf/spark-defaults.conf repo/confs/spark-oap-dataproc/spark/spark-defaults.conf
+sudo cp /etc/spark/conf/spark-defaults.conf repo/confs/spark-oap-dataproc/hibench/spark.conf
 ```
 
 ## 3. Config Rules to Follow && Create a configuration folder ##
