@@ -113,7 +113,8 @@ function gather() {
   rm -rf $DEV_PATH/release-package/*
   target_path=$DEV_PATH/release-package/$package_name/jars/
   mkdir -p $target_path
-  
+  mkdir -p $DEV_PATH/release-package/jars/
+
   cp ../gazelle_plugin/arrow-data-source/standard/target/*with-dependencies.jar $target_path
   cp ../gazelle_plugin/native-sql-engine/core/target/*with-dependencies.jar $target_path
   cp ../oap-mllib/mllib-dal/target/*.jar $target_path
@@ -123,9 +124,7 @@ function gather() {
   rm -f oap-cache-$OAP_VERSION.jar
   cd $DEV_PATH/thirdparty
 
-  mkdir -p $DEV_PATH/thirdparty/arrow/oap
-  rm -rf $DEV_PATH/thirdparty/arrow/oap/*
-  cp $target_path/* $DEV_PATH/thirdparty/arrow/oap/
+  cp $target_path/* $DEV_PATH/release-package/jars/
   cd  $DEV_PATH/release-package
   tar -czf $package_name.tar.gz $package_name/
   echo "Please check the result in  $DEV_PATH/release-package!"
