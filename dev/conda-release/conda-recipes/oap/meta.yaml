@@ -4,7 +4,7 @@ package:
   version: {{ OAP_VERSION }}
 
 source:
-  path: ../../../thirdparty/arrow/
+  path: ../../../release-package/jars/
 
 build:
   build:
@@ -14,12 +14,6 @@ build:
     - {{ pin_subpackage("oap", max_pin="x.x") }}
 
 requirements:
-  build:
-    - cmake 3.16.*
-    - autoconf  # [unix]
-    - ninja
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
 
 
   run:
