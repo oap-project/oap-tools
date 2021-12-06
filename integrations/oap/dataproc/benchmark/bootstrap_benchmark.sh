@@ -27,6 +27,7 @@ function install_centos_lib() {
   wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
   yum -y install maven
   yum -y flex bison byacc
+  yum -y install jemalloc
 }
 
 function check_os() {

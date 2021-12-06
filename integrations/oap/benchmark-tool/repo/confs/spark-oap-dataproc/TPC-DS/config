@@ -1,4 +1,5 @@
 scale 1
 partitionTables true
+partition 100
 format parquet
 queries all
