@@ -18,10 +18,8 @@ requirements:
 
   run:
     - libhdfs3
-    - gcc_impl_linux-64  7.5.0
-    - gcc_linux-64       7.5.0
-    - gxx_impl_linux-64  7.5.0
-    - gxx_linux-64       7.5.0
+    - c-compiler         1.2.0
+    - cxx-compiler         1.2.0
     - curl               7.78
 
 

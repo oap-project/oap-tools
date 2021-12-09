@@ -1,7 +1,5 @@
-gcc_impl_linux-64=7.5.0
-gcc_linux-64=7.5.0
-gxx_impl_linux-64=7.5.0
-gxx_linux-64=7.5.0
+c-compiler=1.2.0
+cxx-compiler=1.2.0
 curl=7.78
 clangdev=7
-python=3.10
+python>=3
