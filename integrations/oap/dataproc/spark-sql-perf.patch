@@ -1,0 +1,48 @@
+diff --git a/build.sbt b/build.sbt
+index 2303e62..5b26e80 100644
+--- a/build.sbt
++++ b/build.sbt
+@@ -9,14 +9,14 @@ scalaVersion := "2.12.10"
+ 
+ crossScalaVersions := Seq("2.12.10")
+ 
+-sparkPackageName := "databricks/spark-sql-perf"
++//sparkPackageName := "databricks/spark-sql-perf"
+ 
+ // All Spark Packages need a license
+ licenses := Seq("Apache-2.0" -> url("http://opensource.org/licenses/Apache-2.0"))
+ 
+-sparkVersion := "3.0.0"
++val sparkVersion = "3.0.0"
+ 
+-sparkComponents ++= Seq("sql", "hive", "mllib")
++//sparkComponents ++= Seq("sql", "hive", "mllib")
+ 
+ 
+ initialCommands in console :=
+@@ -40,6 +40,12 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % "test"
+ 
+ libraryDependencies += "org.yaml" % "snakeyaml" % "1.23"
+ 
++libraryDependencies += "org.apache.spark" %% "spark-sql" % sparkVersion % "provided"
++
++libraryDependencies += "org.apache.spark" %% "spark-mllib" % sparkVersion % "provided"
++
++libraryDependencies += "org.apache.spark" %% "spark-hive" % sparkVersion % "provided"
++
+ fork := true
+ 
+ // Your username to login to Databricks Cloud
+diff --git a/project/plugins.sbt b/project/plugins.sbt
+index 74cfded..04dce45 100644
+--- a/project/plugins.sbt
++++ b/project/plugins.sbt
+@@ -4,7 +4,7 @@ resolvers += "Spark Packages repo" at "https://dl.bintray.com/spark-packages/mav
+ 
+ resolvers += "sonatype-releases" at "https://oss.sonatype.org/content/repositories/releases/"
+ 
+-addSbtPlugin("org.spark-packages" %% "sbt-spark-package" % "0.1.1")
++//addSbtPlugin("org.spark-packages" %% "sbt-spark-package" % "0.1.1")
+ 
+ addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "1.6.0")
+ 
