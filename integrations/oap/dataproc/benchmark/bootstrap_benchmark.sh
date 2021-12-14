@@ -13,6 +13,7 @@ function install_ubuntu_debian_lib() {
   apt-get -y update
   apt-get -y install sbt
   apt -y install maven
+  apt -y install libjemalloc-dev
   apt-get -y install flex bison byacc
 }
 
@@ -26,8 +27,8 @@ function install_centos_lib() {
   yum -y install wget
   wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
   yum -y install maven
-  yum -y flex bison byacc
-  yum -y install jemalloc
+  yum -y install flex bison byacc
+  yum -y install jemalloc-devel
 }
 
 function check_os() {
@@ -41,7 +42,9 @@ function check_os() {
  
 function install_spark_sql_perf() {
   cd $SOFTWARE_HOME
-  git clone https://github.com/haojinIntel/spark-sql-perf.git && cd spark-sql-perf
+  git clone https://github.com/databricks/spark-sql-perf.git && cd spark-sql-perf
+  wget https://raw.githubusercontent.com/oap-project/oap-tools/master/integrations/oap/dataproc/spark-sql-perf.patch
+  git apply spark-sql-perf.patch
   sbt package
 }
 
