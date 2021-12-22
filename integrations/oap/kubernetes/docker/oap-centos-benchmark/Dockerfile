@@ -11,7 +11,7 @@
 # limitations under the License.
 #
 
-FROM oap-centos:1.2.0
+FROM oap-centos:1.2.1
 
 USER root
 
