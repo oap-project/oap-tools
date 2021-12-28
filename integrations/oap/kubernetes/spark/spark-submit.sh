@@ -24,7 +24,7 @@ if [ ! -n "${SPARK_HOME}" ]; then
 fi
 
 K8S_MASTER=localhost:8443
-CONTAINER_IMAGE=spark-centos:1.2.0
+CONTAINER_IMAGE=spark-ubuntu:1.3.0
 SPARK_CONF=${WORK_DIR}/conf
 
 while [[ $# -gt 0 ]]
