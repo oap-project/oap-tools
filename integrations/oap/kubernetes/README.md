@@ -5,7 +5,7 @@ This directory contains the docker file and useful scripts to help user to build
 Before doing this, make sure you have installed docker at your machine.
 
 ### Build the Spark Base Docker Image
-Go to the directory [docker/spark-ubuntu](./docker/oap-ubuntu) and execute the following command to build Spark base docker image.
+Go to folder docker/spark-ubuntu and execute the following command to build Spark base docker image.
 ``` 
 git clone -b <oap-tool-version> https://github.com/oap-project/oap-tools.git
 cd oap-tools/integrations/oap/kubernetes/docker/spark-ubuntu
@@ -13,15 +13,14 @@ docker build --tag spark-ubuntu:1.3.0 .
 ``` 
 
 ### Build the OAP Docker Image
-Go to folder [docker/spark-ubuntu](./docker/oap-ubuntu) and execute the following command to build OAP docker image which is based on Spark base docker image.
+Go to folder docker/oap-ubuntu and execute the following command to build OAP docker image which is based on Spark base docker image.
 ``` 
 cd ../oap-ubuntu
 docker build --tag oap-ubuntu:1.3.0 .
 ``` 
 
 ## Run Spark/OAP on Kubernetes
-Before doing this, we assume you have set up Kubernetes environment andKubernetes works properly. All the tool scripts are under [spark](./spark) or [oap](./oap) directory. 
-We tested these scripts in Minikube environment. If you are using other Kubernetes distributions, you may need to make some changes to work properly.
+Before doing this, we assume you have set up Kubernetes environment and it worked properly. All the tool scripts are under "spark" or "oap" folder. We tested these scripts in Minikube environment. If you are using other Kubernetes distributions, you may need to make some changes to work properly.
 
 ### Create Spark User and Assign Cluster Role
 Spark running on Kubernetes needs edit role of your Kubernetes clusters to create driver or executor pods. 
