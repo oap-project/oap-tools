@@ -23,13 +23,6 @@ ENV LD_LIBRARY_PATH                      ${OAP_HOME}/lib:${LD_LIBRARY_PATH}
 
 USER root
 
-#install runtime prerequisites
-RUN git clone https://github.com/oap-project/oap-tools oap_source && \
-  cd /opt/home/oap_source && \
-  git checkout branch-1.3 && \
-  sh /opt/home/oap_source/dev/install-runtime-dependencies.sh --with-rdma && \
-  rm -rf /opt/home/oap_source
-
 # Install OAP conda packages
 COPY oap.yml /opt/home/oap.yml
 RUN /opt/home/conda/bin/conda config --system --set channel_priority flexible && \
