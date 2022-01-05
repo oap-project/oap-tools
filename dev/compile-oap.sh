@@ -122,7 +122,6 @@ function gather() {
   find $target_path -name "*test*"|xargs rm -rf
   cd $target_path
   rm -f oap-cache-$OAP_VERSION.jar
-  cd $DEV_PATH/thirdparty
 
   cp $target_path/* $DEV_PATH/release-package/jars/
   cd  $DEV_PATH/release-package
