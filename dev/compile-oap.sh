@@ -138,7 +138,7 @@ function build_oap(){
 
     gazelle_plugin)
     cd $OAP_HOME/gazelle_plugin/
-    mvn clean package -DskipTests -Dcpp_tests=OFF -Dbuild_arrow=ON -Dcheckstyle.skip  $PROFILE
+    mvn clean package -DskipTests -Dcpp_tests=OFF -Dbuild_arrow=ON -Dcheckstyle.skip -Pfull-scala-compiler $PROFILE
     ;;
 
     oap-mllib )
