@@ -1,6 +1,6 @@
-![logo](./image/logo.jpg) 
+![logo](./image/logo.jpg)
 
-Optimized Analytics Package (OAP) is an open source project to optimize Apache Spark on Cache, Shuffle, Native SQL Engine, MLlib and so on, driven by Intel and the community.
+Optimized Analytics Package (OAP) is an open source project to optimize Apache Spark on cache, shuffle, SQL Engine, MLlib and so on, driven by Intel and the community.
 
 # <font size="6"><b>Why use OAP?</b></font>
 
@@ -12,8 +12,10 @@ Apache Spark is powerful and well optimized on many aspects, but still faces som
 
 - The batch processing engine cannot satisfy the need of queries with high performance requirement.
 
-OAP Project is targeted to optimize Spark on these aspects above, now it has 8 components, including **SQL DS Cache**,
-**Native SQL Engine**, **Arrow Data Source**, **OAP MLlib**, **PMem Spill**, **PMem Common**, **PMem Shuffle** and **Remote Shuffle**.
+OAP Project is targeted to optimize Spark on these aspects above, it had 6 components, including **Gazelle Plugin**, **SQL DS Cache**,
+**OAP MLlib**, **PMem Spill**, **PMem Common**, and **PMem Shuffle** in previous releases.
+
+Currently, in OAP 1.3.0, it has 2 components including **Gazelle Plugin** and **OAP MLlib**.
 
 ![Overview](./image/OAP-Components.png)
 
@@ -30,10 +32,5 @@ Please refer to the total OAP project installation and developer guide below.
 
 You can get more detailed information from each module web page of OAP Project below.
 
-* [SQL DS Cache](https://oap-project.github.io/sql-ds-cache/)
-* [Native SQL Engine](https://oap-project.github.io/native-sql-engine/)
+* [Gazelle Plugin](https://oap-project.github.io/gazelle_plugin/)
 * [OAP MLlib](https://oap-project.github.io/oap-mllib/)
-* [PMem Shuffle](https://oap-project.github.io/pmem-shuffle/)
-* [Remote Shuffle](https://oap-project.github.io/remote-shuffle/)
-* [PMem Spill](https://oap-project.github.io/pmem-spill/)
-* [PMem Common](https://oap-project.github.io/pmem-common/)
