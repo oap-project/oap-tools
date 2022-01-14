@@ -11,24 +11,17 @@
 # limitations under the License.
 #
 
-FROM spark-ubuntu:1.2.0
+FROM spark-ubuntu:1.3.0
 
-MAINTAINER The Optimized Analyitics Package for Spark Platform (OAP) Authors https://github.com/Intel-bigdata/OAP/
+MAINTAINER The Optimized Analyitics Package for Spark Platform (OAP) Authors https://github.com/oap-project
 
 #oap
-ARG OAP_VERSION=1.2.0
+ARG OAP_VERSION=1.3.0
 ENV OAP_VERSION                       ${OAP_VERSION}
 ENV OAP_HOME              /opt/home/conda/envs/oap-${OAP_VERSION}
 ENV LD_LIBRARY_PATH                      ${OAP_HOME}/lib:${LD_LIBRARY_PATH}
 
 USER root
-
-#install runtime prerequisites
-RUN git clone https://github.com/oap-project/oap-tools oap_source && \
-  cd /opt/home/oap_source && \
-  git checkout branch-1.2 && \
-  bash /opt/home/oap_source/dev/scripts/prepare_oap_env.sh --prepare_PMDK && \
-  rm -rf /opt/home/oap_source
 
 # Install OAP conda packages
 COPY oap.yml /opt/home/oap.yml
