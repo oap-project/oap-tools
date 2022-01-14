@@ -41,55 +41,59 @@ To create a new cluster with initialization actions, follow the steps below:
 
 ## 2. Enabling Gazelle Plugin on Dataproc 2.0
 
-Here is an example of `spark-defaults.conf` on a `1 master + 2 workers` Dataproc cluster, 
-you can add these items to your `/etc/spark/conf/spark-defaults.conf` and modify corresponding configuration according to your cluster.
+Here is an example of `spark-defaults.conf` on a `1 master + 2 workers` on `n2-highmem-32` Dataproc cluster, with 1TB
+data scale. Each worker node has 4 local SSDs attached.
+you can add these items to your `/etc/spark/spark-defaults.conf` and modify config according to your cluster.
 
 ```
 ###Enabling Gazelle Plugin###
-
-spark.driver.extraLibraryPath                /opt/benchmark-tools/oap/lib
-spark.executorEnv.LD_LIBRARY_PATH            /opt/benchmark-tools/oap/lib
+spark.driver.extraLibraryPath                    /opt/benchmark-tools/oap/lib
+spark.executorEnv.LD_LIBRARY_PATH    /opt/benchmark-tools/oap/lib
 spark.executor.extraLibraryPath              /opt/benchmark-tools/oap/lib
-spark.executorEnv.LIBARROW_DIR               /opt/benchmark-tools/oap
-spark.executorEnv.CC                         /opt/benchmark-tools/oap/bin/gcc
+spark.executorEnv.CC                                /opt/benchmark-tools/oap/bin/gcc                             
+spark.executorEnv.LD_PRELOAD             /usr/lib64/libjemalloc.so
 
-spark.sql.extensions  com.intel.oap.ColumnarPlugin
-spark.files   /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.2.0-jar-with-dependencies.jar,/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.2.0-jar-with-dependencies.jar
-spark.driver.extraClassPath  /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.2.0-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.2.0-jar-with-dependencies.jar
-spark.executor.extraClassPath  /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.2.0-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.2.0-jar-with-dependencies.jar
-
-spark.executor.memoryOverhead 2989
-spark.memory.offHeap.enabled false
-spark.memory.offHeap.size 3g
-
+spark.files   /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.3.0-jar-with-dependencies.jar,/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.3.0-jar-with-dependencies.jar
+spark.driver.extraClassPath  /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.3.0-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.3.0-jar-with-dependencies.jar
+spark.executor.extraClassPath /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.3.0-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.3.0-jar-with-dependencies.jar
+spark.executor.instances                         8
+spark.executor.cores                             8       
+spark.executor.memory                            8g
+spark.memory.offHeap.enabled                     true
+spark.memory.offHeap.size                        40g
+spark.executor.memoryOverhead                    384
+spark.sql.shuffle.partitions                     64
+spark.sql.files.maxPartitionBytes                1073741824
+spark.plugins                                    com.intel.oap.GazellePlugin
 spark.shuffle.manager     org.apache.spark.shuffle.sort.ColumnarShuffleManager
+spark.oap.sql.columnar.preferColumnar false
+spark.sql.join.preferSortMergeJoin  false
+spark.sql.execution.sort.spillThreshold          2147483648
+spark.oap.sql.columnar.joinOptimizationLevel     18
+spark.oap.sql.columnar.sortmergejoin.lazyread  true
+spark.executor.extraJavaOptions   -XX:+UseParallelOldGC -XX:ParallelGCThreads=5 -XX:NewRatio=1 -XX:SurvivorRatio=1 -XX:+UseCompressedOops -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps
+spark.executorEnv.ARROW_ENABLE_NULL_CHECK_FOR_GET    false
+spark.sql.autoBroadcastJoinThreshold             10m
+spark.kryoserializer.buffer.max                  128m
 spark.oap.sql.columnar.sortmergejoin  true
-spark.oap.sql.columnar.preferColumnar true
-spark.oap.sql.columnar.joinOptimizationLevel 12
-
-spark.sql.autoBroadcastJoinThreshold 31457280
-spark.sql.adaptive.enabled true
-spark.sql.inMemoryColumnarStorage.batchSize 20480
+spark.oap.sql.columnar.shuffle.customizedCompression.codec  lz4
+spark.sql.inMemoryColumnarStorage.batchSize      20480
 spark.sql.sources.useV1SourceList avro
-spark.sql.extensions com.intel.oap.ColumnarPlugin
 spark.sql.columnar.window  true
 spark.sql.columnar.sort  true
-spark.sql.execution.arrow.maxRecordsPerBatch 20480
-spark.sql.shuffle.partitions  72
-spark.sql.parquet.columnarReaderBatchSize 20480
-spark.sql.columnar.codegen.hashAggregate false
-spark.sql.join.preferSortMergeJoin  false
-spark.sql.broadcastTimeout 3600
-
-spark.authenticate false
-spark.history.ui.port 18080
-spark.history.fs.cleaner.enabled true
-spark.eventLog.enabled true
-spark.network.timeout 3600s
+spark.sql.execution.arrow.maxRecordsPerBatch     20480
+spark.kryoserializer.buffer                      32m
+spark.sql.parquet.columnarReaderBatchSize        20480
+spark.executorEnv.MALLOC_ARENA_MAX   2
+spark.executorEnv.ARROW_ENABLE_UNSAFE_MEMORY_ACCESS  true
+spark.oap.sql.columnar.wholestagecodegen         true
 spark.serializer org.apache.spark.serializer.KryoSerializer
-spark.kryoserializer.buffer           64m
-spark.kryoserializer.buffer.max       256m
-spark.dynamicAllocation.executorIdleTimeout 3600s
+spark.authenticate false
+spark.executorEnv.MALLOC_CONF                    background_thread:true,dirty_decay_ms:0,muzzy_decay_ms:0,narenas:2
+spark.sql.columnar.codegen.hashAggregate false
+spark.yarn.appMasterEnv.LD_PRELOAD           /usr/lib64/libjemalloc.so
+spark.network.timeout 3600s
+spark.sql.warehouse.dir hdfs:///datagen
 
 ```
 #### Verify Gazelle Plugin Integration
