@@ -57,6 +57,7 @@ Once finished steps above, make sure libraries installed by Conda can be linked 
 spark.executorEnv.LD_LIBRARY_PATH   $HOME/miniconda2/envs/oapenv/lib
 spark.executor.extraLibraryPath     $HOME/miniconda2/envs/oapenv/lib
 spark.driver.extraLibraryPath       $HOME/miniconda2/envs/oapenv/lib
+spark.executorEnv.CC                $HOME/miniconda2/envs/oapenv/bin/gcc
 spark.executor.extraClassPath       $HOME/miniconda2/envs/oapenv/oap_jars/$OAP_FEATURE.jar
 spark.driver.extraClassPath         $HOME/miniconda2/envs/oapenv/oap_jars/$OAP_FEATURE.jar
 ```
