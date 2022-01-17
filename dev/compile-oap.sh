@@ -122,7 +122,6 @@ function gather() {
   find $target_path -name "*test*"|xargs rm -rf
   cd $target_path
   rm -f oap-cache-$OAP_VERSION.jar
-  cd $DEV_PATH/thirdparty
 
   cp $target_path/* $DEV_PATH/release-package/jars/
   cd  $DEV_PATH/release-package
@@ -139,7 +138,7 @@ function build_oap(){
 
     gazelle_plugin)
     cd $OAP_HOME/gazelle_plugin/
-    mvn clean package -DskipTests -Dcpp_tests=OFF -Dbuild_arrow=ON -Dcheckstyle.skip  $PROFILE
+    mvn clean package -DskipTests -Dcpp_tests=OFF -Dbuild_arrow=ON -Dcheckstyle.skip -Pfull-scala-compiler $PROFILE
     ;;
 
     oap-mllib )
@@ -252,4 +251,3 @@ case $BUILD_COMPONENT in
     exit 1
     ;;
 esac
-
