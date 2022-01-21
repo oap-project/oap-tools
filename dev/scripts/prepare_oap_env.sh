@@ -654,6 +654,9 @@ function  prepare_conda_build() {
 function  prepare_all() {
   prepare_maven
   prepare_cmake
+  if [  -z "$(uname -a | grep Ubuntu)" ]; then
+    prepare_llvm
+  fi 
   # prepare_intel_arrow
   prepare_oneAPI
 }
