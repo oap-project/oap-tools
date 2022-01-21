@@ -81,6 +81,7 @@ function install_ubuntu_lib() {
   apt-get -y pkg-config
   apt-get -y install uuid-dev libuuid1
   apt-get -y install libjson-c-dev
+  apt-get -y install patchelf
   apt -y install llvm-7
   apt -y install clang-7
   apt -y install bash-completion
@@ -96,6 +97,7 @@ function install_redhat_lib() {
   yum -y install unzip
   yum -y install make
   yum -y install wget
+  yum -y install patchelf
   yum -y install gmp-devel
   yum -y install mpfr-devel
   yum -y install libmpc-devel
@@ -654,6 +656,9 @@ function  prepare_conda_build() {
 function  prepare_all() {
   prepare_maven
   prepare_cmake
+  if [  -z "$(uname -a | grep Ubuntu)" ]; then
+    prepare_llvm
+  fi 
   # prepare_intel_arrow
   prepare_oneAPI
 }
