@@ -94,6 +94,7 @@ spark.sql.columnar.codegen.hashAggregate false
 spark.yarn.appMasterEnv.LD_PRELOAD           /usr/lib64/libjemalloc.so
 spark.network.timeout 3600s
 spark.sql.warehouse.dir hdfs:///datagen
+spark.dynamicAllocation.enabled false
 
 ```
 #### Verify Gazelle Plugin Integration
