@@ -42,10 +42,10 @@ make sure to add below configuration to `./repo/confs/Intel_MLlib_performance/hi
 
 ```
 ++spark.driver.extraLibraryPath             :/opt/benchmark-tools/oap/lib
-++spark.driver.extraClassPath               :/opt/benchmark-tools/oap/oap_jars/oap-mllib-1.2.0.jar
+++spark.driver.extraClassPath               :/opt/benchmark-tools/oap/oap_jars/oap-mllib-1.3.0.jar
 
 ++spark.executor.extraLibraryPath           :/opt/benchmark-tools/oap/lib
-++spark.executor.extraClassPath             :/opt/benchmark-tools/oap/oap_jars/oap-mllib-1.2.0.jar
+++spark.executor.extraClassPath             :/opt/benchmark-tools/oap/oap_jars/oap-mllib-1.3.0.jar
 
 spark.executor.extraJavaOptions             -XX:+UseG1GC -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps
 

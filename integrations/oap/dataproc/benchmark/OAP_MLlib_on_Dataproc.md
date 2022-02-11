@@ -21,9 +21,9 @@ To create a new cluster with initialization actions, follow the steps below:
 
 1). Click the  **CREATE CLUSTER** to create and custom your cluster.
 
-2). **Set up cluster:** choose cluster type and Dataproc image version `2.0-centos8`, enable component gateway, and add Jupyter Notebook, ZooKeeper.
+2). **Set up cluster:** choose cluster type and Dataproc image version `2.0-debian10`, enable component gateway, and add Jupyter Notebook, ZooKeeper.
 
-![Enable_component_gateway](../imgs/component_gateway.png)
+![Enable_component_gateway](../imgs/component_gateway_debian.png)
 
 3). **Configure nodes:** choose the instance type and other configurations of nodes.
 
@@ -90,9 +90,9 @@ vim ./repo/confs/OAP_MLlib_performance/hibench/spark.conf
 Add below configuration to `./repo/confs/OAP_MLlib_performance/hibench/spark.conf`.
 
 ```
-spark.files                       /opt/benchmark-tools/oap/oap_jars/oap-mllib-1.2.0.jar
-spark.executor.extraClassPath     ./oap-mllib-1.2.0.jar
-spark.driver.extraClassPath       /opt/benchmark-tools/oap/oap_jars/oap-mllib-1.2.0.jar
+spark.files                       /opt/benchmark-tools/oap/oap_jars/oap-mllib-1.3.0.jar
+spark.executor.extraClassPath     ./oap-mllib-1.3.0.jar
+spark.driver.extraClassPath       /opt/benchmark-tools/oap/oap_jars/oap-mllib-1.3.0.jar
 
 # Make it enough to cache training data
 spark.executor.memoryOverhead               512m   
