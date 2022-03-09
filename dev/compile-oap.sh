@@ -8,7 +8,7 @@ OAP_HOME="$(cd "`dirname "$0"`/.."; pwd)"
 
 DEV_PATH=$OAP_HOME/dev
 
-OAP_VERSION=1.3.0
+OAP_VERSION=1.3.1
 
 SPARK_VERSION=3.1.1
 
@@ -251,3 +251,4 @@ case $BUILD_COMPONENT in
     exit 1
     ;;
 esac
+
