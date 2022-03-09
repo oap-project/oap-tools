@@ -14,7 +14,7 @@ INTEL_ARROW_REPO="https://github.com/oap-project/arrow.git"
 ARROW_BRANCH="arrow-4.0.0-oap"
 
 
-OAP_VERSION=1.3.0
+OAP_VERSION=1.3.1
 OAP_BRANCH="master"
 
 
