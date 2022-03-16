@@ -117,6 +117,8 @@ function gather() {
 
   cp ../gazelle_plugin/arrow-data-source/standard/target/*with-dependencies.jar $target_path
   cp ../gazelle_plugin/native-sql-engine/core/target/*with-dependencies.jar $target_path
+  cp ../gazelle_plugin/shims/common/target/*.jar $target_path
+  cp ../gazelle_plugin/shims/spark321/target/*.jar $target_path
   cp ../oap-mllib/mllib-dal/target/*.jar $target_path
 
   find $target_path -name "*test*"|xargs rm -rf
@@ -138,7 +140,7 @@ function build_oap(){
 
     gazelle_plugin)
     cd $OAP_HOME/gazelle_plugin/
-    mvn clean package -DskipTests -Dcpp_tests=OFF -Dbuild_arrow=ON -Dcheckstyle.skip -Pfull-scala-compiler $PROFILE
+    mvn clean package -Dmaven.test.skip=true -Dcpp_tests=OFF -Dbuild_arrow=ON -Dcheckstyle.skip -Pfull-scala-compiler  -Pspark-3.2 $PROFILE
     ;;
 
     oap-mllib )
@@ -147,7 +149,6 @@ function build_oap(){
     sh  ../dev/prepare-build-deps.sh
     ./build.sh 
     ;;
-
 
 
     pmem-common)    
