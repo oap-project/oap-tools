@@ -110,26 +110,38 @@ function check_gcc() {
 function gather() {
   cd  $DEV_PATH
   package_name=oap-$OAP_VERSION-bin-spark-$SPARK_VERSION
-  rm -rf $DEV_PATH/release-package/*
   target_path=$DEV_PATH/release-package/$package_name/jars/
-  mkdir -p $target_path
-  mkdir -p $DEV_PATH/release-package/jars/
+  mkdir -p $target_path/gazelle/spark311/
+  mkdir -p $DEV_PATH/release-package/jars/gazelle/spark311/
 
-  cp ../gazelle_plugin/arrow-data-source/standard/target/*with-dependencies.jar $target_path
-  cp ../gazelle_plugin/native-sql-engine/core/target/*with-dependencies.jar $target_path
-  cp ../gazelle_plugin/shims/common/target/*.jar $target_path
-  cp ../gazelle_plugin/shims/spark321/target/*.jar $target_path
+  cp ../gazelle_plugin/arrow-data-source/standard/target/*with-dependencies.jar $target_path/gazelle/spark311
+  cp ../gazelle_plugin/native-sql-engine/core/target/*with-dependencies.jar $target_path/gazelle/spark311
+  cp ../gazelle_plugin/shims/common/target/*.jar $target_path/gazelle/spark311
+  cp ../gazelle_plugin/shims/spark311/target/*.jar $target_path/gazelle/spark311
   cp ../oap-mllib/mllib-dal/target/*.jar $target_path
 
   find $target_path -name "*test*"|xargs rm -rf
   cd $target_path
   rm -f oap-cache-$OAP_VERSION.jar
 
-  cp $target_path/* $DEV_PATH/release-package/jars/
+  cp -r $target_path/* $DEV_PATH/release-package/jars/
   cd  $DEV_PATH/release-package
   tar -czf $package_name.tar.gz $package_name/
   echo "Please check the result in  $DEV_PATH/release-package!"
 }
+
+function collect_gazelle_spark321() {
+  target_path=$DEV_PATH/release-package/$package_name/jars/gazelle/spark321
+  mkdir -p $target_path
+  mkdir -p $DEV_PATH/release-package/jars/gazelle/spark321/
+
+  cp ../gazelle_plugin/arrow-data-source/standard/target/*with-dependencies.jar $target_path
+  cp ../gazelle_plugin/native-sql-engine/core/target/*with-dependencies.jar $target_path
+  cp ../gazelle_plugin/shims/common/target/*.jar $target_path
+  cp ../gazelle_plugin/shims/spark321/target/*.jar $target_path
+
+  cp -r $target_path/* $DEV_PATH/release-package/jars/gazelle/spark321/
+} 
 
 function build_oap(){
     case $1 in
@@ -140,7 +152,9 @@ function build_oap(){
 
     gazelle_plugin)
     cd $OAP_HOME/gazelle_plugin/
-    mvn clean package -Dmaven.test.skip=true -Dcpp_tests=OFF -Dbuild_arrow=ON -Dcheckstyle.skip -Pfull-scala-compiler  -Pspark-3.2 $PROFILE
+    mvn clean package -Dmaven.test.skip=true -Dcpp_tests=OFF -Dbuild_arrow=ON -Dcheckstyle.skip -Pfull-scala-compiler -Pspark-3.2 $PROFILE
+    collect_gazelle_spark321
+    mvn clean package -Dmaven.test.skip=true -Dcpp_tests=OFF -Dbuild_arrow=ON -Dcheckstyle.skip -Pfull-scala-compiler   $PROFILE
     ;;
 
     oap-mllib )
@@ -196,6 +210,7 @@ case $BUILD_COMPONENT in
     "")
     shift 1
     echo "Start to compile all modules of OAP ..."
+    rm -rf $DEV_PATH/release-package/*
     build_oap gazelle_plugin
     build_oap oap-mllib
 
@@ -205,6 +220,7 @@ case $BUILD_COMPONENT in
     gazelle_plugin)
     shift 1
     build_oap gazelle_plugin
+    gather
     exit 0
     ;;
     oap-mllib )
