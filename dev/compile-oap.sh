@@ -110,7 +110,6 @@ function check_gcc() {
 function gather() {
   cd  $DEV_PATH
   package_name=oap-$OAP_VERSION-bin-spark-$SPARK_VERSION
-  rm -rf $DEV_PATH/release-package/*
   target_path=$DEV_PATH/release-package/$package_name/jars/
   mkdir -p $target_path/gazelle/spark311/
   mkdir -p $DEV_PATH/release-package/jars/gazelle/spark311/
@@ -125,7 +124,7 @@ function gather() {
   cd $target_path
   rm -f oap-cache-$OAP_VERSION.jar
 
-  cp $target_path/* $DEV_PATH/release-package/jars/
+  cp -r $target_path/* $DEV_PATH/release-package/jars/
   cd  $DEV_PATH/release-package
   tar -czf $package_name.tar.gz $package_name/
   echo "Please check the result in  $DEV_PATH/release-package!"
@@ -211,6 +210,7 @@ case $BUILD_COMPONENT in
     "")
     shift 1
     echo "Start to compile all modules of OAP ..."
+    rm -rf $DEV_PATH/release-package/*
     build_oap gazelle_plugin
     build_oap oap-mllib
 
@@ -220,6 +220,7 @@ case $BUILD_COMPONENT in
     gazelle_plugin)
     shift 1
     build_oap gazelle_plugin
+    gather
     exit 0
     ;;
     oap-mllib )
