@@ -160,7 +160,7 @@ function build_oap(){
     oap-mllib )
     cd $OAP_HOME/oap-mllib/mllib-dal
     source /opt/intel/oneapi/setvars.sh --force
-    sh  ../dev/prepare-build-deps.sh
+    bash  ../dev/prepare-build-deps.sh
     ./build.sh 
     ;;
 
