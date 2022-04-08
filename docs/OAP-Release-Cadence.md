@@ -16,7 +16,7 @@ In general, major feature releases occur about every 4 months. Hence, OAP would 
 | :----- | :----- |
 May        2022	           |  Code freeze. Release branch cut.|
 Mid June   2022	            | QA period. Focus on bug fixes, tests, stability and docs. Generally, no new features merged.|
-June     2022	             |Release candidates (RC), etc. until final release passes|
+July     2022	             |Release candidates (RC), etc. until final release passes|
 
 
 #### Maintenance Releases
