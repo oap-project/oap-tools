@@ -28,25 +28,11 @@ To test your installation,  run the command `conda list` in your terminal window
 Create a Conda environment and install OAP Conda package.
 
 ```bash
-$ conda create -n oapenv -c conda-forge -c intel -y oap=1.2.0
+$ conda create -n oapenv -c conda-forge -c intel -y oap=1.3.1
 ```
 
 Once finished steps above, you have completed OAP dependencies installation and OAP building, and will find built OAP jars under `$HOME/miniconda2/envs/oapenv/oap_jars`
 
-Dependencies below are required by OAP and all of them are included in OAP Conda package, they will be automatically installed in your cluster when you Conda install OAP. Ensure you have activated environment which you created in the previous steps.
-
-- [Arrow](https://github.com/oap-project/arrow/tree/v4.0.0-oap-1.2.0)
-- [Plasma](http://arrow.apache.org/blog/2017/08/08/plasma-in-memory-object-store/)
-- [Memkind](https://github.com/memkind/memkind/tree/v1.10.1)
-- [Vmemcache](https://github.com/pmem/vmemcache.git)
-- [HPNL](https://anaconda.org/intel/hpnl)
-- [PMDK](https://github.com/pmem/pmdk)  
-- [OneAPI](https://software.intel.com/content/www/us/en/develop/tools/oneapi.html)
-
-
-#### Extra Steps for Shuffle Remote PMem Extension
-
-If you use one of OAP features -- [PMem Shuffle](https://github.com/oap-project/pmem-shuffle) with **RDMA**, you need to configure and validate RDMA, please refer to [PMem Shuffle](https://github.com/oap-project/pmem-shuffle#4-configure-and-validate-rdma) for the details.
 
 
 ###  Configuration

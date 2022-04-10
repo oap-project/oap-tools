@@ -9,14 +9,14 @@ Go to folder docker/spark-ubuntu and execute the following command to build Spar
 ``` 
 git clone -b <oap-tool-version> https://github.com/oap-project/oap-tools.git
 cd oap-tools/integrations/oap/kubernetes/docker/spark-ubuntu
-docker build --tag spark-ubuntu:1.3.0 .
+docker build --tag spark-ubuntu:1.3.1 .
 ``` 
 
 ### Build the OAP Docker Image
 Go to folder docker/oap-ubuntu and execute the following command to build OAP docker image which is based on Spark base docker image.
 ``` 
 cd ../oap-ubuntu
-docker build --tag oap-ubuntu:1.3.0 .
+docker build --tag oap-ubuntu:1.3.1 .
 ``` 
 
 ## Run Spark/OAP on Kubernetes
@@ -36,13 +36,13 @@ In Kubernetes, you can run Spark/OAP job using spark-submit in Cluster mode at a
 You can run a Spark Pi job for a simple testing of the environment is working. Execute the following command. If you are running on the master node,  you can ignore the --master parameter.
 For example:
 ``` 
-sh ./spark-pi.sh --master localhost:8443  --image oap-ubuntu:1.3.0  --spark_conf ./conf
+sh ./spark-pi.sh --master localhost:8443  --image oap-ubuntu:1.3.1  --spark_conf ./conf
 ``` 
 #### Run Spark Job through spark-submit
 You can submit your own job. Execute the following command. If you are running on the master node,  you can ignore the --master parameter.
 For exmaple:
 ``` 
-sh ./spark-submit.sh --master localhost:8443  --image oap-ubuntu:1.3.0  --spark_conf ./conf --name spark-pi --class org.apache.spark.examples.SparkPi  local:///opt/home/spark-3.1.1/examples/jars/spark-examples_2.12-3.1.1.jar 100
+sh ./spark-submit.sh --master localhost:8443  --image oap-ubuntu:1.3.1  --spark_conf ./conf --name spark-pi --class org.apache.spark.examples.SparkPi  local:///opt/home/spark-3.1.1/examples/jars/spark-examples_2.12-3.1.1.jar 100
 ``` 
 
 ### Run Spark/OAP in Client Mode
@@ -54,7 +54,7 @@ A lot of Spark tools run at Client Mode, such Spark Thrift Server, Spark Shell a
 Execute the following command to start Spark Thrift Server in a pod and launch corresponding services.
 For example:
 ``` 
-sh ./spark-thrift-server.sh start --image oap-ubuntu:1.3.0  --spark_conf ./conf
+sh ./spark-thrift-server.sh start --image oap-ubuntu:1.3.1  --spark_conf ./conf
 ``` 
 
 ##### Stop Spark Thrift Server
@@ -81,7 +81,7 @@ To run Spark Shell, Spark SQL or Spark Submit at client mode, we need to launch 
 Execute the following command to configure and start the client pod.
 For example:
 ``` 
-sh ./spark-client.sh start --image oap-ubuntu:1.3.0 --spark_conf ./conf
+sh ./spark-client.sh start --image oap-ubuntu:1.3.1 --spark_conf ./conf
 ``` 
 
 ##### Run Spark Shell

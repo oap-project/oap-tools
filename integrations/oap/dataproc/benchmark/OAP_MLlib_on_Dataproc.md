@@ -90,9 +90,9 @@ vim ./repo/confs/OAP_MLlib_performance/hibench/spark.conf
 Add below configuration to `./repo/confs/OAP_MLlib_performance/hibench/spark.conf`.
 
 ```
-spark.files                       /opt/benchmark-tools/oap/oap_jars/oap-mllib-1.3.0.jar
-spark.executor.extraClassPath     ./oap-mllib-1.3.0.jar
-spark.driver.extraClassPath       /opt/benchmark-tools/oap/oap_jars/oap-mllib-1.3.0.jar
+spark.files                       /opt/benchmark-tools/oap/oap_jars/oap-mllib-1.3.1.jar
+spark.executor.extraClassPath     ./oap-mllib-1.3.1.jar
+spark.driver.extraClassPath       /opt/benchmark-tools/oap/oap_jars/oap-mllib-1.3.1.jar
 
 # Make it enough to cache training data
 spark.executor.memoryOverhead               512m   

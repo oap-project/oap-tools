@@ -16,15 +16,15 @@
 # limitations under the License.
 #
 
-OAP_ENV=/opt/home/conda/envs/oap-1.3.0
+OAP_ENV=/opt/home/conda/envs/oap-1.3.1
 
 sh ../spark/spark-shell-client.sh --conf spark.executor.instances=1 \
---conf spark.driver.extraClassPath=$OAP_ENV/oap_jars/spark-columnar-core-1.3.0-jar-with-dependencies.jar:$OAP_ENV/oap_jars/spark-arrow-datasource-standard-1.3.0-jar-with-dependencies.jar \
+--conf spark.driver.extraClassPath=$OAP_ENV/oap_jars/spark-columnar-core-1.3.1-jar-with-dependencies.jar:$OAP_ENV/oap_jars/spark-arrow-datasource-standard-1.3.1-jar-with-dependencies.jar \
   --conf spark.driver.maxResultSize=15g \
   --conf spark.executorEnv.LD_LIBRARY_PATH=$OAP_ENV/lib \
   --conf spark.executorEnv.LIBARROW_DIR=$OAP_ENV \
   --conf spark.sql.extensions=com.intel.oap.ColumnarPlugin \
-  --conf spark.executor.extraClassPath=$OAP_ENV/oap_jars/spark-columnar-core-1.3.0-jar-with-dependencies.jar:$OAP_ENV/oap_jars/spark-arrow-datasource-standard-1.3.0-jar-with-dependencies.jar \
+  --conf spark.executor.extraClassPath=$OAP_ENV/oap_jars/spark-columnar-core-1.3.1-jar-with-dependencies.jar:$OAP_ENV/oap_jars/spark-arrow-datasource-standard-1.3.1-jar-with-dependencies.jar \
   --conf spark.sql.columnar.sort=true \
   --conf spark.executor.extraLibraryPath=$OAP_ENV/lib \
   --conf spark.sql.execution.arrow.maxRecordsPerBatch=20480 \

@@ -53,9 +53,9 @@ spark.executor.extraLibraryPath              /opt/benchmark-tools/oap/lib
 spark.executorEnv.CC                                /opt/benchmark-tools/oap/bin/gcc                             
 spark.executorEnv.LD_PRELOAD             /usr/lib64/libjemalloc.so
 
-spark.files   /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.3.0-jar-with-dependencies.jar,/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.3.0-jar-with-dependencies.jar
-spark.driver.extraClassPath  /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.3.0-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.3.0-jar-with-dependencies.jar
-spark.executor.extraClassPath /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.3.0-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.3.0-jar-with-dependencies.jar
+spark.files   /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.3.1-jar-with-dependencies.jar,/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.3.1-jar-with-dependencies.jar
+spark.driver.extraClassPath  /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.3.1-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.3.1-jar-with-dependencies.jar
+spark.executor.extraClassPath /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.3.1-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.3.1-jar-with-dependencies.jar
 spark.executor.instances                         8
 spark.executor.cores                             8       
 spark.executor.memory                            8g
