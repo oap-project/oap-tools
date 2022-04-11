@@ -1,6 +1,6 @@
 ![logo](./image/logo.jpg)
 
-Optimized Analytics Package (OAP) is an open source project to optimize Apache Spark on cache, shuffle, SQL Engine, MLlib and so on, driven by Intel and the community.
+Optimized Analytics Package (OAP) is an open source project to optimize Apache Spark on cache, shuffle, SQL engine, MLlib and so on, driven by Intel and the community.
 
 # <font size="6"><b>Why use OAP?</b></font>
 
@@ -15,7 +15,7 @@ Apache Spark is powerful and well optimized on many aspects, but still faces som
 OAP Project is targeted to optimize Spark on these aspects above, it had 6 components, including **Gazelle Plugin**, **SQL DS Cache**,
 **OAP MLlib**, **PMem Spill**, **PMem Common**, and **PMem Shuffle** in previous releases.
 
-Currently, in OAP 1.3.0, it has 2 components including **Gazelle Plugin** and **OAP MLlib**.
+Currently, from OAP 1.3.1, it has 2 components including **Gazelle Plugin** and **OAP MLlib**.
 
 ![Overview](./image/OAP-Components.png)
 

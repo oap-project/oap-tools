@@ -27,9 +27,9 @@ To create a new cluster using the uploaded init script, follow the following ste
 7. Click **Add**. 
 8. Add Spark config in **Advanced Options**, for example:
 ```
-spark.files                       /databricks/conda/oap_jars/oap-mllib-1.3.0.jar
-spark.executor.extraClassPath     /databricks/conda/oap_jars/oap-mllib-1.3.0.jar
-spark.driver.extraClassPath       /databricks/conda/oap_jars/oap-mllib-1.3.0.jar
+spark.files                       /databricks/conda/oap_jars/oap-mllib-1.3.1.jar
+spark.executor.extraClassPath     /databricks/conda/oap_jars/oap-mllib-1.3.1.jar
+spark.driver.extraClassPath       /databricks/conda/oap_jars/oap-mllib-1.3.1.jar
 ```
 
 ![create_cluster](./imgs/create-oap-cluster.png)

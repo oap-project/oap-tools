@@ -23,9 +23,7 @@ To create a new cluster with initialization actions, follow the steps below:
 
 1). Click the  **CREATE CLUSTER** to create and custom your cluster.
 
-2). **Set up cluster:** choose cluster type and Dataproc image version `2.0-centos8`,  enable component gateway, and add Jupyter Notebook, ZooKeeper.
-
-![Enable_component_gateway](../integrations/oap/dataproc/imgs/component_gateway.png)
+2). **Set up cluster:** choose cluster type and Dataproc image version ***2.0***, enable component gateway, and add Jupyter Notebook, ZooKeeper.
 
 3). **Configure nodes:** choose the instance type and other configurations of nodes;
 
@@ -53,9 +51,9 @@ spark.executor.extraLibraryPath              /opt/benchmark-tools/oap/lib
 spark.executorEnv.CC                                /opt/benchmark-tools/oap/bin/gcc                             
 spark.executorEnv.LD_PRELOAD             /usr/lib64/libjemalloc.so
 
-spark.files   /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.3.0-jar-with-dependencies.jar,/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.3.0-jar-with-dependencies.jar
-spark.driver.extraClassPath  /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.3.0-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.3.0-jar-with-dependencies.jar
-spark.executor.extraClassPath /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.3.0-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.3.0-jar-with-dependencies.jar
+spark.files   /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.3.1-jar-with-dependencies.jar,/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.3.1-jar-with-dependencies.jar,/opt/benchmark-tools/oap/oap_jars/spark-sql-columnar-shims-spark311-1.3.1.jar,/opt/benchmark-tools/oap/oap_jars/spark-sql-columnar-shims-common-1.3.1.jar
+spark.driver.extraClassPath  /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.3.1-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.3.1-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-sql-columnar-shims-spark311-1.3.1.jar:/opt/benchmark-tools/oap/oap_jars/spark-sql-columnar-shims-common-1.3.1.jar
+spark.executor.extraClassPath /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.3.1-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.3.1-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-sql-columnar-shims-spark311-1.3.1.jar:/opt/benchmark-tools/oap/oap_jars/spark-sql-columnar-shims-common-1.3.1.jar
 spark.executor.instances                         8
 spark.executor.cores                             8       
 spark.executor.memory                            8g

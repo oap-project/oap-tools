@@ -89,14 +89,14 @@ spark.sql.oap.external.cache.socket.path /var/log/plasmaStore
 Go to folder integrations/oap/kubernetes/spark/ and do following steps:
 ``` 
 # Start spark client
-sh ./spark-client.sh start --image oap-ubuntu:1.3.0 --spark_conf ./conf
+sh ./spark-client.sh start --image oap-ubuntu:1.3.1 --spark_conf ./conf
 # Start spark shell
 sh ./spark-shell-client.sh --conf spark.executor.instances=1
 # Launch plasma-store-server:
 export OAP_DIR=/opt/home/conda/envs/oap-1.2.0
 export PMEM_PATH=/mnt/pmem
 export PMEM_SIZE=5000000000
-export CONTAINER_IMAGE=oap-ubuntu:1.3.0
+export CONTAINER_IMAGE=oap-ubuntu:1.3.1
 envsubst < plasma-store-server.yaml | kubectl apply -f -
 # use following scala to trigger cache
 spark.sql(s"""CREATE TABLE oap_test(a INT, b STRING) USING parquet OPTIONS(path '/var/log/test')""".stripMargin)
