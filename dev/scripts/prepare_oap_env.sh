@@ -635,12 +635,16 @@ function clone_all(){
     do
         echo "$key : ${repo_dic[$key]}"
         cd $OAP_DEV_HOME
+        TARGET_BRANCH=$OAP_BRANCH
+        if [ $key == "gazelle_plugin" ] && [ $OAP_BRANCH == "master" ]; then
+            TARGET_BRANCH="main"
+        fi
         if [ ! -d $key ]; then
-            git clone ${repo_dic[$key]} -b $OAP_BRANCH 
+            git clone ${repo_dic[$key]} -b $TARGET_BRANCH 
         else
             cd $key
             git reset --hard HEAD^
-            git checkout -f $OAP_BRANCH 
+            git checkout -f $TARGET_BRANCH 
             git pull
         fi
     
