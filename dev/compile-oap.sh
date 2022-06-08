@@ -8,7 +8,7 @@ OAP_HOME="$(cd "`dirname "$0"`/.."; pwd)"
 
 DEV_PATH=$OAP_HOME/dev
 
-OAP_VERSION=1.3.1
+OAP_VERSION=1.4.0
 
 SPARK_VERSION=3.1.1
 
@@ -109,7 +109,7 @@ function check_gcc() {
 
 function gather() {
   cd  $DEV_PATH
-  package_name=oap-$OAP_VERSION-bin-spark-$SPARK_VERSION
+  package_name=oap-$OAP_VERSION-bin
   target_path=$DEV_PATH/release-package/$package_name/jars/
   mkdir -p $target_path/gazelle/spark311/
   mkdir -p $DEV_PATH/release-package/jars/gazelle/spark311/
