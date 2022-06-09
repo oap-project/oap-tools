@@ -1,5 +1,5 @@
-c-compiler=1.2.0
-cxx-compiler=1.2.0
+c-compiler=1.3.0
+cxx-compiler=1.3.0
 curl=7.78
 clangdev=7
 python>=3
