@@ -60,8 +60,8 @@ function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)"
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
 
 
-function install_gcc7() {
-  #for gcc7
+function install_gcc9() {
+  #for gcc9
   yum -y install gmp-devel
   yum -y install mpfr-devel
   yum -y install libmpc-devel
@@ -69,19 +69,19 @@ function install_gcc7() {
 
   cd $DEV_PATH/thirdparty
 
-  if [ ! -d "gcc-7.3.0" ]; then
-    if [ ! -f "gcc-7.3.0.tar" ]; then
-      if [ ! -f "gcc-7.3.0.tar.xz" ]; then
-        wget https://bigsearcher.com/mirrors/gcc/releases/gcc-7.3.0/gcc-7.3.0.tar.xz
+  if [ ! -d "gcc-9.3.0" ]; then
+    if [ ! -f "gcc-9.3.0.tar" ]; then
+      if [ ! -f "gcc-9.3.0.tar.xz" ]; then
+        wget https://bigsearcher.com/mirrors/gcc/releases/gcc-9.3.0/gcc-9.3.0.tar.xz
       fi
-      xz -d gcc-7.3.0.tar.xz
+      xz -d gcc-9.3.0.tar.xz
     fi
-    tar -xvf gcc-7.3.0.tar
+    tar -xvf gcc-9.3.0.tar
   fi
 
-  cd gcc-7.3.0/
-  mkdir -p $DEV_PATH/thirdparty/gcc7
-  ./configure --prefix=$DEV_PATH/thirdparty/gcc7 --disable-multilib
+  cd gcc-9.3.0/
+  mkdir -p $DEV_PATH/thirdparty/gcc9
+  ./configure --prefix=$DEV_PATH/thirdparty/gcc9 --disable-multilib
   make -j
   make install
 }
@@ -93,13 +93,13 @@ function check_gcc() {
   CURRENT_GCC_VERSION=${array[2]}
   if version_lt $CURRENT_GCC_VERSION $GCC_MIN_VERSION; then
     if [  -n "$(uname -a | grep Ubuntu)" ]; then
-      apt-get install -y g++-7
+      apt-get install -y g++-9
     else
-      if [ ! -f "$DEV_PATH/thirdparty/gcc7/bin/gcc" ]; then
-        install_gcc7
+      if [ ! -f "$DEV_PATH/thirdparty/gcc9/bin/gcc" ]; then
+        install_gcc9
       fi 
-      export CXX=$DEV_PATH/thirdparty/gcc7/bin/g++
-      export CC=$DEV_PATH/thirdparty/gcc7/bin/gcc
+      export CXX=$DEV_PATH/thirdparty/gcc9/bin/g++
+      export CC=$DEV_PATH/thirdparty/gcc9/bin/gcc
     fi
 
   fi
