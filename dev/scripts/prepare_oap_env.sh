@@ -82,8 +82,9 @@ function install_ubuntu_lib() {
   apt-get -y install uuid-dev libuuid1
   apt-get -y install libjson-c-dev
   apt-get -y install patchelf
-  apt -y install llvm-7
-  apt -y install clang-7
+  apt-get install -y g++-9
+  apt -y install llvm-9
+  apt -y install clang-9
   apt -y install bash-completion
 }
 
@@ -118,12 +119,12 @@ function check_gcc() {
   array=(${CURRENT_GCC_VERSION_STR//,/ })
   CURRENT_GCC_VERSION=${array[2]}
   if version_lt $CURRENT_GCC_VERSION $GCC_MIN_VERSION; then
-    if [ ! -f "$DEV_PATH/thirdparty/gcc7/bin/gcc" ]; then
-      install_gcc7
+    if [ ! -f "$DEV_PATH/thirdparty/gcc9/bin/gcc" ]; then
+      install_gcc9
     fi
-    export CXX=$DEV_PATH/thirdparty/gcc7/bin/g++
-    export CC=$DEV_PATH/thirdparty/gcc7/bin/gcc
-    export LD_LIBRARY_PATH=$DEV_PATH/thirdparty/gcc7/lib64:$LD_LIBRARY_PATH
+    export CXX=$DEV_PATH/thirdparty/gcc9/bin/g++
+    export CC=$DEV_PATH/thirdparty/gcc9/bin/gcc
+    export LD_LIBRARY_PATH=$DEV_PATH/thirdparty/gcc9/lib64:$LD_LIBRARY_PATH
   fi
 }
 
@@ -292,31 +293,31 @@ function prepare_vmemcache() {
   
 }
 
-function install_gcc7() {
-  #for gcc7
+function install_gcc9() {
+  #for gcc9
 
   cd $DEV_PATH/thirdparty
 
-  if [ ! -d "gcc-7.3.0" ]; then
-    if [ ! -f "gcc-7.3.0.tar" ]; then
-      if [ ! -f "gcc-7.3.0.tar.xz" ]; then
-        wget -t 0 -c  --no-check-certificate https://bigsearcher.com/mirrors/gcc/releases/gcc-7.3.0/gcc-7.3.0.tar.xz
+  if [ ! -d "gcc-9.3.0" ]; then
+    if [ ! -f "gcc-9.3.0.tar" ]; then
+      if [ ! -f "gcc-9.3.0.tar.xz" ]; then
+        wget -t 0 -c  --no-check-certificate https://bigsearcher.com/mirrors/gcc/releases/gcc-9.3.0/gcc-9.3.0.tar.xz
       fi
-      xz -d gcc-7.3.0.tar.xz
+      xz -d gcc-9.3.0.tar.xz
     fi
-    tar -xvf gcc-7.3.0.tar
+    tar -xvf gcc-9.3.0.tar
   fi
 
-  cd gcc-7.3.0/
-  mkdir -p $DEV_PATH/thirdparty/gcc7
-  ./configure --prefix=$DEV_PATH/thirdparty/gcc7 --disable-multilib 
+  cd gcc-9.3.0/
+  mkdir -p $DEV_PATH/thirdparty/gcc9
+  ./configure --prefix=$DEV_PATH/thirdparty/gcc9 --disable-multilib 
   make -j
   make install
 }
 
 function prepare_llvm() {
   check_gcc
-  CURRENT_LLVM_VERSION_STR=`export LD_LIBRARY_PATH=$DEV_PATH/thirdparty/gcc7/lib64:$LD_LIBRARY_PATH;llvm-config --version`
+  CURRENT_LLVM_VERSION_STR=`export LD_LIBRARY_PATH=$DEV_PATH/thirdparty/gcc9/lib64:$LD_LIBRARY_PATH;llvm-config --version`
   if [[ $CURRENT_LLVM_VERSION_STR =~ $rx  ]]; then
     if version_ge $CURRENT_LLVM_VERSION_STR $LLVM_MIN_VERSION; then
       echo "llvm is installed"
@@ -671,7 +672,7 @@ function oap_build_help() {
     echo " --prepare_maven            function to install Maven"
     echo " --prepare_memkind          function to install Memkind"
     echo " --prepare_cmake            function to install Cmake"
-    echo " --install_gcc7             function to install GCC 7.3.0"
+    echo " --install_gcc9             function to install GCC 9.3.0"
     echo " --prepare_vmemcache        function to install Vmemcache"
     echo " --prepare_intel_arrow      function to install intel Arrow"
     echo " --prepare_HPNL             function to install intel HPNL"
@@ -716,9 +717,9 @@ case $key in
     prepare_cmake
     exit 0
     ;;
-    --install_gcc7)
+    --install_gcc9)
     shift 1 
-    install_gcc7
+    install_gcc9
     exit 0
     ;;
     --prepare_vmemcache)
