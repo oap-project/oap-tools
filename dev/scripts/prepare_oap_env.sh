@@ -83,8 +83,8 @@ function install_ubuntu_lib() {
   apt-get -y install libjson-c-dev
   apt-get -y install patchelf
   apt-get install -y g++-9
-  apt -y install llvm-9
-  apt -y install clang-9
+  apt -y install llvm-7
+  apt -y install clang-7
   apt -y install bash-completion
 }
 
