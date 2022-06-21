@@ -1,7 +1,6 @@
 #!/bin/bash
 
-VERSION_8_P='^8.[0-3]$'
-VERSION_9_P='^9.*$'
+VERSION_11_P='^11.*$'
 
 if [[ $DATABRICKS_RUNTIME_VERSION == "7.3" ]]; then
   if [ -n $DATABRICKS_ROOT_CONDA_ENV ]; then
