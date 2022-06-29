@@ -12,7 +12,7 @@ ${conda_install_dir}/bin/conda init
 source ~/.bashrc
 sudo chown $(whoami):$(whoami) ${oap_install_dir}
 
-if [ ! -n "$1" ];then
+if [ -n "$1" ];then
     oap_version=$1
 else
     oap_version=1.2.0
