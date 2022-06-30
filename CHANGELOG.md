@@ -30,7 +30,7 @@ Generated on 2022-06-30
 |[#854](https://github.com/oap-project/gazelle_plugin/issues/854)|Enable skipping columnarWSCG for queries with small shuffle size|
 |[#857](https://github.com/oap-project/gazelle_plugin/issues/857)|[SHUFFLE] split by reducer by column|
 
-### Bugs Fixed
+#### Bugs Fixed
 |||
 |:---|:---|
 |[#827](https://github.com/oap-project/gazelle_plugin/issues/827)|Github action is broken|
