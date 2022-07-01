@@ -17,6 +17,10 @@ GCC_MIN_VERSION=7.0
 BUILD_COMPONENT=""
 PROFILE="-Phadoop-3.2"
 
+package_name=oap-$OAP_VERSION-bin
+
+target_path=$DEV_PATH/release-package/$package_name/jars/
+
 while true; do
   case "$1" in
   -c | --component)
@@ -109,13 +113,13 @@ function check_gcc() {
 
 function gather() {
   cd  $DEV_PATH
-  package_name=oap-$OAP_VERSION-bin
-  target_path=$DEV_PATH/release-package/$package_name/jars/
 
   cp ../gazelle_plugin/gazelle-dist/target/*.jar $target_path
   cp ../oap-mllib/mllib-dal/target/*.jar $target_path
   
   cd $target_path
+
+  mkdir -p $DEV_PATH/release-package/jars/
 
   cp -r $target_path/* $DEV_PATH/release-package/jars/
   cd  $DEV_PATH/release-package
@@ -124,8 +128,7 @@ function gather() {
 }
 
 function collect_gazelle_spark321() {
-  target_path=$DEV_PATH/release-package/$package_name/jars/
-  mkdir -p $target_path
+  cd  $DEV_PATH
   cp ../gazelle_plugin/gazelle-dist/target/*.jar $target_path
 } 
 
@@ -192,11 +195,14 @@ esac
 check_gcc
 cd $OAP_HOME
 
+rm -rf $DEV_PATH/release-package/*
+mkdir -p $target_path
+
 case $BUILD_COMPONENT in
     "")
     shift 1
     echo "Start to compile all modules of OAP ..."
-    rm -rf $DEV_PATH/release-package/*
+
     build_oap gazelle_plugin
     build_oap oap-mllib
 
