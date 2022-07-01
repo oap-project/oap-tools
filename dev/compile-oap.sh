@@ -111,18 +111,11 @@ function gather() {
   cd  $DEV_PATH
   package_name=oap-$OAP_VERSION-bin
   target_path=$DEV_PATH/release-package/$package_name/jars/
-  mkdir -p $target_path/gazelle/spark311/
-  mkdir -p $DEV_PATH/release-package/jars/gazelle/spark311/
 
-  cp ../gazelle_plugin/arrow-data-source/standard/target/*with-dependencies.jar $target_path/gazelle/spark311
-  cp ../gazelle_plugin/native-sql-engine/core/target/*with-dependencies.jar $target_path/gazelle/spark311
-  cp ../gazelle_plugin/shims/common/target/*.jar $target_path/gazelle/spark311
-  cp ../gazelle_plugin/shims/spark311/target/*.jar $target_path/gazelle/spark311
+  cp ../gazelle_plugin/gazelle-dist/target/*.jar $target_path
   cp ../oap-mllib/mllib-dal/target/*.jar $target_path
-
-  find $target_path -name "*test*"|xargs rm -rf
+  
   cd $target_path
-  rm -f oap-cache-$OAP_VERSION.jar
 
   cp -r $target_path/* $DEV_PATH/release-package/jars/
   cd  $DEV_PATH/release-package
@@ -131,16 +124,9 @@ function gather() {
 }
 
 function collect_gazelle_spark321() {
-  target_path=$DEV_PATH/release-package/$package_name/jars/gazelle/spark321
+  target_path=$DEV_PATH/release-package/$package_name/jars/
   mkdir -p $target_path
-  mkdir -p $DEV_PATH/release-package/jars/gazelle/spark321/
-
-  cp ../gazelle_plugin/arrow-data-source/standard/target/*with-dependencies.jar $target_path
-  cp ../gazelle_plugin/native-sql-engine/core/target/*with-dependencies.jar $target_path
-  cp ../gazelle_plugin/shims/common/target/*.jar $target_path
-  cp ../gazelle_plugin/shims/spark321/target/*.jar $target_path
-
-  cp -r $target_path/* $DEV_PATH/release-package/jars/gazelle/spark321/
+  cp ../gazelle_plugin/gazelle-dist/target/*.jar $target_path
 } 
 
 function build_oap(){

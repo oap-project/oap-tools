@@ -15,7 +15,7 @@ sudo chown $(whoami):$(whoami) ${oap_install_dir}
 if [ -n "$1" ];then
     oap_version=$1
 else
-    oap_version=1.2.0
+    oap_version=1.4.0.emr630
 fi
 
 ## Step 2: install oap
