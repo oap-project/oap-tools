@@ -143,6 +143,7 @@ function build_oap(){
     cd $OAP_HOME/gazelle_plugin/
     mvn clean package -Dmaven.test.skip=true -Dcpp_tests=OFF -Dbuild_arrow=ON -Dcheckstyle.skip -Pfull-scala-compiler -Pspark-3.2 $PROFILE
     collect_gazelle_spark321
+    cd $OAP_HOME/gazelle_plugin/
     mvn clean package -Dmaven.test.skip=true -Dcpp_tests=OFF -Dbuild_arrow=ON -Dcheckstyle.skip -Pfull-scala-compiler   $PROFILE
     ;;
 
