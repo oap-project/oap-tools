@@ -6,12 +6,15 @@ repo_name: 'Fork on GitHub '
 repo_url: 'https://github.com/oap-project/'
 google_analytics: ['UA-125166209-1', 'oap-project.github.io']
 extra:
-  version: master
+  version: 1.4.0
   article_nav_top: false
   article_nav_bottom: false
 
 pages:
   - Overview: index.md
-  - OAP Installation Guide: OAP-Installation-Guide.md
-  - OAP Developer Guide: OAP-Developer-Guide.md
-  - OAP Release Cadence: OAP-Release-Cadence.md
+  - Components: Components.md
+  - Installation Guide: OAP-Installation-Guide.md
+  - Developer Guide: OAP-Developer-Guide.md
+  - Release Cadence: OAP-Release-Cadence.md
+  - Presentations: Presentations.md
+  - Powered By: Powered-by.md
