@@ -73,7 +73,7 @@ LABEL_FEATURE = 'feature'
 # Queries
 query_pr = """
 query ($after: String) {
-  repository(name: "sql-ds-cache", owner: "oap-project") {
+  repository(name: "gazelle_plugin", owner: "oap-project") {
     pullRequests(states: [MERGED], first: 100, after: $after) {
       totalCount
       nodes {
@@ -108,7 +108,7 @@ query ($after: String) {
 """
 query_issue = """
 query ($after: String) {
-  repository(name: "sql-ds-cache", owner: "oap-project") {
+  repository(name: "gazelle_plugin", owner: "oap-project") {
     issues(states: [CLOSED], labels: ["feature", "performance", "bug"], first: 100, after: $after) {
       totalCount
       nodes {
