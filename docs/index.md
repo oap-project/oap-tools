@@ -14,7 +14,7 @@ Apache Spark is powerful and well optimized on many aspects, but it still faces 
 
 OAP Project aims to optimize Spark on these aspects above. It had 6 components, including **Gazelle Plugin**, **OAP MLlib**, **SQL DS Cache**, **PMem Spill**, **PMem Common**, and **PMem Shuffle** in previous releases.
 
-Since 1.3, OAP consists of 2 components: **Gazelle Plugin** and **OAP MLlib**.
+Since 1.4.0, OAP consists of 3 components: **Gazelle Plugin**, **OAP MLlib** and **CloudTik**. 
 
 ![Overview](./image/OAP-Components.png)
 
@@ -33,3 +33,4 @@ You can get more detailed information from each component web page of OAP Projec
 
 * [Gazelle Plugin](https://oap-project.github.io/gazelle_plugin/)
 * [OAP MLlib](https://oap-project.github.io/oap-mllib/)
+* [CloudTik](https://cloudtik.readthedocs.io/)

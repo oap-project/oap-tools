@@ -44,16 +44,16 @@ data scale. Each worker node has 4 local SSDs attached.
 you can add these items to your `/etc/spark/spark-defaults.conf` and modify config according to your cluster.
 
 ```
-###Enabling Gazelle Plugin###
+# Enabling Gazelle Plugin
 spark.driver.extraLibraryPath                    /opt/benchmark-tools/oap/lib
 spark.executorEnv.LD_LIBRARY_PATH    /opt/benchmark-tools/oap/lib
 spark.executor.extraLibraryPath              /opt/benchmark-tools/oap/lib
 spark.executorEnv.CC                                /opt/benchmark-tools/oap/bin/gcc                             
 spark.executorEnv.LD_PRELOAD             /usr/lib64/libjemalloc.so
+spark.files  /opt/benchmark-tools/oap/oap_jars/gazelle-plugin-1.4.0-spark-3.1.1.jar 
+spark.driver.extraClassPath  /opt/benchmark-tools/oap/oap_jars/gazelle-plugin-1.4.0-spark-3.1.1.jar
+spark.executor.extraClassPath /opt/benchmark-tools/oap/oap_jars/gazelle-plugin-1.4.0-spark-3.1.1.jar 
 
-spark.files   /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.4.0-jar-with-dependencies.jar,/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.4.0-jar-with-dependencies.jar,/opt/benchmark-tools/oap/oap_jars/spark-sql-columnar-shims-spark311-1.4.0.jar,/opt/benchmark-tools/oap/oap_jars/spark-sql-columnar-shims-common-1.4.0.jar
-spark.driver.extraClassPath  /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.4.0-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.4.0-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-sql-columnar-shims-spark311-1.4.0.jar:/opt/benchmark-tools/oap/oap_jars/spark-sql-columnar-shims-common-1.4.0.jar
-spark.executor.extraClassPath /opt/benchmark-tools/oap/oap_jars/spark-columnar-core-1.4.0-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-arrow-datasource-standard-1.4.0-jar-with-dependencies.jar:/opt/benchmark-tools/oap/oap_jars/spark-sql-columnar-shims-spark311-1.4.0.jar:/opt/benchmark-tools/oap/oap_jars/spark-sql-columnar-shims-common-1.4.0.jar
 spark.executor.instances                         8
 spark.executor.cores                             8       
 spark.executor.memory                            8g
