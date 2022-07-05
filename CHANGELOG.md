@@ -1,5 +1,5 @@
 # Change log
-Generated on 2022-06-30
+Generated on 2022-07-05
 
 ## Release 1.4.0
 
@@ -52,64 +52,65 @@ Generated on 2022-06-30
 #### PRs
 |||
 |:---|:---|
+|[#1005](https://github.com/oap-project/gazelle_plugin/pull/1005)|[NSE-800] Fix an assembly warning|
 |[#1002](https://github.com/oap-project/gazelle_plugin/pull/1002)|[NSE-800] Pack the classes into one single jar|
 |[#988](https://github.com/oap-project/gazelle_plugin/pull/988)|[NSE-987] fix string date|
 |[#977](https://github.com/oap-project/gazelle_plugin/pull/977)|[NSE-126] set default codegen opt to O1|
-|[#975](https://github.com/oap-project/gazelle_plugin/pull/975)|[NSE-927] Add macro __AVX512BW__ check for different CPU architecture|
+|[#975](https://github.com/oap-project/gazelle_plugin/pull/975)|[NSE-927] Add macro AVX512BW check for different CPU architecture|
 |[#962](https://github.com/oap-project/gazelle_plugin/pull/962)|[NSE-359] disable unit tests on spark32 package|
 |[#966](https://github.com/oap-project/gazelle_plugin/pull/966)|[NSE-913] Add support for Hadoop 3.3.1 when packaging|
 |[#936](https://github.com/oap-project/gazelle_plugin/pull/936)|[NSE-943] Optimize IsNULL() function for Row2Columnar|
 |[#937](https://github.com/oap-project/gazelle_plugin/pull/937)|[NSE-927] Implement AVX512 optimization selection in Runtime and merge two C2R code files into one.|
-|[#951](https://github.com/oap-project/gazelle_plugin/pull/951)|[DNM] update sparklog|
-|[#938](https://github.com/oap-project/gazelle_plugin/pull/938)|[NSE-581] implement rlike/regexp_like|
-|[#946](https://github.com/oap-project/gazelle_plugin/pull/946)|[DNM] update on sparklog script|
-|[#939](https://github.com/oap-project/gazelle_plugin/pull/939)|[NSE-581] adding ShortType/FloatType in ColumnarLiteral|
-|[#934](https://github.com/oap-project/gazelle_plugin/pull/934)|[NSE-927] Extract and inline functions for native ColumnartoRow|
-|[#933](https://github.com/oap-project/gazelle_plugin/pull/933)|[NSE-581] Improve GetArrayItem(Split()) performance|
-|[#922](https://github.com/oap-project/gazelle_plugin/pull/922)|[NSE-912] Remove extra handleSafe costs|
-|[#925](https://github.com/oap-project/gazelle_plugin/pull/925)|[NSE-926] Support a UDF: URLDecoder|
-|[#924](https://github.com/oap-project/gazelle_plugin/pull/924)|[NSE-927] Enable AVX512 in Binary length calculation for native ColumnartoRow|
-|[#918](https://github.com/oap-project/gazelle_plugin/pull/918)|[NSE-856] Optimize of string/binary split|
-|[#908](https://github.com/oap-project/gazelle_plugin/pull/908)| [NSE-848] Optimize performance for Column2Row|
-|[#900](https://github.com/oap-project/gazelle_plugin/pull/900)|[NSE-869] Add 'first' agg function support|
-|[#917](https://github.com/oap-project/gazelle_plugin/pull/917)|[NSE-886] Add pmod expression support|
-|[#916](https://github.com/oap-project/gazelle_plugin/pull/916)|[NSE-909] fix slow test|
-|[#915](https://github.com/oap-project/gazelle_plugin/pull/915)|[NSE-857] Further optimizations of validity buffer split|
-|[#912](https://github.com/oap-project/gazelle_plugin/pull/912)|[NSE-909] "INSERT OVERWRITE x SELECT /*+ REPARTITION(2) */ * FROM y L…|
-|[#896](https://github.com/oap-project/gazelle_plugin/pull/896)|[NSE-889] Failed to write with ParquetFileFormat while using ArrowWriteExtension|
-|[#911](https://github.com/oap-project/gazelle_plugin/pull/911)|[NSE-910] fix bug of PR903|
-|[#901](https://github.com/oap-project/gazelle_plugin/pull/901)|[NSE-891] Spark executor lost while DatasetFileWriter failed with speculation|
-|[#907](https://github.com/oap-project/gazelle_plugin/pull/907)|[NSE-857] split validity buffer by reducer|
-|[#902](https://github.com/oap-project/gazelle_plugin/pull/902)|[NSE-892] Allow to use jar cmd not in PATH|
-|[#898](https://github.com/oap-project/gazelle_plugin/pull/898)|[NSE-867][FOLLOWUP] Add substring_index function support|
-|[#894](https://github.com/oap-project/gazelle_plugin/pull/894)|[NSE-855] allocate large block of memory for all reducer #881|
-|[#880](https://github.com/oap-project/gazelle_plugin/pull/880)|[NSE-857] Fill destination buffer by reducer|
-|[#839](https://github.com/oap-project/gazelle_plugin/pull/839)|[DNM] some optimizations to shuffle's split function|
-|[#879](https://github.com/oap-project/gazelle_plugin/pull/879)|[NSE-878]Wip get phyplan bugfix|
-|[#877](https://github.com/oap-project/gazelle_plugin/pull/877)|[NSE-876] Fix writing arrow hang with OutputWriter.path|
-|[#873](https://github.com/oap-project/gazelle_plugin/pull/873)|[NSE-872] implement replace function|
-|[#850](https://github.com/oap-project/gazelle_plugin/pull/850)|[NSE-854] Small Shuffle Size disable wholestagecodegen|
-|[#868](https://github.com/oap-project/gazelle_plugin/pull/868)|[NSE-867] Add substring_index function support|
-|[#847](https://github.com/oap-project/gazelle_plugin/pull/847)|[NSE-818] Support length, char_length, locate & regexp_extract|
-|[#865](https://github.com/oap-project/gazelle_plugin/pull/865)|[NSE-864] Enable native parquet write by default|
-|[#811](https://github.com/oap-project/gazelle_plugin/pull/811)|[NSE-810] disable codegen for SMJ with local limit|
-|[#860](https://github.com/oap-project/gazelle_plugin/pull/860)|remove sensitive info from physical plan|
-|[#853](https://github.com/oap-project/gazelle_plugin/pull/853)|[NSE-852] Unit test fix for NSE-843|
-|[#844](https://github.com/oap-project/gazelle_plugin/pull/844)|[NSE-843] ArrowDataSouce: Arrow dataset inspect() is called every tim…|
-|[#842](https://github.com/oap-project/gazelle_plugin/pull/842)|fix in eventlog script|
-|[#841](https://github.com/oap-project/gazelle_plugin/pull/841)|fix bug of script|
-|[#829](https://github.com/oap-project/gazelle_plugin/pull/829)|[NSE-828] Add native CoalesceBatches implementation|
-|[#830](https://github.com/oap-project/gazelle_plugin/pull/830)|[NSE-831] Support more expression types in getting attribute|
-|[#815](https://github.com/oap-project/gazelle_plugin/pull/815)|[NSE-610] Shrink hashmap to use less memory|
-|[#822](https://github.com/oap-project/gazelle_plugin/pull/822)|[NSE-821] Fix Wholestage Codegen on unsupported pattern|
-|[#824](https://github.com/oap-project/gazelle_plugin/pull/824)|[NSE-823] Use `SPARK_VERSION_SHORT` instead of `SPARK_VERSION` to find SparkShims|
-|[#826](https://github.com/oap-project/gazelle_plugin/pull/826)|[NSE-827] fix GHA|
-|[#819](https://github.com/oap-project/gazelle_plugin/pull/819)|[DNM] complete sparklog script|
-|[#802](https://github.com/oap-project/gazelle_plugin/pull/802)|[NSE-794] Fix count() with decimal value|
-|[#801](https://github.com/oap-project/gazelle_plugin/pull/801)|[NSE-786] Adding docs for shim layers|
-|[#790](https://github.com/oap-project/gazelle_plugin/pull/790)|[NSE-781]Add eventlog analyzer tool|
-|[#789](https://github.com/oap-project/gazelle_plugin/pull/789)|[NSE-788] Quick fix for randomSplit on reordered partitions|
-|[#780](https://github.com/oap-project/gazelle_plugin/pull/780)|[NSE-784] fallback Sort after SortHashAgg|
+|[#951](https://github.com/oap-project/gazelle_plugin/pull/951)| [DNM] update sparklog                                                                             |
+|[#938](https://github.com/oap-project/gazelle_plugin/pull/938)| [NSE-581] implement rlike/regexp_like                                                             |
+|[#946](https://github.com/oap-project/gazelle_plugin/pull/946)| [DNM] update on sparklog script                                                                   |
+|[#939](https://github.com/oap-project/gazelle_plugin/pull/939)| [NSE-581] adding ShortType/FloatType in ColumnarLiteral                                           |
+|[#934](https://github.com/oap-project/gazelle_plugin/pull/934)| [NSE-927] Extract and inline functions for native ColumnartoRow                                   |
+|[#933](https://github.com/oap-project/gazelle_plugin/pull/933)| [NSE-581] Improve GetArrayItem(Split()) performance                                               |
+|[#922](https://github.com/oap-project/gazelle_plugin/pull/922)| [NSE-912] Remove extra handleSafe costs                                                           |
+|[#925](https://github.com/oap-project/gazelle_plugin/pull/925)| [NSE-926] Support a UDF: URLDecoder                                                               |
+|[#924](https://github.com/oap-project/gazelle_plugin/pull/924)| [NSE-927] Enable AVX512 in Binary length calculation for native ColumnartoRow                     |
+|[#918](https://github.com/oap-project/gazelle_plugin/pull/918)| [NSE-856] Optimize of string/binary split                                                         |
+|[#908](https://github.com/oap-project/gazelle_plugin/pull/908)| [NSE-848] Optimize performance for Column2Row                                                     |
+|[#900](https://github.com/oap-project/gazelle_plugin/pull/900)| [NSE-869] Add 'first' agg function support                                                        |
+|[#917](https://github.com/oap-project/gazelle_plugin/pull/917)| [NSE-886] Add pmod expression support                                                             |
+|[#916](https://github.com/oap-project/gazelle_plugin/pull/916)| [NSE-909] fix slow test                                                                           |
+|[#915](https://github.com/oap-project/gazelle_plugin/pull/915)| [NSE-857] Further optimizations of validity buffer split                                          |
+|[#912](https://github.com/oap-project/gazelle_plugin/pull/912)| [NSE-909] "INSERT OVERWRITE x SELECT /*+ REPARTITION(2) */ * FROM y L…                            |
+|[#896](https://github.com/oap-project/gazelle_plugin/pull/896)| [NSE-889] Failed to write with ParquetFileFormat while using ArrowWriteExtension                  |
+|[#911](https://github.com/oap-project/gazelle_plugin/pull/911)| [NSE-910] fix bug of PR903                                                                        |
+|[#901](https://github.com/oap-project/gazelle_plugin/pull/901)| [NSE-891] Spark executor lost while DatasetFileWriter failed with speculation                     |
+|[#907](https://github.com/oap-project/gazelle_plugin/pull/907)| [NSE-857] split validity buffer by reducer                                                        |
+|[#902](https://github.com/oap-project/gazelle_plugin/pull/902)| [NSE-892] Allow to use jar cmd not in PATH                                                        |
+|[#898](https://github.com/oap-project/gazelle_plugin/pull/898)| [NSE-867][FOLLOWUP] Add substring_index function support                                          |
+|[#894](https://github.com/oap-project/gazelle_plugin/pull/894)| [NSE-855] allocate large block of memory for all reducer #881                                     |
+|[#880](https://github.com/oap-project/gazelle_plugin/pull/880)| [NSE-857] Fill destination buffer by reducer                                                      |
+|[#839](https://github.com/oap-project/gazelle_plugin/pull/839)| [DNM] some optimizations to shuffle's split function                                              |
+|[#879](https://github.com/oap-project/gazelle_plugin/pull/879)| [NSE-878]Wip get phyplan bugfix                                                                   |
+|[#877](https://github.com/oap-project/gazelle_plugin/pull/877)| [NSE-876] Fix writing arrow hang with OutputWriter.path                                           |
+|[#873](https://github.com/oap-project/gazelle_plugin/pull/873)| [NSE-872] implement replace function                                                              |
+|[#850](https://github.com/oap-project/gazelle_plugin/pull/850)| [NSE-854] Small Shuffle Size disable wholestagecodegen                                            |
+|[#868](https://github.com/oap-project/gazelle_plugin/pull/868)| [NSE-867] Add substring_index function support                                                    |
+|[#847](https://github.com/oap-project/gazelle_plugin/pull/847)| [NSE-818] Support length, char_length, locate & regexp_extract                                    |
+|[#865](https://github.com/oap-project/gazelle_plugin/pull/865)| [NSE-864] Enable native parquet write by default                                                  |
+|[#811](https://github.com/oap-project/gazelle_plugin/pull/811)| [NSE-810] disable codegen for SMJ with local limit                                                |
+|[#860](https://github.com/oap-project/gazelle_plugin/pull/860)| remove sensitive info from physical plan                                                          |
+|[#853](https://github.com/oap-project/gazelle_plugin/pull/853)| [NSE-852] Unit test fix for NSE-843                                                               |
+|[#844](https://github.com/oap-project/gazelle_plugin/pull/844)| [NSE-843] ArrowDataSouce: Arrow dataset inspect() is called every tim…                            |
+|[#842](https://github.com/oap-project/gazelle_plugin/pull/842)| fix in eventlog script                                                                            |
+|[#841](https://github.com/oap-project/gazelle_plugin/pull/841)| fix bug of script                                                                                 |
+|[#829](https://github.com/oap-project/gazelle_plugin/pull/829)| [NSE-828] Add native CoalesceBatches implementation                                               |
+|[#830](https://github.com/oap-project/gazelle_plugin/pull/830)| [NSE-831] Support more expression types in getting attribute                                      |
+|[#815](https://github.com/oap-project/gazelle_plugin/pull/815)| [NSE-610] Shrink hashmap to use less memory                                                       |
+|[#822](https://github.com/oap-project/gazelle_plugin/pull/822)| [NSE-821] Fix Wholestage Codegen on unsupported pattern                                           |
+|[#824](https://github.com/oap-project/gazelle_plugin/pull/824)| [NSE-823] Use `SPARK_VERSION_SHORT` instead of `SPARK_VERSION` to find SparkShims                 |
+|[#826](https://github.com/oap-project/gazelle_plugin/pull/826)| [NSE-827] fix GHA                                                                                 |
+|[#819](https://github.com/oap-project/gazelle_plugin/pull/819)| [DNM] complete sparklog script                                                                    |
+|[#802](https://github.com/oap-project/gazelle_plugin/pull/802)| [NSE-794] Fix count() with decimal value                                                          |
+|[#801](https://github.com/oap-project/gazelle_plugin/pull/801)| [NSE-786] Adding docs for shim layers                                                             |
+|[#790](https://github.com/oap-project/gazelle_plugin/pull/790)| [NSE-781]Add eventlog analyzer tool                                                               |
+|[#789](https://github.com/oap-project/gazelle_plugin/pull/789)| [NSE-788] Quick fix for randomSplit on reordered partitions                                       |
+|[#780](https://github.com/oap-project/gazelle_plugin/pull/780)| [NSE-784] fallback Sort after SortHashAgg                                                         |
 
 
 ### OAP MLlib
