@@ -8,7 +8,7 @@ OAP_HOME="$(cd "`dirname "$0"`/.."; pwd)"
 
 DEV_PATH=$OAP_HOME/dev
 
-OAP_VERSION=1.3.1
+OAP_VERSION=1.5.0
 
 SPARK_VERSION=3.1.1
 
@@ -16,6 +16,10 @@ GCC_MIN_VERSION=7.0
 
 BUILD_COMPONENT=""
 PROFILE="-Phadoop-3.2"
+
+package_name=oap-$OAP_VERSION-bin
+
+target_path=$DEV_PATH/release-package/$package_name/jars/
 
 while true; do
   case "$1" in
@@ -60,8 +64,8 @@ function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)"
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
 
 
-function install_gcc7() {
-  #for gcc7
+function install_gcc9() {
+  #for gcc9
   yum -y install gmp-devel
   yum -y install mpfr-devel
   yum -y install libmpc-devel
@@ -69,19 +73,19 @@ function install_gcc7() {
 
   cd $DEV_PATH/thirdparty
 
-  if [ ! -d "gcc-7.3.0" ]; then
-    if [ ! -f "gcc-7.3.0.tar" ]; then
-      if [ ! -f "gcc-7.3.0.tar.xz" ]; then
-        wget https://bigsearcher.com/mirrors/gcc/releases/gcc-7.3.0/gcc-7.3.0.tar.xz
+  if [ ! -d "gcc-9.3.0" ]; then
+    if [ ! -f "gcc-9.3.0.tar" ]; then
+      if [ ! -f "gcc-9.3.0.tar.xz" ]; then
+        wget https://bigsearcher.com/mirrors/gcc/releases/gcc-9.3.0/gcc-9.3.0.tar.xz
       fi
-      xz -d gcc-7.3.0.tar.xz
+      xz -d gcc-9.3.0.tar.xz
     fi
-    tar -xvf gcc-7.3.0.tar
+    tar -xvf gcc-9.3.0.tar
   fi
 
-  cd gcc-7.3.0/
-  mkdir -p $DEV_PATH/thirdparty/gcc7
-  ./configure --prefix=$DEV_PATH/thirdparty/gcc7 --disable-multilib
+  cd gcc-9.3.0/
+  mkdir -p $DEV_PATH/thirdparty/gcc9
+  ./configure --prefix=$DEV_PATH/thirdparty/gcc9 --disable-multilib
   make -j
   make install
 }
@@ -93,13 +97,13 @@ function check_gcc() {
   CURRENT_GCC_VERSION=${array[2]}
   if version_lt $CURRENT_GCC_VERSION $GCC_MIN_VERSION; then
     if [  -n "$(uname -a | grep Ubuntu)" ]; then
-      apt-get install -y g++-7
+      apt-get install -y g++-9
     else
-      if [ ! -f "$DEV_PATH/thirdparty/gcc7/bin/gcc" ]; then
-        install_gcc7
-      fi 
-      export CXX=$DEV_PATH/thirdparty/gcc7/bin/g++
-      export CC=$DEV_PATH/thirdparty/gcc7/bin/gcc
+      if [ ! -f "$DEV_PATH/thirdparty/gcc9/bin/gcc" ]; then
+        install_gcc9
+      fi
+      export CXX=$DEV_PATH/thirdparty/gcc9/bin/g++
+      export CC=$DEV_PATH/thirdparty/gcc9/bin/gcc
     fi
 
   fi
@@ -109,20 +113,13 @@ function check_gcc() {
 
 function gather() {
   cd  $DEV_PATH
-  package_name=oap-$OAP_VERSION-bin-spark-$SPARK_VERSION
-  target_path=$DEV_PATH/release-package/$package_name/jars/
-  mkdir -p $target_path/gazelle/spark311/
-  mkdir -p $DEV_PATH/release-package/jars/gazelle/spark311/
 
-  cp ../gazelle_plugin/arrow-data-source/standard/target/*with-dependencies.jar $target_path/gazelle/spark311
-  cp ../gazelle_plugin/native-sql-engine/core/target/*with-dependencies.jar $target_path/gazelle/spark311
-  cp ../gazelle_plugin/shims/common/target/*.jar $target_path/gazelle/spark311
-  cp ../gazelle_plugin/shims/spark311/target/*.jar $target_path/gazelle/spark311
+  cp ../gazelle_plugin/gazelle-dist/target/*.jar $target_path
   cp ../oap-mllib/mllib-dal/target/*.jar $target_path
 
-  find $target_path -name "*test*"|xargs rm -rf
   cd $target_path
-  rm -f oap-cache-$OAP_VERSION.jar
+
+  mkdir -p $DEV_PATH/release-package/jars/
 
   cp -r $target_path/* $DEV_PATH/release-package/jars/
   cd  $DEV_PATH/release-package
@@ -131,17 +128,9 @@ function gather() {
 }
 
 function collect_gazelle_spark321() {
-  target_path=$DEV_PATH/release-package/$package_name/jars/gazelle/spark321
-  mkdir -p $target_path
-  mkdir -p $DEV_PATH/release-package/jars/gazelle/spark321/
-
-  cp ../gazelle_plugin/arrow-data-source/standard/target/*with-dependencies.jar $target_path
-  cp ../gazelle_plugin/native-sql-engine/core/target/*with-dependencies.jar $target_path
-  cp ../gazelle_plugin/shims/common/target/*.jar $target_path
-  cp ../gazelle_plugin/shims/spark321/target/*.jar $target_path
-
-  cp -r $target_path/* $DEV_PATH/release-package/jars/gazelle/spark321/
-} 
+  cd  $DEV_PATH
+  cp ../gazelle_plugin/gazelle-dist/target/*.jar $target_path
+}
 
 function build_oap(){
     case $1 in
@@ -154,6 +143,7 @@ function build_oap(){
     cd $OAP_HOME/gazelle_plugin/
     mvn clean package -Dmaven.test.skip=true -Dcpp_tests=OFF -Dbuild_arrow=ON -Dcheckstyle.skip -Pfull-scala-compiler -Pspark-3.2 $PROFILE
     collect_gazelle_spark321
+    cd $OAP_HOME/gazelle_plugin/
     mvn clean package -Dmaven.test.skip=true -Dcpp_tests=OFF -Dbuild_arrow=ON -Dcheckstyle.skip -Pfull-scala-compiler   $PROFILE
     ;;
 
@@ -161,11 +151,11 @@ function build_oap(){
     cd $OAP_HOME/oap-mllib/mllib-dal
     source /opt/intel/oneapi/setvars.sh --force
     bash  ../dev/prepare-build-deps.sh
-    ./build.sh 
+    ./build.sh
     ;;
 
 
-    pmem-common)    
+    pmem-common)
     cd $OAP_HOME/pmem-common
     mvn clean package -Pvmemcache  -Ppersistent-memory  -DskipTests
     ;;
@@ -206,11 +196,14 @@ esac
 check_gcc
 cd $OAP_HOME
 
+rm -rf $DEV_PATH/release-package/*
+mkdir -p $target_path
+
 case $BUILD_COMPONENT in
     "")
     shift 1
     echo "Start to compile all modules of OAP ..."
-    rm -rf $DEV_PATH/release-package/*
+
     build_oap gazelle_plugin
     build_oap oap-mllib
 
@@ -268,4 +261,3 @@ case $BUILD_COMPONENT in
     exit 1
     ;;
 esac
-

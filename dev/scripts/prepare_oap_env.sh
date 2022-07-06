@@ -14,7 +14,7 @@ INTEL_ARROW_REPO="https://github.com/oap-project/arrow.git"
 ARROW_BRANCH="arrow-4.0.0-oap"
 
 
-OAP_VERSION=1.3.1
+OAP_VERSION=1.5.0
 OAP_BRANCH="master"
 
 
@@ -39,7 +39,7 @@ function check_os {
     install_ubuntu_lib
   else
     install_redhat_lib
-  fi  
+  fi
 }
 
 function check_os_docker {
@@ -47,7 +47,7 @@ function check_os_docker {
     install_redhat_lib
   else
     install_ubuntu_lib
-  fi  
+  fi
 }
 
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
@@ -71,7 +71,7 @@ function install_ubuntu_lib() {
   apt-get -y install asciidoctor
   apt-get -y install libkmod-dev libkmod2 kmod
   apt-get -y install libudev-dev libudev1
-  apt-get -y install libdaxctl-dev 
+  apt-get -y install libdaxctl-dev
   apt-get -y install build-essential
   apt-get -y install autogen
   apt-get -y install pandoc
@@ -82,6 +82,7 @@ function install_ubuntu_lib() {
   apt-get -y install uuid-dev libuuid1
   apt-get -y install libjson-c-dev
   apt-get -y install patchelf
+  apt-get install -y g++-9
   apt -y install llvm-7
   apt -y install clang-7
   apt -y install bash-completion
@@ -118,12 +119,12 @@ function check_gcc() {
   array=(${CURRENT_GCC_VERSION_STR//,/ })
   CURRENT_GCC_VERSION=${array[2]}
   if version_lt $CURRENT_GCC_VERSION $GCC_MIN_VERSION; then
-    if [ ! -f "$DEV_PATH/thirdparty/gcc7/bin/gcc" ]; then
-      install_gcc7
+    if [ ! -f "$DEV_PATH/thirdparty/gcc9/bin/gcc" ]; then
+      install_gcc9
     fi
-    export CXX=$DEV_PATH/thirdparty/gcc7/bin/g++
-    export CC=$DEV_PATH/thirdparty/gcc7/bin/gcc
-    export LD_LIBRARY_PATH=$DEV_PATH/thirdparty/gcc7/lib64:$LD_LIBRARY_PATH
+    export CXX=$DEV_PATH/thirdparty/gcc9/bin/g++
+    export CC=$DEV_PATH/thirdparty/gcc9/bin/gcc
+    export LD_LIBRARY_PATH=$DEV_PATH/thirdparty/gcc9/lib64:$LD_LIBRARY_PATH
   fi
 }
 
@@ -216,7 +217,7 @@ function install_cmake {
     install_cmake_ubuntu
   else
     install_cmake_redhat
-  fi  
+  fi
 }
 
 function prepare_cmake() {
@@ -229,7 +230,7 @@ function prepare_cmake() {
     CURRENT_CMAKE_VERSION=${array[2]}
     if version_lt $CURRENT_CMAKE_VERSION $CMAKE_MIN_VERSION; then
       echo "$CURRENT_CMAKE_VERSION is less than $CMAKE_MIN_VERSION,install cmake $CMAKE_TARGET_VERSION"
-      
+
       install_cmake
     fi
   else
@@ -288,35 +289,35 @@ function prepare_vmemcache() {
     cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCPACK_GENERATOR=rpm
     make package
     rpm -i libvmemcache*.rpm
-  fi  
-  
+  fi
+
 }
 
-function install_gcc7() {
-  #for gcc7
+function install_gcc9() {
+  #for gcc9
 
   cd $DEV_PATH/thirdparty
 
-  if [ ! -d "gcc-7.3.0" ]; then
-    if [ ! -f "gcc-7.3.0.tar" ]; then
-      if [ ! -f "gcc-7.3.0.tar.xz" ]; then
-        wget -t 0 -c  --no-check-certificate https://bigsearcher.com/mirrors/gcc/releases/gcc-7.3.0/gcc-7.3.0.tar.xz
+  if [ ! -d "gcc-9.3.0" ]; then
+    if [ ! -f "gcc-9.3.0.tar" ]; then
+      if [ ! -f "gcc-9.3.0.tar.xz" ]; then
+        wget -t 0 -c  --no-check-certificate https://bigsearcher.com/mirrors/gcc/releases/gcc-9.3.0/gcc-9.3.0.tar.xz
       fi
-      xz -d gcc-7.3.0.tar.xz
+      xz -d gcc-9.3.0.tar.xz
     fi
-    tar -xvf gcc-7.3.0.tar
+    tar -xvf gcc-9.3.0.tar
   fi
 
-  cd gcc-7.3.0/
-  mkdir -p $DEV_PATH/thirdparty/gcc7
-  ./configure --prefix=$DEV_PATH/thirdparty/gcc7 --disable-multilib 
+  cd gcc-9.3.0/
+  mkdir -p $DEV_PATH/thirdparty/gcc9
+  ./configure --prefix=$DEV_PATH/thirdparty/gcc9 --disable-multilib
   make -j
   make install
 }
 
 function prepare_llvm() {
   check_gcc
-  CURRENT_LLVM_VERSION_STR=`export LD_LIBRARY_PATH=$DEV_PATH/thirdparty/gcc7/lib64:$LD_LIBRARY_PATH;llvm-config --version`
+  CURRENT_LLVM_VERSION_STR=`export LD_LIBRARY_PATH=$DEV_PATH/thirdparty/gcc9/lib64:$LD_LIBRARY_PATH;llvm-config --version`
   if [[ $CURRENT_LLVM_VERSION_STR =~ $rx  ]]; then
     if version_ge $CURRENT_LLVM_VERSION_STR $LLVM_MIN_VERSION; then
       echo "llvm is installed"
@@ -359,7 +360,7 @@ function prepare_intel_arrow() {
   prepare_cmake
   if [  -z "$(uname -a | grep Ubuntu)" ]; then
     prepare_llvm
-  fi  
+  fi
 
   cd $DEV_PATH
   mkdir -p $DEV_PATH/thirdparty/
@@ -450,9 +451,9 @@ function prepare_HPNL(){
   cd build
   if $ENABLE_RDMA
   then
-    cmake -DWITH_VERBS=ON .. 
+    cmake -DWITH_VERBS=ON ..
   else
-    cmake -DWITH_VERBS=OFF  .. 
+    cmake -DWITH_VERBS=OFF  ..
   fi
   make -j && make install
   cd ../java/hpnl
@@ -485,12 +486,12 @@ function prepare_PMDK() {
   cd pmdk
   git checkout tags/1.8
   if [   -e  "/etc/redhat-release" ]; then
-    make -j && make install  
+    make -j && make install
   else
     make NDCTL_ENABLE=n
     make NDCTL_ENABLE=n install
-  fi 
-  
+  fi
+
   export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig/:$PKG_CONFIG_PATH
   echo 'export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig/:$PKG_CONFIG_PATH' > /etc/profile.d/pmdk.sh
   source /etc/profile
@@ -607,7 +608,7 @@ function prepare_rpmp_native() {
   git submodule add -b master https://github.com/redis/hiredis.git rpmp/include/hiredis
   git submodule add -b master https://github.com/open-source-parsers/jsoncpp.git rpmp/include/jsoncpp
   git submodule add -b v1.x https://github.com/gabime/spdlog.git rpmp/include/spdlog
-  cd rpmp 
+  cd rpmp
   mkdir -p  build
   cd build
   cmake ..
@@ -621,12 +622,12 @@ function prepare_rpmp_native() {
 function prepare_oneAPI() {
   cd $DEV_PATH/
   cd ../oap-mllib/dev/
-  
+
   if [  -n "$(uname -a | grep Ubuntu)" ]; then
     sh install-build-deps-ubuntu.sh
   else
     sh install-build-deps-centos.sh
-  fi 
+  fi
 }
 
 function clone_all(){
@@ -640,14 +641,14 @@ function clone_all(){
             TARGET_BRANCH="main"
         fi
         if [ ! -d $key ]; then
-            git clone ${repo_dic[$key]} -b $TARGET_BRANCH 
+            git clone ${repo_dic[$key]} -b $TARGET_BRANCH
         else
             cd $key
             git reset --hard HEAD^
-            git checkout -f $TARGET_BRANCH 
+            git checkout -f $TARGET_BRANCH
             git pull
         fi
-    
+
     done
 }
 
@@ -662,7 +663,7 @@ function  prepare_all() {
   prepare_cmake
   if [  -z "$(uname -a | grep Ubuntu)" ]; then
     prepare_llvm
-  fi 
+  fi
   # prepare_intel_arrow
   prepare_oneAPI
 }
@@ -671,7 +672,7 @@ function oap_build_help() {
     echo " --prepare_maven            function to install Maven"
     echo " --prepare_memkind          function to install Memkind"
     echo " --prepare_cmake            function to install Cmake"
-    echo " --install_gcc7             function to install GCC 7.3.0"
+    echo " --install_gcc9             function to install GCC 9.3.0"
     echo " --prepare_vmemcache        function to install Vmemcache"
     echo " --prepare_intel_arrow      function to install intel Arrow"
     echo " --prepare_HPNL             function to install intel HPNL"
@@ -686,7 +687,7 @@ do
 key="$1"
 case $key in
     --prepare_all)
-    shift 1 
+    shift 1
     echo "Start to install all compile-time dependencies for OAP ..."
     clone_all
     check_os
@@ -702,23 +703,23 @@ case $key in
     exit 0
     ;;
     --prepare_maven)
-    shift 1 
+    shift 1
     prepare_maven
     exit 0
     ;;
     --prepare_memkind)
-    shift 1 
+    shift 1
     prepare_memkind
     exit 0
     ;;
     --prepare_cmake)
-    shift 1 
+    shift 1
     prepare_cmake
     exit 0
     ;;
-    --install_gcc7)
-    shift 1 
-    install_gcc7
+    --install_gcc9)
+    shift 1
+    install_gcc9
     exit 0
     ;;
     --prepare_vmemcache)
