@@ -15,7 +15,7 @@ ARROW_BRANCH="arrow-4.0.0-oap"
 
 
 OAP_VERSION=1.5.0
-OAP_BRANCH="master"
+OAP_BRANCH="branch-1.5"
 
 
 declare -A repo_dic
