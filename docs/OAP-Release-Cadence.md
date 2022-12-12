@@ -10,13 +10,13 @@ Each OAP release will be versioned: [MAJOR].[FEATURE].[MAINTENANCE]
 
 In general, major feature releases occur about every 4 months. Hence, OAP would generally be released about 4 months after 1.1.0. Maintenance releases happen as needed in between feature releases. Major releases do not happen according to a fixed schedule.
 
-##### OAP 1.5 Release Window
+##### OAP 1.6 Release Window
 
 |Date  |  Event |
 | :----- | :----- |
-Aug        2022	           |  Code freeze. Release branch cut.|
-Mid Sep   2022	            | QA period. Focus on bug fixes, tests, stability and docs. Generally, no new features merged.|
-Sep     2022	             |Release candidates (RC), etc. until final release passes|
+May        2023	           |  Code freeze. Release branch cut.|
+Mid June   2023             | QA period. Focus on bug fixes, tests, stability and docs. Generally, no new features merged.|
+June     2023	             |Release candidates (RC), etc. until final release passes|
 
 
 #### Maintenance Releases
