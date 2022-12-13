@@ -6,7 +6,7 @@ repo_name: 'Fork on GitHub '
 repo_url: 'https://github.com/oap-project/'
 google_analytics: ['UA-125166209-1', 'oap-project.github.io']
 extra:
-  version: 1.4.0
+  version: 1.5.0
   article_nav_top: false
   article_nav_bottom: false
 
