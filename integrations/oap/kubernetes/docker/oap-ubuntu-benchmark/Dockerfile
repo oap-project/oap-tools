@@ -11,7 +11,7 @@
 # limitations under the License.
 #
 
-FROM oap-ubuntu:1.4.0
+FROM oap-ubuntu:1.5.0
 
 USER root
 

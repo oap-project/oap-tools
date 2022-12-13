@@ -105,9 +105,9 @@ spark.executorEnv.LD_LIBRARY_PATH    /opt/benchmark-tools/oap/lib
 spark.executor.extraLibraryPath              /opt/benchmark-tools/oap/lib
 spark.executorEnv.CC                                /opt/benchmark-tools/oap/bin/gcc                             
 spark.executorEnv.LD_PRELOAD             /usr/lib64/libjemalloc.so
-spark.files                   /opt/benchmark-tools/oap/oap_jars/gazelle-plugin-1.4.0-spark-3.1.1.jar
-spark.driver.extraClassPath   /opt/benchmark-tools/oap/oap_jars/gazelle-plugin-1.4.0-spark-3.1.1.jar
-spark.executor.extraClassPath /opt/benchmark-tools/oap/oap_jars/gazelle-plugin-1.4.0-spark-3.1.1.jar 
+spark.files                   /opt/benchmark-tools/oap/oap_jars/gazelle-plugin-1.5.0-spark-3.1.1.jar
+spark.driver.extraClassPath   /opt/benchmark-tools/oap/oap_jars/gazelle-plugin-1.5.0-spark-3.1.1.jar
+spark.executor.extraClassPath /opt/benchmark-tools/oap/oap_jars/gazelle-plugin-1.5.0-spark-3.1.1.jar 
 spark.executor.instances                         8
 spark.executor.cores                             8       
 spark.executor.memory                            8g

@@ -14,4 +14,4 @@ source ~/.bashrc
 
 ## Step 2: conda install oap
 
-conda create -p ${oap_install_dir} -c conda-forge -c intel -y oap=1.4.0.dataproc20
+conda create -p ${oap_install_dir} -c conda-forge -c intel -y oap=1.5.0.dataproc20
