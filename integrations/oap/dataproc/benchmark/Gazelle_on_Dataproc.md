@@ -104,7 +104,7 @@ spark.driver.extraLibraryPath                    /opt/benchmark-tools/oap/lib
 spark.executorEnv.LD_LIBRARY_PATH    /opt/benchmark-tools/oap/lib
 spark.executor.extraLibraryPath              /opt/benchmark-tools/oap/lib
 spark.executorEnv.CC                                /opt/benchmark-tools/oap/bin/gcc                             
-spark.executorEnv.LD_PRELOAD             /usr/lib64/libjemalloc.so
+spark.executorEnv.LD_PRELOAD             /usr/lib/x86_64-linux-gnu/libjemalloc.so
 spark.files                   /opt/benchmark-tools/oap/oap_jars/gazelle-plugin-1.5.0-spark-3.1.1.jar
 spark.driver.extraClassPath   /opt/benchmark-tools/oap/oap_jars/gazelle-plugin-1.5.0-spark-3.1.1.jar
 spark.executor.extraClassPath /opt/benchmark-tools/oap/oap_jars/gazelle-plugin-1.5.0-spark-3.1.1.jar 
@@ -143,7 +143,7 @@ spark.serializer org.apache.spark.serializer.KryoSerializer
 spark.authenticate false
 spark.executorEnv.MALLOC_CONF                    background_thread:true,dirty_decay_ms:0,muzzy_decay_ms:0,narenas:2
 spark.sql.columnar.codegen.hashAggregate false
-spark.yarn.appMasterEnv.LD_PRELOAD           /usr/lib64/libjemalloc.so
+spark.yarn.appMasterEnv.LD_PRELOAD           /usr/lib/x86_64-linux-gnu/libjemalloc.so
 spark.network.timeout 3600s
 spark.sql.warehouse.dir hdfs:///datagen
 spark.dynamicAllocation.enabled false
