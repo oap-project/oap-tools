@@ -21,7 +21,7 @@ To create a new cluster with initialization actions, follow the steps below:
 
 1). Click the  **CREATE CLUSTER** to create and custom your cluster.
 
-2). **Set up cluster:** choose cluster type and Dataproc image version `2.0-centos8`, enable component gateway, and add Jupyter Notebook, ZooKeeper.
+2). **Set up cluster:** choose cluster type and Dataproc image version `2.0`, enable component gateway, and add Jupyter Notebook, ZooKeeper.
 ![Enable_component_gateway](../imgs/component_gateway.png)
 
 3). **Configure nodes:** choose the instance type and other configurations of nodes. To use SSD as SQL Data Source media, please choose a **local SSD** to attach to worker nodes.
