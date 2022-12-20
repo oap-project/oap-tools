@@ -127,7 +127,7 @@ function gather() {
   echo "Please check the result in  $DEV_PATH/release-package!"
 }
 
-function collect_gazelle_spark321() {
+function collect_gazelle_spark() {
   cd  $DEV_PATH
   cp ../gazelle_plugin/gazelle-dist/target/*.jar $target_path
 }
@@ -142,7 +142,9 @@ function build_oap(){
     gazelle_plugin)
     cd $OAP_HOME/gazelle_plugin/
     mvn clean package -Dmaven.test.skip=true -Dcpp_tests=OFF -Dbuild_arrow=ON -Dcheckstyle.skip -Pfull-scala-compiler -Pspark-3.2 $PROFILE
-    collect_gazelle_spark321
+    collect_gazelle_spark
+    mvn clean package -Dmaven.test.skip=true -Dcpp_tests=OFF -Dbuild_arrow=ON -Dcheckstyle.skip -Pfull-scala-compiler -Pspark-3.2.2 $PROFILE
+    collect_gazelle_spark
     cd $OAP_HOME/gazelle_plugin/
     mvn clean package -Dmaven.test.skip=true -Dcpp_tests=OFF -Dbuild_arrow=ON -Dcheckstyle.skip -Pfull-scala-compiler   $PROFILE
     ;;
