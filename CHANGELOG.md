@@ -1,5 +1,5 @@
 # Change log
-Generated on 2022-12-14
+Generated on 2022-12-21
 
 ## Release 1.5.0
 
@@ -49,6 +49,8 @@ Generated on 2022-12-14
 #### PRs
 |||
 |:---|:---|
+|[#1192](https://github.com/oap-project/gazelle_plugin/pull/1192)|[NSE-1191] fix AQE exchange reuse in Spark3.2|
+|[#1180](https://github.com/oap-project/gazelle_plugin/pull/1180)|[NSE-1193] fix jni unload|
 |[#1175](https://github.com/oap-project/gazelle_plugin/pull/1175)|[NSE-1171] Support merge parquet schema and read missing schema|
 |[#1178](https://github.com/oap-project/gazelle_plugin/pull/1178)|[NSE-1161][FOLLOWUP] Remove extra compression type check|
 |[#1162](https://github.com/oap-project/gazelle_plugin/pull/1162)|[NSE-1161] Support read-write parquet conversion to read-write arrow|
