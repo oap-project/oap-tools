@@ -1,0 +1,9 @@
+ExecutionPlanParser reads a json file representing a physical plan, identifies dataTypes, expressions and execution operators.
+
+The code requires three files to be present in the same directory: GluttenSupportedExpression.List  GluttenSupportedOperator.List  TotalExpression.List
+Make sure those files exist, and are accurately populated before running the code.
+To compile make sure that java is installed on the system.
+
+
+type: make
+to run: java ExecutionPlanParser inputFile.json
