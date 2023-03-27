@@ -1,0 +1,14 @@
+FileSourceScan
+BatchScan
+Filter
+Project
+HashAggregate
+BroadcastHashJoin
+ShuffledHashJoin
+Sort
+SortMergeJoin
+Window
+GlobalLimit
+LocalLimit
+Expand
+Union
