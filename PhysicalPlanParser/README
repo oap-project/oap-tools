@@ -7,3 +7,7 @@ To compile make sure that java is installed on the system.
 
 type: make
 to run: java ExecutionPlanParser inputFile.json
+
+To run to Java jar:
+
+java -jar ExecutionPlanParser.jar inputFile.json
